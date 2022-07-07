@@ -24,7 +24,7 @@ namespace HM.Collections.Extensions
             sb.Append(']');
             return sb.ToString();
         }
-        public static IEnumerable<T?[]> TakeChunks<T>(this IEnumerable<T?> self, IEnumerable<int> chunkSizeIter)
+        public static IEnumerable<T?[]> Chunks<T>(this IEnumerable<T?> self, IEnumerable<int> chunkSizeIter)
         {
             if (chunkSizeIter is null)
             {
@@ -67,7 +67,7 @@ namespace HM.Collections.Extensions
                 }
             };
         }
-        public static IEnumerable<T?[]> AsZipped<T>(this IEnumerable<T?> self, params IEnumerable<T?>[] iters)
+        public static IEnumerable<T?[]> ZipWith<T>(this IEnumerable<T?> self, params IEnumerable<T?>[] iters)
         {
             var startEnumerator = self.GetEnumerator();
             var enumerators = (from i in iters select i.GetEnumerator()).ToArray();
