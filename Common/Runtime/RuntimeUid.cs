@@ -1,6 +1,6 @@
 ﻿#pragma warning disable IDE0049 // 强制使用.Net CL类型名
 
-namespace HM.Common
+namespace HM.Common.Runtime
 {
     public readonly struct RuntimeUid : IEquatable<RuntimeUid>
     {

@@ -1,6 +1,6 @@
 ﻿namespace HM.Common.Timers
 {
-    public class QTimer : ITimer
+    public sealed class Timer : ITimer
     {
         public event EventHandler? Tick;
 
@@ -19,31 +19,34 @@
         public void Start()
         {
             Stop();
-            _isCancellationRequested = false;
+            _cts = new CancellationTokenSource();
             Worker();
         }
         public void Stop()
         {
-            _isCancellationRequested = true;
+            _cts.Cancel();
         }
         public void Dispose()
         {
-            _isCancellationRequested = true;
+            Stop();
             GC.SuppressFinalize(this);
         }
 
-        private bool _isCancellationRequested;
+        private CancellationTokenSource _cts = new();
         private TimeSpan _interval = TimeSpan.FromSeconds(1);
         private async void Worker()
         {
             while (true)
             {
-                if (_isCancellationRequested)
+                try
+                {
+                    await Task.Delay(Interval, _cts.Token);
+                    Tick?.Invoke(this, EventArgs.Empty);
+                }
+                catch (OperationCanceledException)
                 {
                     break;
                 }
-                await Task.Delay(Interval);
-                Tick?.Invoke(this, EventArgs.Empty);
             }
         }
     }

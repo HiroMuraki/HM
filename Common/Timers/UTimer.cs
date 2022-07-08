@@ -1,6 +1,6 @@
 ﻿namespace HM.Common.Timers
 {
-    public class UTimer : ITimer
+    public sealed class UTimer : ITimer
     {
         public event EventHandler? Tick;
 
@@ -25,7 +25,7 @@
             _timer = new(OnTick);
         }
 
-        private readonly Timer _timer;
+        private readonly System.Threading.Timer _timer;
         private void OnTick(object? args)
         {
             Tick?.Invoke(this, EventArgs.Empty);

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 
-namespace HM.Common.Extensions
+namespace HM.Debug
 {
     public static class ObjectExtension
     {
