@@ -6,7 +6,7 @@ namespace HM.Collections.Observable
     public class ObservableList<T> : ObservableCollection<T>, INotifyPropertyChanged
     {
         public new event PropertyChangedEventHandler? PropertyChanged;
-        
+
         public void AddRange(IEnumerable<T> items)
         {
             foreach (var item in items)

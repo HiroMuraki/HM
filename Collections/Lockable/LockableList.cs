@@ -1,5 +1,4 @@
-﻿using HM.Collections.Observable;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace HM.Collections.Lockable
 {
