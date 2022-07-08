@@ -8,7 +8,7 @@ namespace HM.Serialization
         public static BytesSerializer Default { get; } = new();
         public const int SizeOfInt32 = sizeof(int);
 
-        public Encoding Encoding { get; init; } = Encoding.UTF8;
+        public Encoding TextEncoding { get; init; } = Encoding.UTF8;
 
         public byte[] SerializeToBytes(object obj)
         {
@@ -18,7 +18,7 @@ namespace HM.Serialization
             if (objType == typeof(string))
             {
                 // 编码字符串，写入编码后的字节数组长度 + 字节数组长度
-                byte[] encoded = Encoding.GetBytes((string)obj!);
+                byte[] encoded = TextEncoding.GetBytes((string)obj!);
                 byte[] lengthInfo = BitConverter.GetBytes(encoded.Length);
                 byte[] result = new byte[SizeOfInt32 + encoded.Length];
                 Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
@@ -99,7 +99,7 @@ namespace HM.Serialization
             if (targetType == typeof(string))
             {
                 int lengthInfo = BitConverter.ToInt32(bytes);
-                result = Encoding.GetString(bytes[SizeOfInt32..(SizeOfInt32 + lengthInfo)]);
+                result = TextEncoding.GetString(bytes[SizeOfInt32..(SizeOfInt32 + lengthInfo)]);
                 return SizeOfInt32 + lengthInfo;
             }
             else if (targetType == typeof(int))
