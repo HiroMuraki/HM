@@ -3,7 +3,7 @@
     /// <summary>
     /// 用于等待指定时间间隔
     /// </summary>
-    class IntervalWaiter
+    public sealed class IntervalWaiter
     {
         /// <summary>
         /// 进入等待
