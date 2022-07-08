@@ -16,6 +16,15 @@ namespace HM.Wpf
                 Add(item);
             }
         }
+        public void ForEach(Action<T>? action)
+        {
+            if (action is null) return;
+
+            foreach (var item in this)
+            {
+                action(item);
+            }
+        }
         public void Sort(IComparer<T> comparer)
         {
             /* 转为为一个普通列表后，将该列表使用comparer排序
@@ -51,6 +60,7 @@ namespace HM.Wpf
             }
         }
 
+        public ObservableList() { }
         public ObservableList(IEnumerable<T> items) : base(items) { }
     }
 }
