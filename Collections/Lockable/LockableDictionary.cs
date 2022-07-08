@@ -1,11 +1,9 @@
-﻿using HM.Collections.ObservableCollection;
-
-namespace HM.Collections.LockableCollection
+﻿namespace HM.Collections.Lockable
 {
-    public class LockableDictionary<Tkey, TValue> :
-        DictionaryBase<Tkey, TValue>,
-        ILockableCollection<KeyValuePair<Tkey, TValue>>
-        where Tkey : notnull
+    public class LockableDictionary<TKey, TValue> :
+        DictionaryBase<TKey, TValue>,
+        ILockableCollection<KeyValuePair<TKey, TValue>>
+        where TKey : notnull
     {
 
         public event EventHandler<CollectionLockStatusChangedEventArgs>? LockStatusChanged;
@@ -34,25 +32,25 @@ namespace HM.Collections.LockableCollection
             _lockTokens.Clear();
         }
 
-        protected override void AddItem(Tkey key, TValue value)
+        protected override void AddItem(KeyValuePair<TKey, TValue> keyValuePair)
         {
             CheckAccessability();
-            base.AddItem(key, value);
+            base.AddItem(keyValuePair);
         }
         protected override void ClearItems()
         {
             CheckAccessability();
             base.ClearItems();
         }
-        protected override bool RemoveItem(Tkey key)
+        protected override bool RemoveItem(KeyValuePair<TKey, TValue> keyValuePair)
         {
             CheckAccessability();
-            return base.RemoveItem(key);
+            return base.RemoveItem(keyValuePair);
         }
-        protected override void SetItem(Tkey key, TValue value)
+        protected override void SetItem(KeyValuePair<TKey, TValue> keyValuePair)
         {
             CheckAccessability();
-            base.SetItem(key, value);
+            base.SetItem(keyValuePair);
         }
 
         private readonly HashSet<int> _lockTokens = new();

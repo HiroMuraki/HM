@@ -13,7 +13,7 @@
             }
             return $"{{{string.Join(", ", properties)}}}";
         }
-        public static IEnumerable<KeyValuePair<TValue, TKey>> Reversed<TKey, TValue>(this IDictionary<TKey, TValue> self)
+        public static IEnumerable<KeyValuePair<TValue, TKey>> ToKeyValuePairReversed<TKey, TValue>(this IDictionary<TKey, TValue> self)
         {
             foreach (var item in self)
             {

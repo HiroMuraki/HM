@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Collections
+namespace HM.Collections
 {
     public class AutoSortingList<TKey, TValue> : ICollection<TValue>, IEnumerable<TValue> where TKey : notnull
     {

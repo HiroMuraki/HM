@@ -1,9 +1,8 @@
-﻿using HM.Collections.ObservableCollection;
+﻿using HM.Collections.Observable;
 using System.Collections.ObjectModel;
 
-namespace HM.Collections.LockableCollection
+namespace HM.Collections.Lockable
 {
-
     [Serializable]
     public class LockableList<T> : Collection<T>, ILockableCollection<T>
     {

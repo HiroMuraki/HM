@@ -1,7 +1,11 @@
-﻿using HM.Collections.ObservableCollection;
-
-namespace HM.Collections.LockableCollection
+﻿namespace HM.Collections.Lockable
 {
+    public enum LockStatus
+    {
+        Unlocked,
+        Locked
+    }
+
     /// <summary>
     /// Represent a collection that can be locked to prevent any modifications to the collection
     /// </summary>
