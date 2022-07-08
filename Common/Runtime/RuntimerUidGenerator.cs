@@ -3,7 +3,7 @@
 
 namespace HM.Common.Runtime
 {
-    public sealed class RuntimerUidGenerator
+    public sealed class RuntimeUidGenerator
     {
         public RuntimeUid Generate()
         {
