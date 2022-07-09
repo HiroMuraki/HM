@@ -10,6 +10,20 @@ namespace HM.Common
         public UInt64 NextIndex => _nextIndex;
         public bool ThreadSafe => _threadSafe;
 
+        public void Forward(UInt64 step)
+        {
+            if (_threadSafe)
+            {
+                lock (_locker)
+                {
+                    _nextIndex += step;
+                }
+            }
+            else
+            {
+                _nextIndex += step;
+            }
+        }
         public void Fallback(UInt64 step)
         {
             if (_threadSafe)
@@ -26,20 +40,20 @@ namespace HM.Common
         }
         public Uid Next()
         {
-            return Next(1ul);
-        }
-        public Uid Next(UInt64 step)
-        {
             if (_threadSafe)
             {
                 lock (_locker)
                 {
-                    return NextHelper(step);
+                    UInt64 index = _nextIndex;
+                    _nextIndex++;
+                    return new Uid(index);
                 }
             }
             else
             {
-                return NextHelper(step);
+                UInt64 index = _nextIndex;
+                _nextIndex++;
+                return new Uid(index);
             }
         }
 
@@ -56,13 +70,6 @@ namespace HM.Common
         private readonly bool _threadSafe;
         private readonly UInt64 _startIndex;
         private readonly object _locker = new();
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Uid NextHelper(UInt64 step)
-        {
-            UInt64 index = _nextIndex;
-            _nextIndex += step;
-            return new Uid(index);
-        }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void FallbackHelper(UInt64 step)
         {

@@ -40,11 +40,11 @@
         }
         public static void CopyFrom<T>(this T?[] self, T?[] sourceArray)
         {
-            self.CopyFrom(sourceArray, 0);
+            self.CopyFrom(sourceArray, 0, sourceArray.Length);
         }
-        public static void CopyFrom<T>(this T?[] self, T?[] sourceArray, int fromPos)
+        public static void CopyFrom<T>(this T?[] self, T?[] sourceArray, int startPos, int length)
         {
-            Array.Copy(sourceArray, 0, self, fromPos, sourceArray.Length);
+            Array.Copy(sourceArray, 0, self, startPos, length);
         }
     }
 }

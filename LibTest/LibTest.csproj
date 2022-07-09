@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>true</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+		<PackageReference Include="coverlet.collector" Version="3.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Collections\Collections.csproj" />
+		<ProjectReference Include="..\Common\Common.csproj" />
+		<ProjectReference Include="..\Cryptography\Cryptography.csproj" />
+		<ProjectReference Include="..\Debug\Debug.csproj" />
+		<ProjectReference Include="..\Mathematics\Mathematics.csproj" />
+		<ProjectReference Include="..\MiniGames\MiniGames.csproj" />
+		<ProjectReference Include="..\Serialization\Serialization.csproj" />
+	</ItemGroup>
+
+</Project>
