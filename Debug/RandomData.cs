@@ -28,7 +28,7 @@ namespace HM.Debug
         /// <returns></returns>
         public static string NextString(int minLength, int maxLength, CharTypes charTypes)
         {
-            return NextString(new Random().Next(minLength, maxLength + 1), charTypes);
+            return NextString(Random.Next(minLength, maxLength + 1), charTypes);
         }
         /// <summary>
         /// Generate a random string with specific length
@@ -135,7 +135,7 @@ namespace HM.Debug
         /// <returns></returns>
         public static string NextString(int minLength, int maxLength, params char[][] charPools)
         {
-            return new string(NextArray(new Random().Next(minLength, maxLength + 1), charPools));
+            return new string(NextArray(Random.Next(minLength, maxLength + 1), charPools));
         }
         /// <summary>
         /// Generate a random string with in range, sub strings from char pools
@@ -146,7 +146,7 @@ namespace HM.Debug
         public static string NextString(int minLength, int maxLength, params string[][] charPools)
         {
             var sb = new StringBuilder();
-            foreach (var item in NextArray(new Random().Next(minLength, maxLength + 1), charPools))
+            foreach (var item in NextArray(Random.Next(minLength, maxLength + 1), charPools))
             {
                 sb.Append(item);
             }
@@ -195,7 +195,7 @@ namespace HM.Debug
         }
         public static Boolean NextBoolean()
         {
-            return new Random().Next(0, 2) == 0;
+            return Random.Next(0, 2) == 0;
         }
         public static Char NextChar()
         {
