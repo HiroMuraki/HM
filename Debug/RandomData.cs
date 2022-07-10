@@ -5,7 +5,15 @@ namespace HM.Debug
 {
     public static class RandomData
     {
-        public static Random Random { get; } = new Random();
+        public static Random Random
+        {
+            get => _random;
+            set
+            {
+                ArgumentNullException.ThrowIfNull(value);
+                _random = value;
+            }
+        }
         public static readonly char[] UpperLetters;
         public static readonly char[] LowerLetters;
         public static readonly char[] Digits;
@@ -389,6 +397,7 @@ namespace HM.Debug
             return result;
         }
 
+        private static Random _random = new();
         static RandomData()
         {
             UpperLetters = new char[26] {
