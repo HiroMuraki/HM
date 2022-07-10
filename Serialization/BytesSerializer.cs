@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#pragma warning disable IDE0049
+using System.Reflection;
 using System.Text;
 
 namespace HM.Serialization
@@ -6,8 +7,6 @@ namespace HM.Serialization
     public class BytesSerializer
     {
         public static BytesSerializer Default { get; } = new();
-        public const int SizeOfInt32 = sizeof(int);
-
         public Encoding TextEncoding { get; init; } = Encoding.UTF8;
 
         public byte[] SerializeToBytes(object obj)
@@ -15,38 +14,46 @@ namespace HM.Serialization
             ArgumentNullException.ThrowIfNull(obj);
 
             var objType = obj.GetType();
-            if (objType == typeof(string))
+
+            switch (Type.GetTypeCode(objType))
             {
-                // 编码字符串，写入编码后的字节数组长度 + 字节数组长度
-                byte[] encoded = TextEncoding.GetBytes((string)obj!);
-                byte[] lengthInfo = BitConverter.GetBytes(encoded.Length);
-                byte[] result = new byte[SizeOfInt32 + encoded.Length];
-                Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
-                Array.Copy(encoded, 0, result, SizeOfInt32, encoded.Length);
-                return result;
+                case TypeCode.SByte: return new Byte[] { (Byte)(SByte)obj };
+                case TypeCode.Byte: return new Byte[] { (Byte)obj };
+                case TypeCode.Int16: return BitConverter.GetBytes((Int16)obj!);
+                case TypeCode.UInt16: return BitConverter.GetBytes((UInt16)obj!);
+                case TypeCode.Int32: return BitConverter.GetBytes((Int32)obj!);
+                case TypeCode.UInt32: return BitConverter.GetBytes((UInt32)obj!);
+                case TypeCode.Int64: return BitConverter.GetBytes((Int64)obj!);
+                case TypeCode.UInt64: return BitConverter.GetBytes((UInt64)obj!);
+                case TypeCode.Single: return BitConverter.GetBytes((Single)obj!);
+                case TypeCode.Double: return BitConverter.GetBytes((Double)obj!);
+                case TypeCode.Boolean: return BitConverter.GetBytes((Boolean)obj!);
+                case TypeCode.Char: return BitConverter.GetBytes((Char)obj!);
+                case TypeCode.String:
+                    // 编码字符串，写入编码后的字节数组长度 + 字节数组长度
+                    byte[] encoded = TextEncoding.GetBytes((string)obj!);
+                    byte[] lengthInfo = BitConverter.GetBytes(encoded.Length);
+                    byte[] result = new byte[sizeof(Int32) + encoded.Length];
+                    Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
+                    Array.Copy(encoded, 0, result, sizeof(Int32), encoded.Length);
+                    return result;
+                default: break;
             }
-            else if (objType == typeof(int))
-            {
-                return BitConverter.GetBytes((int)obj!);
-            }
-            else if (objType == typeof(long))
-            {
-                return BitConverter.GetBytes((long)obj!);
-            }
-            else if (objType.IsArray)
+
+            if (objType.IsArray)
             {
                 var array = (Array)obj;
                 byte[] lengthInfo = BitConverter.GetBytes(array.Length);
                 var bytes = new List<byte>();
-                for (int i = 0; i < array.Length; i++)
+                for (Int32 i = 0; i < array.Length; i++)
                 {
                     var element = array.GetValue(i) ?? throw new NullReferenceException("Element in array can't be null");
                     bytes.AddRange(SerializeToBytes(element));
                 }
 
-                byte[] result = new byte[SizeOfInt32 + bytes.Count];
+                byte[] result = new byte[sizeof(Int32) + bytes.Count];
                 Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
-                Array.Copy(bytes.ToArray(), 0, result, SizeOfInt32, bytes.Count);
+                Array.Copy(bytes.ToArray(), 0, result, sizeof(Int32), bytes.Count);
                 return result.ToArray();
             }
             else if (objType.IsDefined(typeof(BytesSerializableAttribute)))
@@ -61,12 +68,21 @@ namespace HM.Serialization
             }
             else
             {
-                throw new Exception($"Type '{objType}' is not supported");
+                throw new BytesSerializationException($"Type '{objType}' is not supported");
             }
+        }
+        public object DeserializeFromBytes(byte[] bytes, Type targetType)
+        {
+            DeserializeFromBytesCore(bytes, targetType, out var result);
+            return result;
         }
         public T DeserializeFromBytes<T>(byte[] bytes)
         {
-            DeserializeFromBytesCore(bytes.AsSpan(), typeof(T), out var result);
+            return DeserializeFromBytes<T>(bytes.AsSpan());
+        }
+        public T DeserializeFromBytes<T>(ReadOnlySpan<byte> bytes)
+        {
+            DeserializeFromBytesCore(bytes, typeof(T), out var result);
             return (T)result;
         }
 
@@ -94,32 +110,43 @@ namespace HM.Serialization
                 return fieldInfos;
             }
         }
-        private int DeserializeFromBytesCore(ReadOnlySpan<byte> bytes, Type targetType, out object result)
+        private Int32 DeserializeFromBytesCore(ReadOnlySpan<byte> bytes, Type targetType, out object result)
         {
-            if (targetType == typeof(string))
+            switch (Type.GetTypeCode(targetType))
             {
-                int lengthInfo = BitConverter.ToInt32(bytes);
-                result = TextEncoding.GetString(bytes[SizeOfInt32..(SizeOfInt32 + lengthInfo)]);
-                return SizeOfInt32 + lengthInfo;
+                case TypeCode.Byte:
+                    result = bytes[0];
+                    return sizeof(Byte);
             }
-            else if (targetType == typeof(int))
+            switch (Type.GetTypeCode(targetType))
             {
-                result = BitConverter.ToInt32(bytes);
-                return SizeOfInt32;
+                case TypeCode.Byte: result = bytes[0]; return sizeof(Byte);
+                case TypeCode.SByte: result = (SByte)bytes[0]; return sizeof(SByte);
+                case TypeCode.Int16: result = BitConverter.ToInt16(bytes); return sizeof(Int16);
+                case TypeCode.UInt16: result = BitConverter.ToUInt16(bytes); return sizeof(UInt16);
+                case TypeCode.Int32: result = BitConverter.ToInt32(bytes); return sizeof(Int32);
+                case TypeCode.UInt32: result = BitConverter.ToUInt32(bytes); return sizeof(UInt32);
+                case TypeCode.Int64: result = BitConverter.ToInt64(bytes); return sizeof(Int64);
+                case TypeCode.UInt64: result = BitConverter.ToUInt64(bytes); return sizeof(UInt64);
+                case TypeCode.Single: result = BitConverter.ToSingle(bytes); return sizeof(Single);
+                case TypeCode.Double: result = BitConverter.ToDouble(bytes); return sizeof(Double);
+                case TypeCode.Boolean: result = BitConverter.ToBoolean(bytes); return sizeof(Boolean);
+                case TypeCode.Char: result = BitConverter.ToChar(bytes); return sizeof(Char);
+                case TypeCode.String:
+                    Int32 lengthInfo = BitConverter.ToInt32(bytes);
+                    result = TextEncoding.GetString(bytes[sizeof(Int32)..(sizeof(Int32) + lengthInfo)]);
+                    return sizeof(Int32) + lengthInfo;
+                default: break;
             }
-            else if (targetType == typeof(long))
-            {
-                result = BitConverter.ToInt64(bytes);
-                return sizeof(long);
-            }
-            else if (targetType.IsArray)
-            {
-                int arraySize = BitConverter.ToInt32(bytes);
 
-                int offset = 4;
+            if (targetType.IsArray)
+            {
+                Int32 arraySize = BitConverter.ToInt32(bytes);
+
+                Int32 offset = 4;
                 var elementType = targetType.GetElementType()!;
                 var resultArray = Array.CreateInstance(elementType, arraySize);
-                for (int i = 0; i < arraySize; i++)
+                for (Int32 i = 0; i < arraySize; i++)
                 {
                     offset += DeserializeFromBytesCore(bytes[offset..], elementType, out var value);
                     resultArray.SetValue(value, i);
@@ -129,7 +156,7 @@ namespace HM.Serialization
             }
             else if (targetType.IsDefined(typeof(BytesSerializableAttribute)))
             {
-                int offset = 0;
+                Int32 offset = 0;
                 var obj = Activator.CreateInstance(targetType)!;
                 foreach (var fieldInfo in GetFieldInfos(targetType))
                 {
@@ -141,7 +168,7 @@ namespace HM.Serialization
             }
             else
             {
-                throw new Exception($"Type '{targetType}' is not supported");
+                throw new BytesSerializationException($"Type '{targetType}' is not supported");
             }
         }
     }

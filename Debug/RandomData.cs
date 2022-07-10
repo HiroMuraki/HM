@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿#pragma warning disable IDE0049
+using System.Text;
 
 namespace HM.Debug
 {
@@ -201,6 +202,72 @@ namespace HM.Debug
         {
             return RandomArray(length, new Random(rndSeed), valuePools);
         }
+
+        public static Byte RandomByte()
+        {
+            var rnd = new Random();
+            return (Byte)rnd.Next(Byte.MinValue, Byte.MaxValue);
+        }
+        public static SByte RandomSByte()
+        {
+            var rnd = new Random();
+            return (SByte)rnd.Next(SByte.MinValue, SByte.MaxValue);
+        }
+        public static Int16 RandomInt16()
+        {
+            var rnd = new Random();
+            return (Int16)rnd.Next(Int16.MinValue, Int16.MaxValue);
+        }
+        public static UInt16 RandomUInt16()
+        {
+            var rnd = new Random();
+            return (UInt16)rnd.Next(UInt16.MinValue, UInt16.MaxValue);
+        }
+        public static Int32 RandomInt32()
+        {
+            var rnd = new Random();
+            return (Int32)rnd.Next(Int32.MinValue, Int32.MaxValue);
+        }
+        public static UInt32 RandomUInt32()
+        {
+            var rnd = new Random();
+            return (UInt32)rnd.Next(Int32.MinValue, Int32.MaxValue);
+        }
+        public static Int64 RandomInt64()
+        {
+            var rnd = new Random();
+            return (Int64)rnd.NextInt64(Int64.MinValue, Int64.MaxValue);
+        }
+        public static UInt64 RandomUInt64()
+        {
+            var rnd = new Random();
+            return (UInt64)rnd.NextInt64(Int64.MinValue, Int64.MaxValue);
+        }
+        public static Single RandomSingle()
+        {
+            var rnd = new Random();
+            return (Single)rnd.NextSingle() * Single.MaxValue * (rnd.Next(0, 2) == 0 ? 1 : -1);
+        }
+        public static Double RandomDouble()
+        {
+            var rnd = new Random();
+            return (Double)rnd.NextDouble() * Double.MaxValue * (rnd.Next(0, 2) == 0 ? 1 : -1);
+        }
+        public static Boolean RandomBoolean()
+        {
+            var rnd = new Random();
+            return new Random().Next(0, 2) == 0;
+        }
+        public static Char RandomChar()
+        {
+            var rnd = new Random();
+            return (Char)rnd.Next(Char.MinValue, Char.MaxValue);
+        }
+        public static String RandomString()
+        {
+            return RandomString(0, 255, CharTypes.All);
+        }
+
 
         static RandomData()
         {
