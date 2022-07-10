@@ -87,7 +87,7 @@ namespace HM.Collections.Extensions
         {
             if (left < 0 || up < 0 || right < 0 || down < 0)
             {
-                throw new ArgumentException("shrink size should be larger than zero");
+                throw new ArgumentOutOfRangeException("shrink size should be larger than zero");
             }
             int newRowSize = self.GetLength(0) - (up + down);
             int newColumnSize = self.GetLength(1) - (left + right);
@@ -119,7 +119,7 @@ namespace HM.Collections.Extensions
         {
             if (left < 0 || up < 0 || right < 0 || down < 0)
             {
-                throw new ArgumentException("expand size should be larger than zero");
+                throw new ArgumentOutOfRangeException("expand size should be larger than zero");
             }
 
             int newRowSize = self.GetLength(0) + up + down;
@@ -189,24 +189,6 @@ namespace HM.Collections.Extensions
                     self[row, col] = valueIter();
                 }
             }
-        }
-        public static bool ElementsEquals<T>(this T?[,] self, T?[,] other)
-        {
-            if (self.GetLength(0) != other.GetLength(0) || self.GetLength(1) != other.GetLength(1))
-            {
-                return false;
-            }
-            for (int row = 0; row < self.GetLength(0); row++)
-            {
-                for (int col = 0; col < self.GetLength(1); col++)
-                {
-                    if (Comparer<T>.Default.Compare(self[row, col], other[row, col]) != 0)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
         public static void Transpose<T>(this T?[,] self)
         {

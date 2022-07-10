@@ -4,6 +4,8 @@
     {
         public static LinkedList<T> RemoveIf<T>(this LinkedList<T> self, Predicate<T> predicate)
         {
+            ArgumentNullException.ThrowIfNull(predicate);
+
             var node = self.First;
 
             while (node is not null)

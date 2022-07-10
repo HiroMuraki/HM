@@ -76,6 +76,10 @@ namespace LibTest.Common
             uid = generator.Next();
             Assert.AreEqual(10ul, uid.Value);
             Assert.AreEqual(11ul, generator.NextIndex);
+
+            generator.Fallback(11);
+            Assert.AreEqual(0ul, generator.NextIndex);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => generator.Fallback(1));
         }
 
         [TestMethod]
@@ -115,10 +119,10 @@ namespace LibTest.Common
         }
 
         [TestMethod]
-        [Timeout(20)]
+        [Timeout(50)]
         public void ConcurrentPerformanceTest()
         {
-            // 能20毫秒生成10000个就行
+            // 能50毫秒生成10000个就行
             int size = 10000;
             UidGenerator generator = new UidGenerator();
             Task[] tasks = new Task[size];
