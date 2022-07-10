@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HM.Cryptography;
 using System.Security.Cryptography;
+using HM.Debug;
 
 namespace LibTest.Cryptography
 {
@@ -19,14 +20,14 @@ namespace LibTest.Cryptography
             {
                 keys = new byte[][]
                 {
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("123456")),
                     sha256.ComputeHash(Encoding.ASCII.GetBytes("")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("Abc_123456")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("joieajioaset9ae8sut43u986239846j436j4236j-4392626u489236u")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("_F(S*EJF(*SE*(SEUTSE*(TSJT"))
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
                 };
             }
-
 
             Assert.ThrowsException<ArgumentException>(() => new AesTextEncrypter(new byte[] { 1, 2, 3 }));
             Assert.ThrowsException<ArgumentException>(() => new AesTextEncrypter(new byte[] { }));
@@ -35,10 +36,15 @@ namespace LibTest.Cryptography
             {
                 string[] texts =
                 {
-                    "Hello World!",
                     "",
-                    @"Hello World!Hello World!Hello World!Hello World!Hello World!Hello World!Hello
-                      World!Hello World!Hello World!Hello World!Hello World!Hello World!Hello World!",
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
+                    RandomData.NextString(),
                     "中文测试中文测试中文测试中文测试中文测试中文测试"
                 };
                 string[] eTexts = texts.Select(t => new AesTextEncrypter(key).Encrypt(t)).ToArray();
@@ -68,11 +74,11 @@ namespace LibTest.Cryptography
             {
                 keys = new byte[][]
                 {
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("123456")),
                     sha256.ComputeHash(Encoding.ASCII.GetBytes("")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("Abc_123456")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("joieajioaset9ae8sut43u986239846j436j4236j-4392626u489236u")),
-                    sha256.ComputeHash(Encoding.ASCII.GetBytes("_F(S*EJF(*SE*(SEUTSE*(TSJT"))
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString())),
+                    sha256.ComputeHash(Encoding.ASCII.GetBytes(RandomData.NextString()))
                 };
             }
 
@@ -83,9 +89,10 @@ namespace LibTest.Cryptography
             {
                 byte[][] bytes =
                 {
-                    new byte[]{0x00,0x01,0x02,0x03},
                     new byte[]{},
-                    new byte[]{0xFF,0xFE,0xFA,0x00,0x2A},
+                    RandomData.NextBytes(),
+                    RandomData.NextBytes(),
+                    RandomData.NextBytes(),
                 };
                 byte[][] eBytes = bytes.Select(t => new AesBytesEncrypter(key).Encrypt(t).ToArray()).ToArray();
 
