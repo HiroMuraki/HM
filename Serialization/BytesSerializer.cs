@@ -17,6 +17,7 @@ namespace HM.Serialization
 
             switch (Type.GetTypeCode(objType))
             {
+                case TypeCode.Empty: throw new NullReferenceException("Unable to serialize null value");
                 case TypeCode.SByte: return new Byte[] { (Byte)(SByte)obj };
                 case TypeCode.Byte: return new Byte[] { (Byte)obj };
                 case TypeCode.Int16: return BitConverter.GetBytes((Int16)obj!);
@@ -29,46 +30,47 @@ namespace HM.Serialization
                 case TypeCode.Double: return BitConverter.GetBytes((Double)obj!);
                 case TypeCode.Boolean: return BitConverter.GetBytes((Boolean)obj!);
                 case TypeCode.Char: return BitConverter.GetBytes((Char)obj!);
+                case TypeCode.DateTime: return BitConverter.GetBytes(((DateTime)obj!).Ticks);
                 case TypeCode.String:
                     // 编码字符串，写入编码后的字节数组长度 + 字节数组长度
                     byte[] encoded = TextEncoding.GetBytes((string)obj!);
-                    byte[] lengthInfo = BitConverter.GetBytes(encoded.Length);
+                    byte[] strLengthInfo = BitConverter.GetBytes(encoded.Length);
                     byte[] result = new byte[sizeof(Int32) + encoded.Length];
-                    Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
+                    Array.Copy(strLengthInfo, 0, result, 0, strLengthInfo.Length);
                     Array.Copy(encoded, 0, result, sizeof(Int32), encoded.Length);
                     return result;
-                default: break;
-            }
+                case TypeCode.Object:
+                    if (objType.IsArray)
+                    {
+                        var array = (Array)obj;
+                        byte[] lengthInfo = BitConverter.GetBytes(array.Length);
+                        var bytes = new List<byte>();
+                        for (Int32 i = 0; i < array.Length; i++)
+                        {
+                            var element = array.GetValue(i) ?? throw new NullReferenceException("Element in array can't be null");
+                            bytes.AddRange(SerializeToBytes(element));
+                        }
 
-            if (objType.IsArray)
-            {
-                var array = (Array)obj;
-                byte[] lengthInfo = BitConverter.GetBytes(array.Length);
-                var bytes = new List<byte>();
-                for (Int32 i = 0; i < array.Length; i++)
-                {
-                    var element = array.GetValue(i) ?? throw new NullReferenceException("Element in array can't be null");
-                    bytes.AddRange(SerializeToBytes(element));
-                }
-
-                byte[] result = new byte[sizeof(Int32) + bytes.Count];
-                Array.Copy(lengthInfo, 0, result, 0, lengthInfo.Length);
-                Array.Copy(bytes.ToArray(), 0, result, sizeof(Int32), bytes.Count);
-                return result.ToArray();
-            }
-            else if (objType.IsDefined(typeof(BytesSerializableAttribute)))
-            {
-                var bytes = new List<byte>();
-                foreach (var fieldInfo in GetFieldInfos(obj.GetType()))
-                {
-                    var value = fieldInfo.GetValue(obj) ?? throw new NullReferenceException($"Value of '{fieldInfo}' cant't be null");
-                    bytes.AddRange(SerializeToBytes(value));
-                }
-                return bytes.ToArray();
-            }
-            else
-            {
-                throw new BytesSerializationException($"Type '{objType}' is not supported");
+                        byte[] arrayResult = new byte[sizeof(Int32) + bytes.Count];
+                        Array.Copy(lengthInfo, 0, arrayResult, 0, lengthInfo.Length);
+                        Array.Copy(bytes.ToArray(), 0, arrayResult, sizeof(Int32), bytes.Count);
+                        return arrayResult.ToArray();
+                    }
+                    else if (objType.IsDefined(typeof(BytesSerializableAttribute)))
+                    {
+                        var bytes = new List<byte>();
+                        foreach (var fieldInfo in GetFieldInfos(obj.GetType()))
+                        {
+                            var value = fieldInfo.GetValue(obj) ?? throw new NullReferenceException($"Value of '{fieldInfo}' cant't be null");
+                            bytes.AddRange(SerializeToBytes(value));
+                        }
+                        return bytes.ToArray();
+                    }
+                    else
+                    {
+                        throw new BytesSerializationException($"Type '{objType}' is not supported");
+                    }
+                default: throw new BytesSerializationException($"Type '{objType}' is not supported");
             }
         }
         public object DeserializeFromBytes(byte[] bytes, Type targetType)
@@ -132,6 +134,7 @@ namespace HM.Serialization
                 case TypeCode.Double: result = BitConverter.ToDouble(bytes); return sizeof(Double);
                 case TypeCode.Boolean: result = BitConverter.ToBoolean(bytes); return sizeof(Boolean);
                 case TypeCode.Char: result = BitConverter.ToChar(bytes); return sizeof(Char);
+                case TypeCode.DateTime: result = DateTime.FromBinary(BitConverter.ToInt64(bytes)); return sizeof(Int64);
                 case TypeCode.String:
                     Int32 lengthInfo = BitConverter.ToInt32(bytes);
                     result = TextEncoding.GetString(bytes[sizeof(Int32)..(sizeof(Int32) + lengthInfo)]);
