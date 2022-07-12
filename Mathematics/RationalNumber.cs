@@ -11,13 +11,17 @@
 
         #region 属性
         /// <summary>
+        /// 实数值
+        /// </summary>
+        public double RealValue => (double)_numerator / _denominator;
+        /// <summary>
         /// 表示分子值
         /// </summary>
-        public int Numerator { get; }
+        public int Numerator => _numerator;
         /// <summary>
         /// 表示分母值
         /// </summary>
-        public int Denominator { get; }
+        public int Denominator => _denominator;
         #endregion
 
         #region 构造函数
@@ -32,12 +36,12 @@
             {
                 throw new MathematicException("分母不能为0");
             }
-            Numerator = numerator;
-            Denominator = denominator;
-            if (Denominator < 0)
+            _numerator = numerator;
+            _denominator = denominator;
+            if (_denominator < 0)
             {
-                Numerator *= -1;
-                Denominator *= -1;
+                _numerator *= -1;
+                _denominator *= -1;
             }
         }
         /// <summary>
@@ -80,28 +84,24 @@
                 throw new MathematicException("分母不能为0");
             }
 
-            Numerator = numerator;
-            Denominator = denominator;
-            if (Denominator < 0)
+            _numerator = numerator;
+            _denominator = denominator;
+            if (_denominator < 0)
             {
-                Numerator *= -1;
-                Denominator *= -1;
+                _numerator *= -1;
+                _denominator *= -1;
             }
         }
         #endregion
 
         #region 公共方法
-        public double GetValue()
-        {
-            return (double)Numerator / Denominator;
-        }
         /// <summary>
         /// 获取化简结果
         /// </summary>
         public RationalNumber GetSimpified()
         {
-            int gcd = GetGCD(Numerator, Denominator);
-            return new RationalNumber(Numerator / gcd, Denominator / gcd);
+            int gcd = GetGCD(_numerator, _denominator);
+            return new RationalNumber(_numerator / gcd, _denominator / gcd);
         }
         /// <summary>
         /// 获取倒数
@@ -109,21 +109,21 @@
         /// <returns></returns>
         public RationalNumber GetReciporcal()
         {
-            return new RationalNumber(Denominator, Numerator);
+            return new RationalNumber(_denominator, _numerator);
         }
         #endregion
 
         #region 算术运算符重载
         public static RationalNumber operator -(RationalNumber x)
         {
-            int numerator = -x.Numerator;
-            int denominator = x.Denominator;
+            int numerator = -x._numerator;
+            int denominator = x._denominator;
             return new RationalNumber(numerator, denominator);
         }
         public static RationalNumber operator +(RationalNumber x, RationalNumber y)
         {
-            int numerator = x.Numerator * y.Denominator + y.Numerator * x.Denominator;
-            int denominator = x.Denominator * y.Denominator;
+            int numerator = x._numerator * y._denominator + y._numerator * x._denominator;
+            int denominator = x._denominator * y._denominator;
             return new RationalNumber(numerator, denominator);
         }
         public static RationalNumber operator -(RationalNumber x, RationalNumber y)
@@ -132,8 +132,8 @@
         }
         public static RationalNumber operator *(RationalNumber x, RationalNumber y)
         {
-            int numerator = x.Numerator * y.Numerator;
-            int denominator = x.Denominator * y.Denominator;
+            int numerator = x._numerator * y._numerator;
+            int denominator = x._denominator * y._denominator;
             return new RationalNumber(numerator, denominator);
         }
         public static RationalNumber operator /(RationalNumber x, RationalNumber y)
@@ -145,8 +145,8 @@
         #region 逻辑运算符重载
         public static bool operator ==(RationalNumber x, RationalNumber y)
         {
-            int a = x.Numerator * y.Denominator;
-            int b = y.Numerator * x.Denominator;
+            int a = x._numerator * y._denominator;
+            int b = y._numerator * x._denominator;
             return a == b;
         }
         public static bool operator !=(RationalNumber x, RationalNumber y)
@@ -163,14 +163,14 @@
         }
         public static bool operator <=(RationalNumber x, RationalNumber y)
         {
-            int a = x.Numerator * y.Denominator;
-            int b = y.Numerator * x.Denominator;
+            int a = x._numerator * y._denominator;
+            int b = y._numerator * x._denominator;
             return a <= b;
         }
         public static bool operator >=(RationalNumber x, RationalNumber y)
         {
-            int a = x.Numerator * y.Denominator;
-            int b = y.Numerator * x.Denominator;
+            int a = x._numerator * y._denominator;
+            int b = y._numerator * x._denominator;
             return a >= b;
         }
         #endregion
@@ -182,7 +182,7 @@
         }
         public static implicit operator double(RationalNumber value)
         {
-            return value.GetValue();
+            return value.RealValue;
         }
         public static implicit operator RationalNumber(string value)
         {
@@ -195,29 +195,29 @@
             return format?.ToLower() switch
             {
                 "s" or "simpified" => GetSimpified().ToString(),
-                "v" or "value" => GetValue().ToString(),
+                "v" or "value" => RealValue.ToString(),
                 _ => ToString()
             };
         }
         public override string ToString()
         {
-            if (Denominator == 1)
+            if (_denominator == 1)
             {
-                return $"{Numerator}";
+                return $"{_numerator}";
             }
-            if (Numerator == 0)
+            if (_numerator == 0)
             {
                 return $"0";
             }
-            if (Numerator == Denominator)
+            if (_numerator == _denominator)
             {
                 return $"1";
             }
-            return $"{Numerator}/{Denominator}";
+            return $"{_numerator}/{_denominator}";
         }
         public override int GetHashCode()
         {
-            return Numerator ^ Denominator + Numerator * Denominator;
+            return _numerator ^ _denominator + _numerator << 2;
         }
         public override bool Equals(object? obj)
         {
@@ -258,6 +258,7 @@
             }
             return CompareTo((RationalNumber)obj);
         }
+
         #region 辅助方法
         /// <summary>
         /// 获取两个数的最大公约数
@@ -276,5 +277,8 @@
             return a;
         }
         #endregion
+
+        private readonly int _numerator;
+        private readonly int _denominator;
     }
 }

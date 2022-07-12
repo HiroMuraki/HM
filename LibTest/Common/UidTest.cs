@@ -4,10 +4,10 @@ using System.Collections.Concurrent;
 namespace LibTest.Common
 {
     [TestClass]
-    public class Uid_Test
+    public class UidTest
     {
         [TestMethod]
-        public void UidTest()
+        public void Common()
         {
             // 直接创建Uid其值应该为0
             Uid uid = new Uid();
