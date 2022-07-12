@@ -193,6 +193,34 @@ namespace HM.Debug
         {
             return (Double)Random.NextDouble() * Double.MaxValue * (Random.Next(0, 2) == 0 ? 1 : -1);
         }
+        public static Decimal NextDecimal()
+        {
+            // [前96比特不用管，用于表示[0,2^96-1]的数，任意取值即可]
+            // 下面是标志位[Int32]的结构
+            // [00000000 00000000 00000000 00000000]
+            // [                  ffffffff        s] x
+            // [s        ffffffff                  ]
+            // [00000000 000fffff 00000000 0000000s]
+            // s = 符号位，0正1负
+            // f = 比例因子，包含一个[0,28]的整数，指示10的幂（即小数从右往左的偏移位）,
+            //     由于实际上只需要5个bit即可表示[0,28]，而剩下的三位一定是0
+            // 0 = 常量0
+            int[] intArray =
+            {
+                Random.Next(Int32.MinValue, Int32.MaxValue),
+                Random.Next(Int32.MinValue, Int32.MaxValue),
+                Random.Next(Int32.MinValue, Int32.MaxValue),
+                0
+            };
+
+            intArray[3] |= Random.Next(0, 29) << 16;
+            if (Random.Next(0, 2) == 0)
+            {
+                intArray[3] |= unchecked((int)0b_10000000_00000000_00000000_00000000);
+            }
+
+            return new decimal(intArray);
+        }
         public static Boolean NextBoolean()
         {
             return Random.Next(0, 2) == 0;
@@ -297,6 +325,15 @@ namespace HM.Debug
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = NextDouble();
+            }
+            return result;
+        }
+        public static Decimal[] NextDecimals(int maxSize = 100)
+        {
+            Decimal[] result = new Decimal[Random.Next(0, maxSize)];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = NextDecimal();
             }
             return result;
         }

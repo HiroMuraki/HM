@@ -18,15 +18,15 @@ namespace LibTest.Serialization
     class Foo : IEquatable<Foo>
     {
         [BytesIncluded(1)]
-        public string _strA = string.Empty;
+        public Int32 _A;
         [BytesIncluded(2)]
-        public string _strB = string.Empty;
+        public Boolean _B;
         [BytesIncluded(3)]
-        public string _strC = string.Empty;
+        public Double _D;
         [BytesIncluded(4)]
-        public string _strD = string.Empty;
+        public string _str1 = string.Empty;
         [BytesIncluded(5)]
-        public string _strE = string.Empty;
+        public string _str2 = string.Empty;
         [BytesIncluded(6)]
         public Int32[] _intArray = Array.Empty<Int32>();
         [BytesIncluded(7)]
@@ -37,50 +37,36 @@ namespace LibTest.Serialization
             if (ReferenceEquals(this, other)) return true;
             if (other is null || other.GetType() != GetType()) return false;
 
-            return _strA == other._strA
-                && _strB == other._strB
-                && _strC == other._strC
-                && _strD == other._strD
-                && _strE == other._strE;
+            if (_A != other._A) return false;
+            if (_B != other._B) return false;
+            if (_D != other._D) return false;
+            if (_str1 != other._str1) return false;
+            if (_str2 != other._str2) return false;
+
+            if (!_intArray.SequenceEqual(other._intArray)) return false;
+            if (!_strArray.SequenceEqual(other._strArray)) return false;
+
+            return true;
         }
 
         public static Foo GetRandomOne()
         {
-            CharTypes charTypes = CharTypes.UpperLetters | CharTypes.LowerLetters | CharTypes.Symbols | CharTypes.Digits;
-            var rnd = new Random();
             var r = new Foo()
             {
-                _strA = RandomData.NextString(0, 5, charTypes),
-                _strB = RandomData.NextString(1, 15, charTypes),
-                _strC = RandomData.NextString(10, 30, charTypes),
-                _strD = RandomData.NextString(10, 100, charTypes),
-                _strE = RandomData.NextString(100, 255, charTypes),
+                _A = RandomData.NextInt32(),
+                _B = RandomData.NextBoolean(),
+                _D = RandomData.NextDouble(),
+                _str1 = RandomData.NextString(0, 5, CharTypes.UpperLetters),
+                _str2 = RandomData.NextString(10, 100, CharTypes.All),
+                _intArray = RandomData.NextInt32s(),
+                _strArray = RandomData.NextStrings()
             };
-
-            int intArraySize = rnd.Next(0, 255);
-            r._intArray = new int[intArraySize];
-            for (int i = 0; i < intArraySize; i++)
-            {
-                r._intArray[i] = rnd.Next(int.MinValue, int.MaxValue);
-            }
-
-            int strArraySize = rnd.Next(0, 10);
-            r._strArray = new string[strArraySize];
-            for (int i = 0; i < strArraySize; i++)
-            {
-                r._strArray[i] = RandomData.NextString(0, 255, charTypes);
-            }
-
             return r;
-        }
-        public override string ToString()
-        {
-            return $"{_strA}{_strB}{_strC}{_strD}{_strE}";
         }
     }
 
     [BytesSerializable]
-    class ComplexFoo : IEquatable<ComplexFoo>
+    public class ComplexFoo : IEquatable<ComplexFoo>
     {
         // single
         [BytesIncluded(0)]
@@ -104,42 +90,46 @@ namespace LibTest.Serialization
         [BytesIncluded(9)]
         public Double _doubleVal; // 9
         [BytesIncluded(10)]
-        public Boolean _booleanVal; // 10
+        public Decimal _decimalVal; // 10
         [BytesIncluded(11)]
-        public Char _charVal; // 11
+        public Boolean _booleanVal; // 11
         [BytesIncluded(12)]
-        public DateTime _dateTimeVal; // 12
+        public Char _charVal; // 12
         [BytesIncluded(13)]
-        public String _stringVal = String.Empty; // 13
-        // array
+        public DateTime _dateTimeVal; // 13
         [BytesIncluded(14)]
-        public Byte[] _byteArray = Array.Empty<Byte>(); // 14
+        public String _stringVal = String.Empty; // 14
+
         [BytesIncluded(15)]
-        public SByte[] _sByteArray = Array.Empty<SByte>(); // 15
+        public Byte[] _byteArray = Array.Empty<Byte>(); // 15
         [BytesIncluded(16)]
-        public Int16[] _int16Array = Array.Empty<Int16>(); // 16
+        public SByte[] _sByteArray = Array.Empty<SByte>(); // 16
         [BytesIncluded(17)]
-        public UInt16[] _uInt16Array = Array.Empty<UInt16>(); // 17
+        public Int16[] _int16Array = Array.Empty<Int16>(); // 17
         [BytesIncluded(18)]
-        public Int32[] _int32Array = Array.Empty<Int32>(); // 18
+        public UInt16[] _uInt16Array = Array.Empty<UInt16>(); // 18
         [BytesIncluded(19)]
-        public UInt32[] _uInt32Array = Array.Empty<UInt32>(); // 19
+        public Int32[] _int32Array = Array.Empty<Int32>(); // 19
         [BytesIncluded(20)]
-        public Int64[] _int64Array = Array.Empty<Int64>(); // 20
+        public UInt32[] _uInt32Array = Array.Empty<UInt32>(); // 20
         [BytesIncluded(21)]
-        public UInt64[] _uInt64Array = Array.Empty<UInt64>(); // 21
+        public Int64[] _int64Array = Array.Empty<Int64>(); // 21
         [BytesIncluded(22)]
-        public Single[] _singleArray = Array.Empty<Single>(); // 22
+        public UInt64[] _uInt64Array = Array.Empty<UInt64>(); // 22
         [BytesIncluded(23)]
-        public Double[] _doubleArray = Array.Empty<Double>(); // 23
+        public Single[] _singleArray = Array.Empty<Single>(); // 23
         [BytesIncluded(24)]
-        public Boolean[] _booleanArray = Array.Empty<Boolean>(); // 24
+        public Double[] _doubleArray = Array.Empty<Double>(); // 24
         [BytesIncluded(25)]
-        public Char[] _charArray = Array.Empty<Char>(); // 25
+        public Decimal[] _decimalArray = Array.Empty<Decimal>(); // 25
         [BytesIncluded(26)]
-        public DateTime[] _dateTimeArray = Array.Empty<DateTime>(); // 26
+        public Boolean[] _booleanArray = Array.Empty<Boolean>(); // 26
         [BytesIncluded(27)]
-        public String[] _stringArray = Array.Empty<String>(); // 27
+        public Char[] _charArray = Array.Empty<Char>(); // 27
+        [BytesIncluded(28)]
+        public DateTime[] _dateTimeArray = Array.Empty<DateTime>(); // 28
+        [BytesIncluded(29)]
+        public String[] _stringArray = Array.Empty<String>(); // 29
 
         public static ComplexFoo CloneFrom(ComplexFoo other)
         {
@@ -157,24 +147,26 @@ namespace LibTest.Serialization
                 _uInt64Val = other._uInt64Val, // 7
                 _singleVal = other._singleVal, // 8
                 _doubleVal = other._doubleVal, // 9
-                _booleanVal = other._booleanVal, // 10
-                _charVal = other._charVal, // 11
-                _dateTimeVal = other._dateTimeVal, // 12
-                _stringVal = other._stringVal, // 13
-                _byteArray = other._byteArray.ToArray(), // 14
-                _sByteArray = other._sByteArray.ToArray(), // 15
-                _int16Array = other._int16Array.ToArray(), // 16
-                _uInt16Array = other._uInt16Array.ToArray(), // 17
-                _int32Array = other._int32Array.ToArray(), // 18
-                _uInt32Array = other._uInt32Array.ToArray(), // 19
-                _int64Array = other._int64Array.ToArray(), // 20
-                _uInt64Array = other._uInt64Array.ToArray(), // 21
-                _singleArray = other._singleArray.ToArray(), // 22
-                _doubleArray = other._doubleArray.ToArray(), // 23
-                _booleanArray = other._booleanArray.ToArray(), // 24
-                _charArray = other._charArray.ToArray(), // 25
-                _dateTimeArray = other._dateTimeArray.ToArray(), // 26
-                _stringArray = other._stringArray.ToArray(), // 27
+                _decimalVal = other._decimalVal, // 10
+                _booleanVal = other._booleanVal, // 11
+                _charVal = other._charVal, // 12
+                _dateTimeVal = other._dateTimeVal, // 13
+                _stringVal = other._stringVal, // 14
+                _byteArray = other._byteArray.ToArray(), // 15
+                _sByteArray = other._sByteArray.ToArray(), // 16
+                _int16Array = other._int16Array.ToArray(), // 17
+                _uInt16Array = other._uInt16Array.ToArray(), // 18
+                _int32Array = other._int32Array.ToArray(), // 19
+                _uInt32Array = other._uInt32Array.ToArray(), // 20
+                _int64Array = other._int64Array.ToArray(), // 21
+                _uInt64Array = other._uInt64Array.ToArray(), // 22
+                _singleArray = other._singleArray.ToArray(), // 23
+                _doubleArray = other._doubleArray.ToArray(), // 24
+                _decimalArray = other._decimalArray.ToArray(), // 25
+                _booleanArray = other._booleanArray.ToArray(), // 26
+                _charArray = other._charArray.ToArray(), // 27
+                _dateTimeArray = other._dateTimeArray.ToArray(), // 28
+                _stringArray = other._stringArray.ToArray(), // 29
             };
             return copy;
         }
@@ -193,25 +185,27 @@ namespace LibTest.Serialization
             if (_uInt64Val != other._uInt64Val) return false; // 7
             if (_singleVal != other._singleVal) return false; // 8
             if (_doubleVal != other._doubleVal) return false; // 9
-            if (_booleanVal != other._booleanVal) return false; // 10
-            if (_charVal != other._charVal) return false; // 11
-            if (_dateTimeVal != other._dateTimeVal) return false; // 12
-            if (_stringVal != other._stringVal) return false; // 13
+            if (_decimalVal != other._decimalVal) return false; // 10
+            if (_booleanVal != other._booleanVal) return false; // 11
+            if (_charVal != other._charVal) return false; // 12
+            if (_dateTimeVal != other._dateTimeVal) return false; // 13
+            if (_stringVal != other._stringVal) return false; // 14
 
-            if (!_byteArray.SequenceEqual(other._byteArray)) return false; // 14
-            if (!_sByteArray.SequenceEqual(other._sByteArray)) return false; // 15
-            if (!_int16Array.SequenceEqual(other._int16Array)) return false; // 16
-            if (!_uInt16Array.SequenceEqual(other._uInt16Array)) return false; // 17
-            if (!_int32Array.SequenceEqual(other._int32Array)) return false; // 18
-            if (!_uInt32Array.SequenceEqual(other._uInt32Array)) return false; // 19
-            if (!_int64Array.SequenceEqual(other._int64Array)) return false; // 20
-            if (!_uInt64Array.SequenceEqual(other._uInt64Array)) return false; // 21
-            if (!_singleArray.SequenceEqual(other._singleArray)) return false; // 22
-            if (!_doubleArray.SequenceEqual(other._doubleArray)) return false; // 23
-            if (!_booleanArray.SequenceEqual(other._booleanArray)) return false; // 24
-            if (!_charArray.SequenceEqual(other._charArray)) return false; // 25
-            if (!_dateTimeArray.SequenceEqual(other._dateTimeArray)) return false; // 26
-            if (!_stringArray.SequenceEqual(other._stringArray)) return false; // 27
+            if (!_byteArray.SequenceEqual(other._byteArray)) return false; // 15
+            if (!_sByteArray.SequenceEqual(other._sByteArray)) return false; // 16
+            if (!_int16Array.SequenceEqual(other._int16Array)) return false; // 17
+            if (!_uInt16Array.SequenceEqual(other._uInt16Array)) return false; // 18
+            if (!_int32Array.SequenceEqual(other._int32Array)) return false; // 19
+            if (!_uInt32Array.SequenceEqual(other._uInt32Array)) return false; // 20
+            if (!_int64Array.SequenceEqual(other._int64Array)) return false; // 21
+            if (!_uInt64Array.SequenceEqual(other._uInt64Array)) return false; // 22
+            if (!_singleArray.SequenceEqual(other._singleArray)) return false; // 23
+            if (!_doubleArray.SequenceEqual(other._doubleArray)) return false; // 24
+            if (!_decimalArray.SequenceEqual(other._decimalArray)) return false; // 25
+            if (!_booleanArray.SequenceEqual(other._booleanArray)) return false; // 26
+            if (!_charArray.SequenceEqual(other._charArray)) return false; // 27
+            if (!_dateTimeArray.SequenceEqual(other._dateTimeArray)) return false; // 28
+            if (!_stringArray.SequenceEqual(other._stringArray)) return false; // 29
 
             return true;
         }
@@ -229,25 +223,27 @@ namespace LibTest.Serialization
                 _uInt64Val = RandomData.NextUInt64(), // 7
                 _singleVal = RandomData.NextSingle(), // 8
                 _doubleVal = RandomData.NextDouble(), // 9
-                _booleanVal = RandomData.NextBoolean(), // 10
-                _charVal = RandomData.NextChar(), // 11
-                _dateTimeVal = RandomData.NextDateTime(), // 12
-                _stringVal = RandomData.NextString(), // 13
-                                                      // array
-                _byteArray = RandomData.NextBytes(), // 14
-                _sByteArray = RandomData.NextSBytes(), // 15
-                _int16Array = RandomData.NextInt16s(), // 16
-                _uInt16Array = RandomData.NextUInt16s(), // 17
-                _int32Array = RandomData.NextInt32s(), // 18
-                _uInt32Array = RandomData.NextUInt32s(), // 19
-                _int64Array = RandomData.NextInt64s(), // 20
-                _uInt64Array = RandomData.NextUInt64s(), // 21
-                _singleArray = RandomData.NextSingles(), // 22
-                _doubleArray = RandomData.NextDoubles(), // 23
-                _booleanArray = RandomData.NextBooleans(), // 24
-                _charArray = RandomData.NextChars(), // 25
-                _dateTimeArray = RandomData.NextDateTimes(), // 26
-                _stringArray = RandomData.NextStrings(), // 27
+                _decimalVal = RandomData.NextDecimal(), // 10
+                _booleanVal = RandomData.NextBoolean(), // 11
+                _charVal = RandomData.NextChar(), // 12
+                _dateTimeVal = RandomData.NextDateTime(), // 13
+                _stringVal = RandomData.NextString(), // 14
+
+                _byteArray = RandomData.NextBytes(), // 15
+                _sByteArray = RandomData.NextSBytes(), // 16
+                _int16Array = RandomData.NextInt16s(), // 17
+                _uInt16Array = RandomData.NextUInt16s(), // 18
+                _int32Array = RandomData.NextInt32s(), // 19
+                _uInt32Array = RandomData.NextUInt32s(), // 20
+                _int64Array = RandomData.NextInt64s(), // 21
+                _uInt64Array = RandomData.NextUInt64s(), // 22
+                _singleArray = RandomData.NextSingles(), // 23
+                _doubleArray = RandomData.NextDoubles(), // 24
+                _decimalArray = RandomData.NextDecimals(), // 25
+                _booleanArray = RandomData.NextBooleans(), // 26
+                _charArray = RandomData.NextChars(), // 27
+                _dateTimeArray = RandomData.NextDateTimes(), // 28
+                _stringArray = RandomData.NextStrings(), // 29
             };
             return r;
         }
@@ -304,216 +300,128 @@ namespace LibTest.Serialization
         {
             BytesSerializer serializer = new BytesSerializer();
 
-            for (int _ = 0; _ < 100; _++)
+            void TestClass<T>(Func<T> objCreater) where T : notnull, IEquatable<T>
             {
-                #region 基元类型测试
-                Byte byteVal = RandomData.NextByte();
-                byte[] byteValBytes = serializer.SerializeToBytes(byteVal);
-                Byte d_byteVal = serializer.DeserializeFromBytes<Byte>(byteValBytes);
-                Assert.AreEqual(byteVal, d_byteVal);
+                ArgumentNullException.ThrowIfNull(objCreater);
 
-                SByte sByteVal = RandomData.NextSByte();
-                byte[] sByteValBytes = serializer.SerializeToBytes(sByteVal);
-                SByte d_sByteVal = serializer.DeserializeFromBytes<SByte>(sByteValBytes);
-                Assert.AreEqual(sByteVal, d_sByteVal);
+                T obj = objCreater();
+                byte[] objBytes = serializer.SerializeToBytes(obj);
+                T d_obj = serializer.DeserializeFromBytes<T>(objBytes);
+                Assert.IsTrue(obj.Equals(d_obj));
 
-                Int16 int16Val = RandomData.NextInt16();
-                byte[] int16ValBytes = serializer.SerializeToBytes(int16Val);
-                Int16 d_int16Val = serializer.DeserializeFromBytes<Int16>(int16ValBytes);
-                Assert.AreEqual(int16Val, d_int16Val);
-
-                UInt16 uInt16Val = RandomData.NextUInt16();
-                byte[] uInt16ValBytes = serializer.SerializeToBytes(uInt16Val);
-                UInt16 d_uInt16Val = serializer.DeserializeFromBytes<UInt16>(uInt16ValBytes);
-                Assert.AreEqual(uInt16Val, d_uInt16Val);
-
-                Int32 int32Val = RandomData.NextInt32();
-                byte[] int32ValBytes = serializer.SerializeToBytes(int32Val);
-                Int32 d_int32Val = serializer.DeserializeFromBytes<Int32>(int32ValBytes);
-                Assert.AreEqual(int32Val, d_int32Val);
-
-                UInt32 uInt32Val = RandomData.NextUInt32();
-                byte[] uInt32ValBytes = serializer.SerializeToBytes(uInt32Val);
-                UInt32 d_uInt32Val = serializer.DeserializeFromBytes<UInt32>(uInt32ValBytes);
-                Assert.AreEqual(uInt32Val, d_uInt32Val);
-
-                Int64 int64Val = RandomData.NextInt64();
-                byte[] int64ValBytes = serializer.SerializeToBytes(int64Val);
-                Int64 d_int64Val = serializer.DeserializeFromBytes<Int64>(int64ValBytes);
-                Assert.AreEqual(int64Val, d_int64Val);
-
-                UInt64 uInt64Val = RandomData.NextUInt16();
-                byte[] uInt64ValBytes = serializer.SerializeToBytes(uInt64Val);
-                UInt64 d_uInt64Val = serializer.DeserializeFromBytes<UInt64>(uInt64ValBytes);
-                Assert.AreEqual(uInt64Val, d_uInt64Val);
-
-                Single singleVal = RandomData.NextSingle();
-                byte[] singleValBytes = serializer.SerializeToBytes(singleVal);
-                Single d_singleVal = serializer.DeserializeFromBytes<Single>(singleValBytes);
-                Assert.AreEqual(singleVal, d_singleVal);
-
-                Double doubleVal = RandomData.NextDouble();
-                byte[] doubleValBytes = serializer.SerializeToBytes(doubleVal);
-                Double d_doubleVal = serializer.DeserializeFromBytes<Double>(doubleValBytes);
-                Assert.AreEqual(doubleVal, d_doubleVal);
-
-                Boolean booleanVal = RandomData.NextBoolean();
-                byte[] booleanValBytes = serializer.SerializeToBytes(booleanVal);
-                Boolean d_booleanVal = serializer.DeserializeFromBytes<Boolean>(booleanValBytes);
-                Assert.AreEqual(booleanVal, d_booleanVal);
-
-                Char charVal = RandomData.NextChar();
-                byte[] charValBytes = serializer.SerializeToBytes(charVal);
-                Char d_charVal = serializer.DeserializeFromBytes<Char>(charValBytes);
-                Assert.AreEqual(charVal, d_charVal);
-
-                DateTime datetimeVal = RandomData.NextDateTime();
-                byte[] datetimeValBytes = serializer.SerializeToBytes(datetimeVal);
-                DateTime d_datetimeVal = serializer.DeserializeFromBytes<DateTime>(datetimeValBytes);
-                Assert.AreEqual(datetimeVal, d_datetimeVal);
-
-                String stringVal = RandomData.NextString();
-                byte[] stringValBytes = serializer.SerializeToBytes(stringVal);
-                String d_stringVal = serializer.DeserializeFromBytes<String>(stringValBytes);
-                Assert.AreEqual(stringVal, d_stringVal);
-                #endregion
-            }
-
-            for (int _ = 0; _ < 100; _++)
-            {
-                #region 数组测试
-                Byte[] bytes = RandomData.NextBytes();
-                byte[] bytesBytes = serializer.SerializeToBytes(bytes);
-                Byte[] d_bytes = serializer.DeserializeFromBytes<Byte[]>(bytesBytes);
-                Assert.IsTrue(bytes.SequenceEqual(d_bytes));
-
-                SByte[] sBytes = RandomData.NextSBytes();
-                byte[] sBytesBytes = serializer.SerializeToBytes(sBytes);
-                SByte[] d_sBytes = serializer.DeserializeFromBytes<SByte[]>(sBytesBytes);
-                Assert.IsTrue(sBytes.SequenceEqual(d_sBytes));
-
-                Int16[] int16s = RandomData.NextInt16s();
-                byte[] int16sBytes = serializer.SerializeToBytes(int16s);
-                Int16[] d_int16s = serializer.DeserializeFromBytes<Int16[]>(int16sBytes);
-                Assert.IsTrue(int16s.SequenceEqual(d_int16s));
-
-                UInt16[] uInt16s = RandomData.NextUInt16s();
-                byte[] uInt16sBytes = serializer.SerializeToBytes(uInt16s);
-                UInt16[] d_uInt16s = serializer.DeserializeFromBytes<UInt16[]>(uInt16sBytes);
-                Assert.IsTrue(uInt16s.SequenceEqual(d_uInt16s));
-
-                Int32[] int32s = RandomData.NextInt32s();
-                byte[] int32sBytes = serializer.SerializeToBytes(int32s);
-                Int32[] d_int32s = serializer.DeserializeFromBytes<Int32[]>(int32sBytes);
-                Assert.IsTrue(int32s.SequenceEqual(d_int32s));
-
-                UInt32[] uInt32s = RandomData.NextUInt32s();
-                byte[] uInt32sBytes = serializer.SerializeToBytes(uInt32s);
-                UInt32[] d_uInt32s = serializer.DeserializeFromBytes<UInt32[]>(uInt32sBytes);
-                Assert.IsTrue(uInt32s.SequenceEqual(d_uInt32s));
-
-                Int64[] int64s = RandomData.NextInt64s();
-                byte[] int64sBytes = serializer.SerializeToBytes(int64s);
-                Int64[] d_int64s = serializer.DeserializeFromBytes<Int64[]>(int64sBytes);
-                Assert.IsTrue(int64s.SequenceEqual(d_int64s));
-
-                UInt64[] uInt64s = RandomData.NextUInt64s();
-                byte[] uInt64sBytes = serializer.SerializeToBytes(uInt64s);
-                UInt64[] d_uInt64s = serializer.DeserializeFromBytes<UInt64[]>(uInt64sBytes);
-                Assert.IsTrue(uInt64s.SequenceEqual(d_uInt64s));
-
-                Single[] singles = RandomData.NextSingles();
-                byte[] singlesBytes = serializer.SerializeToBytes(singles);
-                Single[] d_singles = serializer.DeserializeFromBytes<Single[]>(singlesBytes);
-                Assert.IsTrue(singles.SequenceEqual(d_singles));
-
-                Double[] doubles = RandomData.NextDoubles();
-                byte[] doublesBytes = serializer.SerializeToBytes(doubles);
-                Double[] d_doubles = serializer.DeserializeFromBytes<Double[]>(doublesBytes);
-                Assert.IsTrue(doubles.SequenceEqual(d_doubles));
-
-                Boolean[] booleans = RandomData.NextBooleans();
-                byte[] boolsBytes = serializer.SerializeToBytes(booleans);
-                Boolean[] d_booleans = serializer.DeserializeFromBytes<Boolean[]>(boolsBytes);
-                Assert.IsTrue(booleans.SequenceEqual(d_booleans));
-
-                Char[] chars = RandomData.NextChars();
-                byte[] charsBytes = serializer.SerializeToBytes(chars);
-                Char[] d_chars = serializer.DeserializeFromBytes<Char[]>(charsBytes);
-                Assert.IsTrue(chars.SequenceEqual(d_chars));
-
-                DateTime[] dateTimes = RandomData.NextDateTimes();
-                byte[] datetimesBytes = serializer.SerializeToBytes(dateTimes);
-                DateTime[] d_dateTimes = serializer.DeserializeFromBytes<DateTime[]>(datetimesBytes);
-                Assert.IsTrue(dateTimes.SequenceEqual(d_dateTimes));
-
-                String[] strings = RandomData.NextStrings();
-                byte[] stringsBytes = serializer.SerializeToBytes(strings);
-                String[] d_strings = serializer.DeserializeFromBytes<String[]>(stringsBytes);
-                Assert.IsTrue(strings.SequenceEqual(d_strings));
-                #endregion
-            }
-
-            for (int _ = 0; _ < 100; _++)
-            {
-                #region 常规引用类型测试
-                Foo foo = Foo.GetRandomOne();
-                byte[] fooBytes = serializer.SerializeToBytes(foo);
-                Foo d_Foo = serializer.DeserializeFromBytes<Foo>(fooBytes);
-                Assert.IsTrue(foo.Equals(d_Foo));
                 // 数组
-                Foo[] foos = RandomData.NextArray(() => Foo.GetRandomOne());
-                byte[] foosBytes = serializer.SerializeToBytes(foos);
-                Foo[] d_foos = serializer.DeserializeFromBytes<Foo[]>(foosBytes);
-                Assert.AreEqual(foos.Length, d_foos.Length);
-                for (int i = 0; i < foos.Length; i++)
+                T[] array = RandomData.NextArray<T>(objCreater);
+                byte[] arrayBytes = serializer.SerializeToBytes(array);
+                T[] d_array = serializer.DeserializeFromBytes<T[]>(arrayBytes);
+                Assert.AreEqual(array.Length, d_array.Length);
+                for (int i = 0; i < array.Length; i++)
                 {
-                    Assert.IsTrue(foos[i].Equals(d_foos[i]));
+                    Assert.IsTrue(array[i].Equals(d_array[i]));
                 }
-                #endregion
+            }
+            void TestEquals<T>(T val) where T : notnull
+            {
+                byte[] bytes = serializer.SerializeToBytes(val);
+                T d_val = serializer.DeserializeFromBytes<T>(bytes);
+                try
+                {
+                    Assert.AreEqual(val, d_val);
+                }
+                catch (AssertFailedException)
+                {
+                    System.Diagnostics.Debug.WriteLine($"At type: {typeof(T)}"); // debug output
+                    throw;
+                }
+            }
+            void TestArrayEqual<T>(T[] array) where T : notnull
+            {
+                byte[] bytesBytes = serializer.SerializeToBytes(array);
+                T[] d_bytes = serializer.DeserializeFromBytes<T[]>(bytesBytes);
+                try
+                {
+                    Assert.IsTrue(array.SequenceEqual(d_bytes));
+                }
+                catch (AssertFailedException)
+                {
+                    System.Diagnostics.Debug.WriteLine($"At type: {typeof(T)}"); // debug output
+                    throw;
+                }
             }
 
+            #region 基元类型测试
+            for (int _ = 0; _ < 1000; _++)
+            {
+                TestEquals(RandomData.NextByte());
+                TestEquals(RandomData.NextSByte());
+                TestEquals(RandomData.NextInt16());
+                TestEquals(RandomData.NextUInt16());
+                TestEquals(RandomData.NextInt32());
+                TestEquals(RandomData.NextUInt32());
+                TestEquals(RandomData.NextInt64());
+                TestEquals(RandomData.NextUInt64());
+                TestEquals(RandomData.NextSingle());
+                TestEquals(RandomData.NextDouble());
+                TestEquals(RandomData.NextDecimal());
+                TestEquals(RandomData.NextBoolean());
+                TestEquals(RandomData.NextChar());
+                TestEquals(RandomData.NextDateTime());
+                TestEquals(RandomData.NextString());
+            }
+            #endregion
+
+            #region 数组测试
+            for (int _ = 0; _ < 1000; _++)
+            {
+                TestArrayEqual(RandomData.NextBytes());
+                TestArrayEqual(RandomData.NextSBytes());
+                TestArrayEqual(RandomData.NextInt16s());
+                TestArrayEqual(RandomData.NextUInt16s());
+                TestArrayEqual(RandomData.NextInt32s());
+                TestArrayEqual(RandomData.NextUInt32s());
+                TestArrayEqual(RandomData.NextInt64s());
+                TestArrayEqual(RandomData.NextUInt64s());
+                TestArrayEqual(RandomData.NextSingles());
+                TestArrayEqual(RandomData.NextDoubles());
+                TestArrayEqual(RandomData.NextDecimals());
+                TestArrayEqual(RandomData.NextBooleans());
+                TestArrayEqual(RandomData.NextChars());
+                TestArrayEqual(RandomData.NextDateTimes());
+                TestArrayEqual(RandomData.NextStrings());
+            }
+            #endregion
+
+            #region 常规引用类型测试
             for (int _ = 0; _ < 100; _++)
             {
-                #region 复杂引用类型测试
-                ComplexFoo complexFoo = ComplexFoo.GetRandomOne();
-                byte[] complexFooBytes = serializer.SerializeToBytes(complexFoo);
-                ComplexFoo d_complexFoo = serializer.DeserializeFromBytes<ComplexFoo>(complexFooBytes);
-                Assert.IsTrue(complexFoo.Equals(d_complexFoo));
 
-                ComplexFoo[] complexFoos = RandomData.NextArray(() => ComplexFoo.GetRandomOne());
-                byte[] complexFoosBytes = serializer.SerializeToBytes(complexFoos);
-                ComplexFoo[] d_complexFoos = serializer.DeserializeFromBytes<ComplexFoo[]>(complexFoosBytes);
-                Assert.AreEqual(complexFoos.Length, d_complexFoos.Length);
-                for (int i = 0; i < complexFoos.Length; i++)
-                {
-                    Assert.IsTrue(complexFoos[i].Equals(d_complexFoos[i]));
-                }
-                #endregion
+                TestClass(Foo.GetRandomOne);
             }
+            #endregion
 
+            #region 复杂引用类型测试
             for (int _ = 0; _ < 100; _++)
             {
-                #region 复杂嵌套引用类型测试
-                NestedFoo nestedFoo = NestedFoo.GetRandomOne();
-                byte[] nestedFooBytes = serializer.SerializeToBytes(nestedFoo);
-                NestedFoo d_complexFoo = serializer.DeserializeFromBytes<NestedFoo>(nestedFooBytes);
-                Assert.IsTrue(nestedFoo.Equals(d_complexFoo));
-
-                NestedFoo[] nestedFoos = RandomData.NextArray(() => NestedFoo.GetRandomOne());
-                byte[] nestedFoosBytes = serializer.SerializeToBytes(nestedFoos);
-                NestedFoo[] d_nestedFoos = serializer.DeserializeFromBytes<NestedFoo[]>(nestedFoosBytes);
-                Assert.AreEqual(nestedFoos.Length, d_nestedFoos.Length);
-                for (int i = 0; i < nestedFoos.Length; i++)
-                {
-                    Assert.IsTrue(nestedFoos[i].Equals(d_nestedFoos[i]));
-                }
-                #endregion
+                TestClass(ComplexFoo.GetRandomOne);
             }
+            #endregion
 
+            #region 复杂嵌套引用类型测试
+            for (int _ = 0; _ < 10; _++)
+            {
+                TestClass(NestedFoo.GetRandomOne);
+            }
+            #endregion
+
+            #region 异常引发测试
+            // 不可序列化
             Assert.ThrowsException<BytesSerializationException>(() => serializer.SerializeToBytes(new NBSFoo()));
-            Assert.ThrowsException<ArgumentNullException>(() => serializer.SerializeToBytes(null!));
-            Assert.ThrowsException<NullReferenceException>(() => serializer.SerializeToBytes(new Foo() { _strA = null! }));
+            // 空值
+            Assert.ThrowsException<BytesSerializationException>(() => serializer.SerializeToBytes(null!));
+            // 含空值
+            Assert.ThrowsException<BytesSerializationException>(() => serializer.SerializeToBytes(new Foo() { _str1 = null! }));
+            // 多为数组
+            Assert.ThrowsException<BytesSerializationException>(() => serializer.SerializeToBytes(new int[,] { { 0, 1 }, { 1, 0 } }));
+            #endregion
         }
     }
 }
