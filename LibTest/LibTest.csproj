@@ -15,13 +15,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Collections\Collections.csproj" />
-		<ProjectReference Include="..\Common\Common.csproj" />
-		<ProjectReference Include="..\Cryptography\Cryptography.csproj" />
-		<ProjectReference Include="..\Debug\Debug.csproj" />
-		<ProjectReference Include="..\Mathematics\Mathematics.csproj" />
-		<ProjectReference Include="..\MiniGames\MiniGames.csproj" />
-		<ProjectReference Include="..\Serialization\Serialization.csproj" />
+		<ProjectReference Include="..\Collections\HM.Collections.csproj" />
+		<ProjectReference Include="..\Common\HM.Common.csproj" />
+		<ProjectReference Include="..\Cryptography\HM.Cryptography.csproj" />
+		<ProjectReference Include="..\Debug\HM.Debug.csproj" />
+		<ProjectReference Include="..\Mathematics\HM.Mathematics.csproj" />
+		<ProjectReference Include="..\MiniGames\HM.MiniGames.csproj" />
+		<ProjectReference Include="..\Serialization\HM.Serialization.csproj" />
 	</ItemGroup>
 
 </Project>
