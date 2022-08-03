@@ -1,3 +1,5 @@
+using HM.MiniGames.LinkGame;
+
 namespace HM.MiniGames.Minesweeper
 {
 

@@ -48,8 +48,8 @@
         }
         public MinesweeperHelper(Grid<IBlock> grid)
         {
-            Layout = Layout<IBlock>.Create(grid.RowSize, grid.ColumnSize);
-            foreach (var coord in grid.Coordinates)
+            Layout = Layout<IBlock>.Create(grid.Height, grid.Width);
+            foreach (var coord in grid.GetCoordinates())
             {
                 System.Diagnostics.Debug.WriteLine($"{coord}"); // debug output
                 Layout[coord] = grid[coord];

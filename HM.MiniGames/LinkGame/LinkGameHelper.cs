@@ -50,8 +50,8 @@
         }
         public LinkGameHelper(Grid<IToken> layout)
         {
-            _cachedCoords = layout.Coordinates.ToArray();
-            Layout = Layout<IToken>.Create(layout.RowSize, layout.ColumnSize);
+            _cachedCoords = layout.GetCoordinates().ToArray();
+            Layout = Layout<IToken>.Create(layout.Height, layout.Width);
             foreach (var coord in _cachedCoords)
             {
                 Layout[coord] = layout[coord];

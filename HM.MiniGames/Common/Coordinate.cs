@@ -44,13 +44,13 @@ namespace HM.MiniGames
             }
         }
 
-        public int X { get; }
-        public int Y { get; }
+        public int X => _x;
+        public int Y => _y;
 
         public Coordinate(int x, int y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
 
         public static implicit operator Coordinate((int x, int y) coord)
@@ -102,6 +102,10 @@ namespace HM.MiniGames
             x = X;
             y = Y;
         }
+        public bool Equals(Coordinate other)
+        {
+            return this == other;
+        }
         public override bool Equals(object? obj)
         {
             if (obj is null)
@@ -113,14 +117,6 @@ namespace HM.MiniGames
                 return false;
             }
             return Equals((Coordinate)obj);
-        }
-        public override int GetHashCode()
-        {
-            return (X << 2) ^ Y;
-        }
-        public bool Equals(Coordinate other)
-        {
-            return this == other;
         }
         public override string ToString()
         {
@@ -134,5 +130,12 @@ namespace HM.MiniGames
         {
             return ToString(format, null);
         }
+        public override int GetHashCode()
+        {
+            return (X << 2) ^ Y;
+        }
+
+        private readonly int _x;
+        private readonly int _y;
     }
 }

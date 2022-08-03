@@ -1,4 +1,6 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿using HM.MiniGames.LinkGame;
+
+namespace HM.MiniGames.Minesweeper
 {
     public class GameStatusChangedEventArgs : EventArgs
     {

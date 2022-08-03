@@ -1,4 +1,6 @@
-﻿namespace HM.MiniGames.LinkGame
+﻿using HM.MiniGames.LinkGame;
+
+namespace HM.MiniGames.LinkGame
 {
     public class GameMain
     {

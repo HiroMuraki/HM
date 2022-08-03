@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames
+﻿namespace HM.MiniGames.LinkGame
 {
     public enum GameStatus
     {

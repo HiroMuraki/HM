@@ -7,7 +7,7 @@ namespace HM.MiniGames
     {
         public Coordinate Coordinate { get; }
 
-        public CoordinateOutOfRangeException(Coordinate coordinate) : this($"{coordinate} is out of layout")
+        public CoordinateOutOfRangeException(Coordinate coordinate) : this($"Coordiante `{coordinate}` is out of layout")
         {
             Coordinate = coordinate;
         }
