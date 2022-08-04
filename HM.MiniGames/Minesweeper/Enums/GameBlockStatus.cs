@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.MinesweeperX
+﻿namespace HM.MiniGames.Minesweeper
 {
     public enum GameBlockStatus
     {
