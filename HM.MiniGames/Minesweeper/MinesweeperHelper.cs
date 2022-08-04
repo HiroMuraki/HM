@@ -1,4 +1,8 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace HM.MiniGames.Minesweeper
 {
     public sealed class MinesweeperHelper
     {
