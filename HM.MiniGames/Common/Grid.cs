@@ -210,7 +210,7 @@ namespace HM.MiniGames
         {
             return _origin2DArray;
         }
-        internal Grid(int width, int height)
+        private Grid(int width, int height)
         {
             _origin2DArray = new T[height, width];
         }
