@@ -133,7 +133,7 @@ namespace HM.UnityEngine
         {
             if (!TryReturn(gameObject))
             {
-                Object.Destroy(gameObject);
+                Object.Destroy(gameObject.gameObject);
             }
         }
 
