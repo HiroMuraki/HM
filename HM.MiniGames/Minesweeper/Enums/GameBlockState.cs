@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public enum GameBlockStatus
+    public enum GameBlockState
     {
         Undefined,
         Open,

@@ -43,15 +43,15 @@ namespace HM.MiniGames.Minesweeper
                 for (int x = 0; x < gameBlocks.Width; x++)
                 {
                     var block = GameBlockGenerator.GetGameBlock();
-                    block.BlockStatus = GameBlockStatus.Closed;
+                    block.State = GameBlockState.Closed;
                     if (currentMineCount < totalMineCount)
                     {
-                        block.BlockType = GameBlockType.Mine;
+                        block.Type = GameBlockType.Mine;
                         currentMineCount++;
                     }
                     else
                     {
-                        block.BlockType = GameBlockType.Blank;
+                        block.Type = GameBlockType.Blank;
                     }
                     gameBlocks[x, y] = block;
                 }
@@ -88,7 +88,7 @@ namespace HM.MiniGames.Minesweeper
              * 获取所有除coordinates外的Blank + Closed的方块，获取Blank块组
              * 若Mine块组大小小于Blank组，则将每个Mine块与随机一个Blank块交换 */
             var coords = coordinates.ToArray();
-            var mineCoords = coords.Where(c => GameBlocks[c].BlockType == GameBlockType.Mine).ToArray();
+            var mineCoords = coords.Where(c => GameBlocks[c].Type == GameBlockType.Mine).ToArray();
             if (!mineCoords.Any())
             {
                 return 0;
@@ -96,7 +96,7 @@ namespace HM.MiniGames.Minesweeper
 
             var blankCoords = GameBlocks
                 .GetCoordinates()
-                .Where(c => GameBlocks[c].BlockType == GameBlockType.Blank && GameBlocks[c].BlockStatus == GameBlockStatus.Closed)
+                .Where(c => GameBlocks[c].Type == GameBlockType.Blank && GameBlocks[c].State == GameBlockState.Closed)
                 .Except(coords)
                 .ToList();
 
@@ -152,7 +152,7 @@ namespace HM.MiniGames.Minesweeper
             {
                 GameBlocks[coord].NearbyMineCount =
                     GetNearybyCoordinates(GameBlocks, coord)
-                    .Where(c => GameBlocks[c].BlockType == GameBlockType.Mine)
+                    .Where(c => GameBlocks[c].Type == GameBlockType.Mine)
                     .Count();
             }
         }
@@ -163,8 +163,8 @@ namespace HM.MiniGames.Minesweeper
         /// <returns></returns>
         public bool CheckIfGameCompleted(Grid<IGameBlock> GameBlocks)
         {
-            return !GameBlocks.Any(b => b.BlockType == GameBlockType.Blank
-                                     && b.BlockStatus != GameBlockStatus.Open);
+            return !GameBlocks.Any(b => b.Type == GameBlockType.Blank
+                                     && b.State != GameBlockState.Open);
         }
         /// <summary>
         /// 打开坐标指定方块
@@ -176,9 +176,9 @@ namespace HM.MiniGames.Minesweeper
         {
             if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
 
-            if (GameBlocks[coordinate].BlockStatus == GameBlockStatus.Closed)
+            if (GameBlocks[coordinate].State == GameBlockState.Closed)
             {
-                GameBlocks[coordinate].BlockStatus = GameBlockStatus.Open;
+                GameBlocks[coordinate].State = GameBlockState.Open;
                 return true;
             }
             else
@@ -223,9 +223,9 @@ namespace HM.MiniGames.Minesweeper
         {
             if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
 
-            if (GameBlocks[coordinate].BlockStatus == GameBlockStatus.Closed)
+            if (GameBlocks[coordinate].State == GameBlockState.Closed)
             {
-                GameBlocks[coordinate].BlockStatus = GameBlockStatus.Flagged;
+                GameBlocks[coordinate].State = GameBlockState.Flagged;
                 return true;
             }
             else
@@ -243,9 +243,9 @@ namespace HM.MiniGames.Minesweeper
         {
             if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
 
-            if (GameBlocks[coordinate].BlockStatus == GameBlockStatus.Flagged)
+            if (GameBlocks[coordinate].State == GameBlockState.Flagged)
             {
-                GameBlocks[coordinate].BlockStatus = GameBlockStatus.Closed;
+                GameBlocks[coordinate].State = GameBlockState.Closed;
                 return true;
             }
             else
@@ -273,19 +273,19 @@ namespace HM.MiniGames.Minesweeper
             var openableCoords = new List<Coordinate>(NearbyDelta.Length);
             foreach (var coord in nearbyCoords)
             {
-                switch (gameBlocks[coord].BlockStatus)
+                switch (gameBlocks[coord].State)
                 {
-                    case GameBlockStatus.Closed:
+                    case GameBlockState.Closed:
                         if (!openMap[coord.X, coord.Y])
                         {
                             openableCoords.Add(coord);
                         }
                         break;
-                    case GameBlockStatus.Flagged:
+                    case GameBlockState.Flagged:
                         flaggedCount++;
                         break;
-                    case GameBlockStatus.Open:
-                    case GameBlockStatus.Undefined:
+                    case GameBlockState.Open:
+                    case GameBlockState.Undefined:
                     default:
                         break;
                 }
@@ -310,7 +310,7 @@ namespace HM.MiniGames.Minesweeper
         }
         private static void SwapBlockType(IGameBlock a, IGameBlock b)
         {
-            (a.BlockType, b.BlockType) = (b.BlockType, a.BlockType);
+            (a.Type, b.Type) = (b.Type, a.Type);
         }
     }
 }

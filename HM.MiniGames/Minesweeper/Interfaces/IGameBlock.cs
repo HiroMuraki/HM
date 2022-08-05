@@ -5,11 +5,11 @@
         /// <summary>
         /// 游戏方块类型
         /// </summary>
-        GameBlockType BlockType { get; set; }
+        GameBlockType Type { get; set; }
         /// <summary>
         /// 游戏方块状态
         /// </summary>
-        GameBlockStatus BlockStatus { get; set; }
+        GameBlockState State { get; set; }
         /// <summary>
         /// 指示附近的雷数
         /// </summary>
