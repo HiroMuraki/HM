@@ -61,42 +61,42 @@ namespace HM.MiniGames.Minesweeper
         /// <summary>
         /// 打乱Blank/Mine块的布局
         /// </summary>
-        /// <param name="GameBlocks"></param>
-        public void Shuffle(Grid<IGameBlock> GameBlocks)
+        /// <param name="gameBlocks"></param>
+        public void Shuffle(Grid<IGameBlock> gameBlocks)
         {
-            int total = GameBlocks.Width * GameBlocks.Height;
-            for (int y = 0; y < GameBlocks.Height; y++)
+            int total = gameBlocks.Width * gameBlocks.Height;
+            for (int y = 0; y < gameBlocks.Height; y++)
             {
-                for (int x = 0; x < GameBlocks.Width; x++)
+                for (int x = 0; x < gameBlocks.Width; x++)
                 {
-                    int next = RandomGenerator.Range(y * GameBlocks.Width + x, total);
-                    int nextX = next % GameBlocks.Width;
-                    int nextY = next / GameBlocks.Width;
-                    SwapBlockType(GameBlocks[x, y], GameBlocks[nextX, nextY]);
+                    int next = RandomGenerator.Range(y * gameBlocks.Width + x, total);
+                    int nextX = next % gameBlocks.Width;
+                    int nextY = next / gameBlocks.Width;
+                    SwapBlockType(gameBlocks[x, y], gameBlocks[nextX, nextY]);
                 }
             }
         }
         /// <summary>
         /// 设置安全区域，将安全区域的Mine块用其他区域的Blank块替换
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinates"></param>
         /// <returns>受影响的方块数，若为-1，则表示没有足够的Blank块用于替换Mine块</returns>
-        public int SetSafeCoordinates(Grid<IGameBlock> GameBlocks, IEnumerable<Coordinate> coordinates)
+        public int SetSafeCoordinates(Grid<IGameBlock> gameBlocks, IEnumerable<Coordinate> coordinates)
         {
             /* 获取所有目标坐标中的Mine块，获取Mine块组
              * 获取所有除coordinates外的Blank + Closed的方块，获取Blank块组
              * 若Mine块组大小小于Blank组，则将每个Mine块与随机一个Blank块交换 */
             var coords = coordinates.ToArray();
-            var mineCoords = coords.Where(c => GameBlocks[c].Type == GameBlockType.Mine).ToArray();
+            var mineCoords = coords.Where(c => gameBlocks[c].Type == GameBlockType.Mine).ToArray();
             if (!mineCoords.Any())
             {
                 return 0;
             }
 
-            var blankCoords = GameBlocks
+            var blankCoords = gameBlocks
                 .GetCoordinates()
-                .Where(c => GameBlocks[c].Type == GameBlockType.Blank && GameBlocks[c].State == GameBlockState.Closed)
+                .Where(c => gameBlocks[c].Type == GameBlockType.Blank && gameBlocks[c].State == GameBlockState.Closed)
                 .Except(coords)
                 .ToList();
 
@@ -106,7 +106,7 @@ namespace HM.MiniGames.Minesweeper
                 {
                     var rndBlankCoord = blankCoords[RandomGenerator.Range(0, blankCoords.Count)];
                     blankCoords.Remove(rndBlankCoord);
-                    SwapBlockType(GameBlocks[mineCoords[i]], GameBlocks[rndBlankCoord]);
+                    SwapBlockType(gameBlocks[mineCoords[i]], gameBlocks[rndBlankCoord]);
                 }
                 return mineCoords.Length;
             }
@@ -119,66 +119,53 @@ namespace HM.MiniGames.Minesweeper
         /// <summary>
         /// 获取指定坐标附近的有效坐标
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public Coordinate[] GetNearybyCoordinates(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
+        public Coordinate[] GetNearybyCoordinates(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
             return NearbyDelta
                 .Select(c => coordinate + c)
-                .Where(c => IsValidCoordinate(GameBlocks, c))
+                .Where(gameBlocks.IsValidCoordinate)
                 .ToArray();
-        }
-        /// <summary>
-        /// 检查某一坐标是否有效
-        /// </summary>
-        /// <param name="GameBlocks"></param>
-        /// <param name="coordinate"></param>
-        /// <returns></returns>
-        public bool IsValidCoordinate(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
-        {
-            return coordinate.X >= 0
-                && coordinate.X < GameBlocks.Width
-                && coordinate.Y >= 0
-                && coordinate.Y < GameBlocks.Height;
         }
         /// <summary>
         /// 更新布局中各个GameBlock的MineCout信息
         /// </summary>
-        /// <param name="GameBlocks"></param>
-        public void UpdateMineCountInfo(Grid<IGameBlock> GameBlocks)
+        /// <param name="gameBlocks"></param>
+        public void UpdateMineCountInfo(Grid<IGameBlock> gameBlocks)
         {
-            foreach (var coord in GameBlocks.GetCoordinates())
+            foreach (var coord in gameBlocks.GetCoordinates())
             {
-                GameBlocks[coord].NearbyMineCount =
-                    GetNearybyCoordinates(GameBlocks, coord)
-                    .Where(c => GameBlocks[c].Type == GameBlockType.Mine)
+                gameBlocks[coord].NearbyMineCount =
+                    GetNearybyCoordinates(gameBlocks, coord)
+                    .Where(c => gameBlocks[c].Type == GameBlockType.Mine)
                     .Count();
             }
         }
         /// <summary>
         /// 检查游戏是否完成（即所有的Blank块都处于Open状态）
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <returns></returns>
-        public bool CheckIfGameCompleted(Grid<IGameBlock> GameBlocks)
+        public bool CheckIfGameCompleted(Grid<IGameBlock> gameBlocks)
         {
-            return !GameBlocks.Any(b => b.Type == GameBlockType.Blank
+            return !gameBlocks.Any(b => b.Type == GameBlockType.Blank
                                      && b.State != GameBlockState.Open);
         }
         /// <summary>
         /// 打开坐标指定方块
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public bool Open(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
+        public bool Open(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
-            if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
+            if (!gameBlocks.IsValidCoordinate(coordinate)) return false;
 
-            if (GameBlocks[coordinate].State == GameBlockState.Closed)
+            if (gameBlocks[coordinate].State == GameBlockState.Closed)
             {
-                GameBlocks[coordinate].State = GameBlockState.Open;
+                gameBlocks[coordinate].State = GameBlockState.Open;
                 return true;
             }
             else
@@ -189,26 +176,26 @@ namespace HM.MiniGames.Minesweeper
         /// <summary>
         /// 获取快开下将会被打开的方块的坐标
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public Coordinate[] GetQuickOpenCoordinates(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
+        public Coordinate[] GetQuickOpenCoordinates(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
-            bool[,] openMap = new bool[GameBlocks.Width, GameBlocks.Height];
-            return GetQuickOpenCoordinatesCore(GameBlocks, coordinate, openMap);
+            bool[,] openMap = new bool[gameBlocks.Width, gameBlocks.Height];
+            return GetQuickOpenCoordinatesCore(gameBlocks, coordinate, openMap);
         }
         /// <summary>
         /// 获取保护打开模式下会受到影响的方块的坐标（自身坐标+周围八个坐标，即保证其必定是空区）
         /// </summary>
-        /// <param name="GameBlock"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public Coordinate[] GetGuardOpenCoordinates(Grid<IGameBlock> GameBlock, Coordinate coordinate)
+        public Coordinate[] GetGuardOpenCoordinates(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
             var guaredCoords =
-                GetNearybyCoordinates(GameBlock, coordinate)
+                GetNearybyCoordinates(gameBlocks, coordinate)
                 .Append(coordinate)
-                .Where(c => IsValidCoordinate(GameBlock, c))
+                .Where(gameBlocks.IsValidCoordinate)
                 .ToArray();
 
             return guaredCoords;
@@ -216,16 +203,16 @@ namespace HM.MiniGames.Minesweeper
         /// <summary>
         /// 为指定坐标的方块标旗
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public bool Flag(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
+        public bool Flag(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
-            if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
+            if (!gameBlocks.IsValidCoordinate(coordinate)) return false;
 
-            if (GameBlocks[coordinate].State == GameBlockState.Closed)
+            if (gameBlocks[coordinate].State == GameBlockState.Closed)
             {
-                GameBlocks[coordinate].State = GameBlockState.Flagged;
+                gameBlocks[coordinate].State = GameBlockState.Flagged;
                 return true;
             }
             else
@@ -236,16 +223,16 @@ namespace HM.MiniGames.Minesweeper
         /// <summary>
         /// 取消对指定坐标方块的标旗
         /// </summary>
-        /// <param name="GameBlocks"></param>
+        /// <param name="gameBlocks"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public bool Unflag(Grid<IGameBlock> GameBlocks, Coordinate coordinate)
+        public bool Unflag(Grid<IGameBlock> gameBlocks, Coordinate coordinate)
         {
-            if (!IsValidCoordinate(GameBlocks, coordinate)) return false;
+            if (!gameBlocks.IsValidCoordinate(coordinate)) return false;
 
-            if (GameBlocks[coordinate].State == GameBlockState.Flagged)
+            if (gameBlocks[coordinate].State == GameBlockState.Flagged)
             {
-                GameBlocks[coordinate].State = GameBlockState.Closed;
+                gameBlocks[coordinate].State = GameBlockState.Closed;
                 return true;
             }
             else
@@ -262,7 +249,7 @@ namespace HM.MiniGames.Minesweeper
 
         private Coordinate[] GetQuickOpenCoordinatesCore(Grid<IGameBlock> gameBlocks, Coordinate coordinate, bool[,] openMap)
         {
-            if (!IsValidCoordinate(gameBlocks, coordinate)) return Array.Empty<Coordinate>();
+            if (!gameBlocks.IsValidCoordinate(coordinate)) return Array.Empty<Coordinate>();
             if (openMap[coordinate.X, coordinate.Y]) return Array.Empty<Coordinate>();
 
             /*  获取目标坐标周围至多八个坐标，统计这些坐标中标记了Flag的方块数，并记录处于Closed状态的方块

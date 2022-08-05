@@ -38,12 +38,12 @@ namespace HM.MiniGames.LinkGame
 
             return result;
         }
-        public bool TryConnect(Grid<IGameBlock> gameTokens, Coordinate start, Coordinate target, out Coordinate[] nodes)
+        public bool TryConnect(Grid<IGameBlock> gameBlocks, Coordinate start, Coordinate target, out Coordinate[] nodes)
         {
-            var layoutMap = Grid<bool>.Create(gameTokens.Width, gameTokens.Height);
-            foreach (var coord in gameTokens.GetCoordinates())
+            var layoutMap = Grid<bool>.Create(gameBlocks.Width, gameBlocks.Height);
+            foreach (var coord in gameBlocks.GetCoordinates())
             {
-                layoutMap[coord] = gameTokens[coord].State switch
+                layoutMap[coord] = gameBlocks[coord].State switch
                 {
                     GamkeBlockState.Idle => false,
                     GamkeBlockState.None => true,
@@ -53,13 +53,13 @@ namespace HM.MiniGames.LinkGame
             }
             return TryConnectCore(layoutMap, start, target, out nodes);
         }
-        public bool TryMatch(Grid<IGameBlock> gameTokens, Coordinate start, Coordinate target)
+        public bool TryMatch(Grid<IGameBlock> gameBlocks, Coordinate start, Coordinate target)
         {
-            return TryMatchCore(gameTokens, start, target);
+            return TryMatchCore(gameBlocks, start, target);
         }
-        public bool IsGameCompleted(Grid<IGameBlock> gameTokens)
+        public bool IsGameCompleted(Grid<IGameBlock> gameBlocks)
         {
-            foreach (var token in gameTokens)
+            foreach (var token in gameBlocks)
             {
                 if (token.State == GamkeBlockState.Idle)
                 {

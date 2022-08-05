@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿#nullable enable
+using System.Text;
 using System;
 using System.Linq;
 
@@ -6,6 +7,13 @@ namespace HM.MiniGames
 {
     internal static class GridExtension
     {
+        internal static bool IsValidCoordinate<T>(this Grid<T> grid, Coordinate coordinate)
+        {
+            return coordinate.X >= 0
+                && coordinate.X < grid.Width
+                && coordinate.Y >= 0
+                && coordinate.Y < grid.Height;
+        }
         internal static T[] ToArray<T>(this Grid<T> grid)
         {
             var result = new T[grid.Width * grid.Height];
