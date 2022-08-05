@@ -7,6 +7,39 @@ using System.Threading.Tasks;
 
 namespace UnityEngine
 {
+    public class Object
+    {
+        public static T Instantiate<T>(T source)
+        {
+            throw new InvalidOperationException();
+        }
+        public static void Destroy(Object obj)
+        {
+            throw new InvalidOperationException();
+        }
+    }
+    public class GameObject : Object
+    {
+        public Transform transform;
+        public GameObject gameObject;
+
+        public void SetActive(bool active)
+        {
+            throw new InvalidOperationException();
+        }
+    }
+    public class Component : Object
+    {
+        public Transform transform;
+        public GameObject gameObject;
+    }
+    public class Transform
+    {
+        public void SetParent(Transform parent)
+        {
+            throw new InvalidOperationException();
+        }
+    }
     public class Time
     {
         public static float deltaTime = -1;
