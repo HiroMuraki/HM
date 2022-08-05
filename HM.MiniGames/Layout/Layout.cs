@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Layout
 {
     public sealed class Layout<T>
         : IEquatable<Layout<T>>, IEnumerable<T>, IEnumerable, IFormattable

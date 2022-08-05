@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Layout
 {
     internal static class LayoutHelper
     {
