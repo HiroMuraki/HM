@@ -112,10 +112,15 @@ namespace HM.UnityEngine
         /// 从对象池获取对象，若对象池为空则Instantiate一个Prefab
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T FetchOrInstantiate()
         {
             if (!TryFetch(out var result))
             {
+                if (Prefab is null)
+                {
+                    throw new ArgumentNullException(nameof(Prefab));
+                }
                 result = Object.Instantiate(Prefab);
             }
             return result!;
