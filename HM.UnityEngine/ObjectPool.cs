@@ -88,7 +88,7 @@ namespace HM.UnityEngine
             else
             {
                 result = null;
-                return true;
+                return false;
             }
         }
         /// <summary>
