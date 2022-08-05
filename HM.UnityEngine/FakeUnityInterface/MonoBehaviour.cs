@@ -27,6 +27,10 @@ namespace UnityEngine
         {
             throw new InvalidOperationException();
         }
+        public T[] GetComponents<T>()
+        {
+            throw new InvalidOperationException();
+        }
     }
     public class Component : Object
     {

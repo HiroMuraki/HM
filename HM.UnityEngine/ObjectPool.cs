@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace HM.UnityEngine
 {
-    public class ObjectPool<T> where T : Component
+    public class ObjectPool
     {
         /// <summary>
         /// 对象池的容量上限，若Capacity的大小小于Count，则会销毁多出的部分
@@ -37,7 +37,7 @@ namespace HM.UnityEngine
         /// <summary>
         /// 对象池生成对象时使用的预制体
         /// </summary>
-        public T? Prefab { get; set; }
+        public GameObject? Prefab { get; set; }
         /// <summary>
         /// 集合生成对象的父节点
         /// </summary>
@@ -57,7 +57,7 @@ namespace HM.UnityEngine
                 }
                 var obj = Object.Instantiate(Prefab);
                 obj.transform.SetParent(ObjectsHandler);
-                obj.gameObject.SetActive(false);
+                obj.SetActive(false);
                 _pooledObjects.Enqueue(obj);
             }
         }
@@ -66,9 +66,9 @@ namespace HM.UnityEngine
         /// </summary>
         public void ClearPool()
         {
-            while (_pooledObjects.TryDequeue(out var obj))
+            while (_pooledObjects.TryDequeue(out var gameObject))
             {
-                Object.Destroy(obj);
+                Object.Destroy(gameObject);
             }
         }
         /// <summary>
@@ -76,10 +76,8 @@ namespace HM.UnityEngine
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool TryFetch(out T? result)
+        public bool TryFetch(out GameObject? result)
         {
-            /* 若实例队列不为空，则出列一个实例并将其启用
-             *（若T实现了IPooledObject接口，则先调用其WhenFetch方法）*/
             if (_pooledObjects.TryDequeue(out var fetched))
             {
                 result = FetchHelper(fetched);
@@ -96,16 +94,14 @@ namespace HM.UnityEngine
         /// </summary>
         /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool TryReturn(T gameObject)
+        public bool TryReturn(GameObject gameObject)
         {
-            /* 将目标实例禁用后，并将其父节点设为ObjectsHandler，再入列到实例队列中
-             * （若T实现了IPooledObject接口，则先调用其WhenReturn方法）
-             * 若队列大小已经达到容量上限，视为归还失败 */
             if (_pooledObjects.Count >= Capacity)
             {
                 return false;
             }
             ReturnHelper(gameObject);
+            _pooledObjects.Enqueue(gameObject);
             return true;
         }
         /// <summary>
@@ -113,7 +109,7 @@ namespace HM.UnityEngine
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public T FetchOrInstantiate()
+        public GameObject FetchOrInstantiate()
         {
             if (!TryFetch(out var result))
             {
@@ -129,34 +125,35 @@ namespace HM.UnityEngine
         /// 将归还至对象池，若对象池已满则将其销毁
         /// </summary>
         /// <param name="gameObject"></param>
-        public void ReturnOrDestroy(T gameObject)
+        public void ReturnOrDestroy(GameObject gameObject)
         {
             if (!TryReturn(gameObject))
             {
-                Object.Destroy(gameObject.gameObject);
+                Object.Destroy(gameObject);
             }
         }
 
         private int _capacity;
-        private readonly Queue<T> _pooledObjects = new();
-        private T ReturnHelper(T gameObject)
+        private readonly Queue<GameObject> _pooledObjects = new();
+        private GameObject ReturnHelper(GameObject gameObject)
         {
-            if (gameObject is IPooledObject pooledObject)
+            /* 调用其所有实现IPooledObject接口的Component的WhenFetch方法，然后将其禁用 */
+            foreach (var pooledObject in gameObject.GetComponents<IPooledObject>())
             {
                 pooledObject.WhenReturn();
             }
-            gameObject.gameObject.SetActive(false);
+            gameObject.SetActive(false);
             gameObject.transform.SetParent(ObjectsHandler);
-            _pooledObjects.Enqueue(gameObject);
             return gameObject;
         }
-        private T FetchHelper(T gameObject)
+        private GameObject FetchHelper(GameObject gameObject)
         {
-            if (gameObject is IPooledObject pooledObject)
+            /* 调用其所有实现IPooledObject接口的Component的WhenFetch方法，然后将其启用 */
+            foreach (var pooledObject in gameObject.GetComponents<IPooledObject>())
             {
                 pooledObject.WhenFetch();
             }
-            gameObject.gameObject.SetActive(true);
+            gameObject.SetActive(true);
             return gameObject;
         }
     }
