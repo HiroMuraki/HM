@@ -52,6 +52,7 @@ namespace HM.MiniGames
         }
         public int Height => _origin2DArray.GetLength(0);
         public int Width => _origin2DArray.GetLength(1);
+        public int Count => Width * Height;
         #endregion
 
         #region Methods
@@ -97,6 +98,20 @@ namespace HM.MiniGames
             {
                 yield return this[item.X, item.Y];
             }
+        }
+        /// <summary>
+        /// 检测指定坐标是否合法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        public bool IsValidCoordinate(Coordinate coordinate)
+        {
+            return coordinate.X >= 0
+                && coordinate.X < Width
+                && coordinate.Y >= 0
+                && coordinate.Y < Height;
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
