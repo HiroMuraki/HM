@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System;
 
 namespace HM.MiniGames
 {

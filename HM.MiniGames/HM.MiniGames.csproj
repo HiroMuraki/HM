@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <!--<ImplicitUsings>enable</ImplicitUsings> Unity不支持该特性--> 
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

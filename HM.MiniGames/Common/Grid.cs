@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -69,31 +71,6 @@ namespace HM.MiniGames
         {
             _locked = false;
             return this;
-        }
-        /// <summary>
-        /// 查找网格中符合条件的元素的坐标
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public Coordinate[] FindCoordinates(Predicate<T> predicate)
-        {
-            var result = new List<Coordinate>();
-            foreach (var coordiante in GetCoordinates())
-            {
-                result.Add(coordiante);
-            }
-            return result.ToArray();
-        }
-        /// <summary>
-        /// 查找网格中符合条件的元素的坐标
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public bool TryFindCoordinates(Predicate<T> predicate, out Coordinate[] result)
-        {
-            result = FindCoordinates(predicate);
-            return result.Length != 0;
         }
         /// <summary>
         /// 获取网格的坐标（从左到右，从下到上）

@@ -1,4 +1,6 @@
 ﻿using HM.MiniGames;
+using System;
+using System.Linq;
 
 namespace HM.MiniGames.LinkGame
 {
