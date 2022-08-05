@@ -206,10 +206,6 @@ namespace HM.MiniGames
             return new Grid<T>(width, height);
         }
 
-        internal T[,] GetOrigin2DArray()
-        {
-            return _origin2DArray;
-        }
         private Grid(int width, int height)
         {
             _origin2DArray = new T[height, width];

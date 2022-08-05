@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.LinkGame
 {
-    public enum TokenStatus
+    public enum GamkeBlockState
     {
         None,
         Selected,

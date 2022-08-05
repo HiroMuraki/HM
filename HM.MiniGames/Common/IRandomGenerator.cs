@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿namespace HM.MiniGames
 {
     public interface IRandomGenerator
     {

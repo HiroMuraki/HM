@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.Layout
+﻿namespace HM.MiniGames
 {
     [Flags]
     public enum Directions

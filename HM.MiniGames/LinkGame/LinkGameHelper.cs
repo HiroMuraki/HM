@@ -1,43 +1,65 @@
-﻿using HM.MiniGames.Layout;
+﻿using HM.MiniGames;
 
 namespace HM.MiniGames.LinkGame
 {
     public class LinkGameHelper
     {
-        public Layout<IToken> Layout { get; }
+        public IGameBlockGenerator TokenGenerator { get; }
+        public IRandomGenerator RandomGenerator { get; }
 
-        public bool TryConnect(Coordinate start, Coordinate target, out Coordinate[] nodes)
+        public Grid<IGameBlock> Create(int width, int height, int[] contentIDs)
         {
-            var nodeLayout = Grid<NodeType>.Create(Layout.RowSize, Layout.ColumnSize);
-            foreach (var coord in Layout.Coordinates)
+            int totalTokens = width * height;
+            if (totalTokens % 2 != 0)
             {
-                nodeLayout[coord] = Layout[coord].Status switch
+                throw new ArgumentException($"Invalid layout size({width} x {height})");
+            }
+
+            var emptyMark = contentIDs.Min() - 1;
+            var contentIDLayout = Grid<int>.Create(width, height);
+            GridExtension.Fill(contentIDLayout, emptyMark);
+            while (contentIDLayout.Any(c => c == emptyMark))
+            {
+                int contentID = contentIDs[RandomGenerator.Range(0, contentIDs.Length)];
+                var fixedCoords = contentIDLayout.FindCoordinates(c => c != emptyMark);
+                GridExtension.RandomFill(contentIDLayout, contentID, 2, fixedCoords);
+            }
+
+            var result = Grid<IGameBlock>.Create(width, height);
+            foreach (var coord in result.GetCoordinates())
+            {
+                result[coord] = TokenGenerator.GetGameToken();
+                result[coord].State = GamkeBlockState.Idle;
+                result[coord].Coordinate = coord;
+                result[coord].ContentID = contentIDLayout[coord];
+            }
+
+            return result;
+        }
+        public bool TryConnect(Grid<IGameBlock> gameTokens, Coordinate start, Coordinate target, out Coordinate[] nodes)
+        {
+            var layoutMap = Grid<bool>.Create(gameTokens.Width, gameTokens.Height);
+            foreach (var coord in gameTokens.GetCoordinates())
+            {
+                layoutMap[coord] = gameTokens[coord].State switch
                 {
-                    TokenStatus.Idle => NodeType.Block,
-                    TokenStatus.None => NodeType.Road,
-                    TokenStatus.Matched => NodeType.Road,
-                    _ => NodeType.Road
+                    GamkeBlockState.Idle => false,
+                    GamkeBlockState.None => true,
+                    GamkeBlockState.Matched => true,
+                    _ => false
                 };
             }
-
-            return TryConnectCore(nodeLayout, start, target, out nodes);
+            return TryConnectCore(layoutMap, start, target, out nodes);
         }
-        public bool TryMatch(Coordinate start, Coordinate target)
+        public bool TryMatch(Grid<IGameBlock> gameTokens, Coordinate start, Coordinate target)
         {
-            return TryMatchCore(start, target);
+            return TryMatchCore(gameTokens, start, target);
         }
-        public void CheckCoordinate(Coordinate coord)
+        public bool IsGameCompleted(Grid<IGameBlock> gameTokens)
         {
-            if (!Layout.IsValidCoordinate(coord))
+            foreach (var token in gameTokens)
             {
-                throw new CoordinateOutOfRangeException(coord);
-            }
-        }
-        public bool IsGameCompleted()
-        {
-            foreach (var token in Layout)
-            {
-                if (token.Status == TokenStatus.Idle)
+                if (token.State == GamkeBlockState.Idle)
                 {
                     return false;
                 }
@@ -45,26 +67,14 @@ namespace HM.MiniGames.LinkGame
             return true;
         }
 
-        public LinkGameHelper(Layout<IToken> layout)
+        public LinkGameHelper(IRandomGenerator randomGenerator, IGameBlockGenerator tokenGenerator)
         {
-            _cachedCoords = layout.Coordinates.ToArray();
-            Layout = layout;
+            TokenGenerator = tokenGenerator;
+            RandomGenerator = randomGenerator;
         }
-        public LinkGameHelper(Grid<IToken> layout)
-        {
-            _cachedCoords = layout.GetCoordinates().ToArray();
-            Layout = Layout<IToken>.Create(layout.Height, layout.Width);
-            foreach (var coord in _cachedCoords)
-            {
-                Layout[coord] = layout[coord];
-            }
-        }
-        private readonly Coordinate[] _cachedCoords;
-        private bool TryConnectCore(Grid<NodeType> layout, Coordinate start, Coordinate target, out Coordinate[] nodes)
-        {
-            CheckCoordinate(start);
-            CheckCoordinate(target);
 
+        private static bool TryConnectCore(Grid<bool> accessableMap, Coordinate start, Coordinate target, out Coordinate[] nodes)
+        {
             // 无转向连通检查
             if (TryZeroTurningLink(start, target, out nodes))
             {
@@ -103,7 +113,7 @@ namespace HM.MiniGames.LinkGame
                     var testCoord = start.Up;
                     while (testCoord.Y < target.Y)
                     {
-                        if (layout[testCoord] != NodeType.Road)
+                        if (!accessableMap[testCoord])
                         {
                             return false;
                         }
@@ -115,7 +125,7 @@ namespace HM.MiniGames.LinkGame
                     var testCoord = start.Down;
                     while (testCoord.Y > target.Y)
                     {
-                        if (layout[testCoord] != NodeType.Road)
+                        if (!accessableMap[testCoord])
                         {
                             return false;
                         }
@@ -141,7 +151,7 @@ namespace HM.MiniGames.LinkGame
                     var testCoord = start.Right;
                     while (testCoord.X < target.X)
                     {
-                        if (layout[testCoord] != NodeType.Road)
+                        if (!accessableMap[testCoord])
                         {
                             return false;
                         }
@@ -153,7 +163,7 @@ namespace HM.MiniGames.LinkGame
                     var testCoord = start.Left;
                     while (testCoord.X > target.X)
                     {
-                        if (layout[testCoord] != NodeType.Road)
+                        if (!accessableMap[testCoord])
                         {
                             return false;
                         }
@@ -184,12 +194,12 @@ namespace HM.MiniGames.LinkGame
                 // 第二交点：横轴坐标为目标点横轴坐标，纵轴坐标为起点点纵轴坐标
                 var cross2 = new Coordinate(target.X, start.Y);
                 // 测试第一交点连通性：检查起点与交点的纵向连通性+交点与目标点的横向连通性
-                if (layout[cross1] == NodeType.Road && IsVLinked(start, cross1) && IsHLinked(cross1, target))
+                if (accessableMap[cross1] && IsVLinked(start, cross1) && IsHLinked(cross1, target))
                 {
                     nodes = new Coordinate[] { start, cross1, target };
                 }
                 // 测试第二交点连通性：检查起点与交点的横向连通性+交点与目标点的纵向连通性
-                else if (layout[cross2] == NodeType.Road && IsHLinked(start, cross2) && IsVLinked(cross2, target))
+                else if (accessableMap[cross2] && IsHLinked(start, cross2) && IsVLinked(cross2, target))
                 {
                     nodes = new Coordinate[] { start, cross2, target };
                 }
@@ -205,9 +215,9 @@ namespace HM.MiniGames.LinkGame
             {
                 float minDist = -1;
                 nodes = Array.Empty<Coordinate>();
-                foreach (var coord in _cachedCoords)
+                foreach (var coord in accessableMap.GetCoordinates())
                 {
-                    if (layout[coord] != NodeType.Road)
+                    if (!accessableMap[coord])
                     {
                         continue;
                     }
@@ -231,11 +241,9 @@ namespace HM.MiniGames.LinkGame
                 return nodes.Length != 0;
             }
         }
-        private bool TryMatchCore(Coordinate start, Coordinate target)
+        private static bool TryMatchCore(Grid<IGameBlock> grid, Coordinate start, Coordinate target)
         {
-            CheckCoordinate(start);
-            CheckCoordinate(target);
-            return Layout[start].ContentID == Layout[target].ContentID;
+            return grid[start].ContentID == grid[target].ContentID;
         }
     }
 }

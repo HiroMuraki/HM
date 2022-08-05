@@ -1,9 +1,9 @@
 ﻿namespace HM.MiniGames.LinkGame
 {
-    public interface IToken
+    public interface IGameBlock
     {
         int ContentID { get; set; }
-        TokenStatus Status { get; set; }
+        GamkeBlockState State { get; set; }
         Coordinate Coordinate { get; set; }
     }
 }
