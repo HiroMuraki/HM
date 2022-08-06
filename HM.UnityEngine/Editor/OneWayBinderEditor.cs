@@ -4,11 +4,11 @@ using UnityEngine;
 using System;
 using System.Reflection;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Editor
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OneWayBinder), true)]
-    public class OneWayBinderEditor : Editor
+    public class OneWayBinderEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
