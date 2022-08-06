@@ -23,5 +23,13 @@ namespace UnityEngine
         {
             throw new InvalidOperationException();
         }
+        public static Vector2 operator *(Vector2 left, float value)
+        {
+            throw new InvalidOperationException();
+        }
+        public static Vector2 operator *(float a, Vector2 b)
+        {
+            throw new InvalidOperationException();
+        }
     }
 }
