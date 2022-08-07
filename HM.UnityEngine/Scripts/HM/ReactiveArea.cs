@@ -7,8 +7,8 @@ namespace HM.UnityEngine
     {
         public Margin Margin { get; set; }
         public int PixelsPerUnit { get; set; } = 100;
-        public float ScreenWidthInUnit => (float)Screen.width / PixelsPerUnit;
-        public float ScreenHeightInUnit => (float)Screen.height / PixelsPerUnit;
+        public float ScreenWidthInUnit => (float)Screen.currentResolution.width / PixelsPerUnit; // (float)Screen.width / PixelsPerUnit;
+        public float ScreenHeightInUnit => (float)Screen.currentResolution.height / PixelsPerUnit;// (float)Screen.height / PixelsPerUnit;
         public float Width => ScreenWidthInUnit - (Margin.Left + Margin.Right);
         public float Height => ScreenHeightInUnit - (Margin.Top + Margin.Bottom);
         public Vector2 Center => new Vector2(Margin.Left - Margin.Right, Margin.Bottom - Margin.Top) / 2;
