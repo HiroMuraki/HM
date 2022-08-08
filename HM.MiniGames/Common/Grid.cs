@@ -31,10 +31,6 @@ namespace HM.MiniGames
             }
             set
             {
-                if (_locked)
-                {
-                    throw new InvalidOperationException("Unable to modify locked grid");
-                }
                 CheckCoordinate(x, y);
                 _items[y * Width + x] = value;
             }
@@ -56,24 +52,6 @@ namespace HM.MiniGames
         #endregion
 
         #region Methods
-        /// <summary>
-        /// 锁定网格，状态变为只读
-        /// </summary>
-        /// <returns></returns>
-        public Grid<T> Lock()
-        {
-            _locked = true;
-            return this;
-        }
-        /// <summary>
-        /// 解除对网格的锁定，取消只读状态
-        /// </summary>
-        /// <returns></returns>
-        public Grid<T> Unlock()
-        {
-            _locked = false;
-            return this;
-        }
         /// <summary>
         /// 获取网格的坐标（从左到右，从下到上）
         /// </summary>
@@ -99,6 +77,10 @@ namespace HM.MiniGames
                 yield return this[item.X, item.Y];
             }
         }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
         /// <summary>
         /// 检测指定坐标是否合法
         /// </summary>
@@ -123,10 +105,6 @@ namespace HM.MiniGames
                 && x < Width
                 && y >= 0
                 && y < Height;
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
@@ -216,7 +194,6 @@ namespace HM.MiniGames
             _height = height;
             _items = new T[_width * _height];
         }
-        private bool _locked;
         private readonly T[] _items;
         private readonly int _width;
         private readonly int _height;

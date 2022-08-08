@@ -1,11 +1,11 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public interface IGameBlockGenerator
+    public interface ICellGenerator
     {
         /// <summary>
         /// 生成一个GameBlock
         /// </summary>
         /// <returns></returns>
-        IGameBlock GetGameBlock();
+        ICell GetCell();
     }
 }

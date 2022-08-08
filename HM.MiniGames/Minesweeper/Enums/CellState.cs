@@ -1,10 +1,12 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public enum GameBlockState
+    public enum CellState
     {
         Undefined,
+        Proclaimed,
+        Held,
         Open,
         Closed,
-        Flagged
+        Flagged,
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public enum GameBlockType
+    public enum CellType
     {
         Undefined,
         Blank,
