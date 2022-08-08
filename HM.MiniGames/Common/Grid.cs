@@ -27,7 +27,7 @@ namespace HM.MiniGames
             get
             {
                 CheckCoordinate(x, y);
-                return _origin2DArray[y, x];
+                return _items[y * Width + x];
             }
             set
             {
@@ -36,7 +36,7 @@ namespace HM.MiniGames
                     throw new InvalidOperationException("Unable to modify locked grid");
                 }
                 CheckCoordinate(x, y);
-                _origin2DArray[y, x] = value;
+                _items[y * Width + x] = value;
             }
         }
         public T this[Coordinate coord]
@@ -50,9 +50,9 @@ namespace HM.MiniGames
                 this[coord.X, coord.Y] = value;
             }
         }
-        public int Height => _origin2DArray.GetLength(0);
-        public int Width => _origin2DArray.GetLength(1);
-        public int Count => Width * Height;
+        public int Width => _width;
+        public int Height => _height;
+        public int Count => _width * _height;
         #endregion
 
         #region Methods
@@ -108,10 +108,21 @@ namespace HM.MiniGames
         /// <returns></returns>
         public bool IsValidCoordinate(Coordinate coordinate)
         {
-            return coordinate.X >= 0
-                && coordinate.X < Width
-                && coordinate.Y >= 0
-                && coordinate.Y < Height;
+            return IsValidCoordinate(coordinate.X, coordinate.Y);
+        }
+        /// <summary>
+        /// 检测指定坐标是否合法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        public bool IsValidCoordinate(int x, int y)
+        {
+            return x >= 0
+                && x < Width
+                && y >= 0
+                && y < Height;
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -120,7 +131,7 @@ namespace HM.MiniGames
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
             var sb = new StringBuilder();
-            for (int y = 0; y < Height; y++)
+            for (int y = Height - 1; y >= 0; y--)
             {
                 for (int x = 0; x < Width; x++)
                 {
@@ -137,7 +148,7 @@ namespace HM.MiniGames
                         sb.Append(' ');
                     }
                 }
-                if (y != Height - 1)
+                if (y != 0)
                 {
                     sb.AppendLine();
                 }
@@ -174,8 +185,8 @@ namespace HM.MiniGames
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    T a = _origin2DArray[y, x];
-                    T b = other._origin2DArray[y, x];
+                    T a = this[x, y];
+                    T b = other[x, y];
                     if (a is IEquatable<T> equatableA && !equatableA.Equals(b))
                     {
                         return false;
@@ -184,7 +195,7 @@ namespace HM.MiniGames
                     {
                         return false;
                     }
-                    else if (Equals(_origin2DArray[y, x], other._origin2DArray[x, y]))
+                    else if (!Equals(a, b))
                     {
                         return false;
                     }
@@ -201,10 +212,14 @@ namespace HM.MiniGames
 
         private Grid(int width, int height)
         {
-            _origin2DArray = new T[height, width];
+            _width = width;
+            _height = height;
+            _items = new T[_width * _height];
         }
         private bool _locked;
-        private readonly T[,] _origin2DArray;
+        private readonly T[] _items;
+        private readonly int _width;
+        private readonly int _height;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CheckCoordinate(int x, int y)
         {
