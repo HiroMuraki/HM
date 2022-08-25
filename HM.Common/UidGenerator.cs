@@ -3,16 +3,21 @@ using System.Runtime.CompilerServices;
 
 namespace HM.Common
 {
-    public sealed class UidGenerator
+    public enum ThreadSafeMode
+    {
+        NoThreadSafe,
+        EnsureThreadSafe
+    }
+    public sealed class UidGenerator : IUidGenerator
     {
         public static UidGenerator Default { get; } = new();
 
         public UInt64 NextIndex => _nextIndex;
-        public bool ThreadSafe => _threadSafe;
+        public ThreadSafeMode ThreadSafeMode => _threadSafeMode;
 
         public void Forward(UInt64 step)
         {
-            if (_threadSafe)
+            if (_threadSafeMode == ThreadSafeMode.EnsureThreadSafe)
             {
                 lock (_locker)
                 {
@@ -26,7 +31,7 @@ namespace HM.Common
         }
         public void Fallback(UInt64 step)
         {
-            if (_threadSafe)
+            if (_threadSafeMode == ThreadSafeMode.EnsureThreadSafe)
             {
                 lock (_locker)
                 {
@@ -40,7 +45,7 @@ namespace HM.Common
         }
         public Uid Next()
         {
-            if (_threadSafe)
+            if (_threadSafeMode == ThreadSafeMode.EnsureThreadSafe)
             {
                 lock (_locker)
                 {
@@ -57,17 +62,17 @@ namespace HM.Common
             }
         }
 
-        public UidGenerator() : this(0ul, false) { }
-        public UidGenerator(UInt64 startIndex) : this(startIndex, false) { }
-        public UidGenerator(UInt64 startIndex, bool threadSafe)
+        public UidGenerator() : this(0ul, ThreadSafeMode.NoThreadSafe) { }
+        public UidGenerator(UInt64 startIndex) : this(startIndex, ThreadSafeMode.NoThreadSafe) { }
+        public UidGenerator(UInt64 startIndex, ThreadSafeMode threadSafeMode)
         {
             _startIndex = startIndex;
             _nextIndex = startIndex;
-            _threadSafe = threadSafe;
+            _threadSafeMode = threadSafeMode;
         }
 
         private UInt64 _nextIndex;
-        private readonly bool _threadSafe;
+        private readonly ThreadSafeMode _threadSafeMode;
         private readonly UInt64 _startIndex;
         private readonly object _locker = new();
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
