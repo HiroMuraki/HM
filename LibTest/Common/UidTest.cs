@@ -86,7 +86,7 @@ namespace LibTest.Common
         public void ConcurrentTest()
         {
             int cycles = 10_0000;
-            UidGenerator generator = new UidGenerator(0, true);
+            UidGenerator generator = new UidGenerator(0, ThreadSafeMode.EnsureThreadSafe);
             ConcurrentQueue<Uid> queue = new ConcurrentQueue<Uid>();
             Task[] tasks = new Task[cycles];
 
