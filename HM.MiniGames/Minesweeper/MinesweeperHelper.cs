@@ -144,7 +144,7 @@ namespace HM.MiniGames.Minesweeper
         /// </summary>
         /// <param name="gameCells"></param>
         /// <returns></returns>
-        public static GameResult CheckIfGameCompleted<TGameCell>(Grid<TGameCell> gameCells)
+        public static GameResult GetGameResult<TGameCell>(Grid<TGameCell> gameCells)
             where TGameCell : IGameCell
         {
             /* 若存在任何一个处于Open状态的Mine块，则返回Fail，
