@@ -1,15 +1,15 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public interface ICell
+    public interface IGameCell
     {
         /// <summary>
         /// 游戏方块类型
         /// </summary>
-        CellType Type { get; set; }
+        GameCellType Type { get; set; }
         /// <summary>
         /// 游戏方块状态
         /// </summary>
-        CellState State { get; set; }
+        GameCellState State { get; set; }
         /// <summary>
         /// 指示附近的雷数
         /// </summary>
