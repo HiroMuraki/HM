@@ -54,7 +54,8 @@ namespace HM.MiniGames.Minesweeper
         /// 打乱Blank/Mine块的布局
         /// </summary>
         /// <param name="gameCells"></param>
-        public static void Shuffle(Grid<IGameCell> gameCells, IRandomGenerator randomGenerator)
+        public static void Shuffle<TGameCell>(Grid<TGameCell> gameCells, IRandomGenerator randomGenerator)
+            where TGameCell : IGameCell
         {
             int total = gameCells.Width * gameCells.Height;
             for (int y = 0; y < gameCells.Height; y++)
@@ -74,7 +75,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinates"></param>
         /// <returns>受影响的方块数，若为-1，则表示没有足够的Blank块用于替换Mine块</returns>
-        public static int SetSafeCoordinates(Grid<IGameCell> gameCells, IEnumerable<Coordinate> coordinates, IRandomGenerator randomGenerator)
+        public static int SetSafeCoordinates<TGameCell>(Grid<TGameCell> gameCells, IEnumerable<Coordinate> coordinates, IRandomGenerator randomGenerator)
+            where TGameCell : IGameCell
         {
             /* 获取所有目标坐标中的Mine块，获取Mine块组
              * 获取所有除coordinates外的Blank + Closed的方块，获取Blank块组
@@ -114,7 +116,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static Coordinate[] GetNearybyCoordinates(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static Coordinate[] GetNearybyCoordinates<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             return NearbyDelta
                 .Select(c => coordinate + c)
@@ -125,7 +128,8 @@ namespace HM.MiniGames.Minesweeper
         /// 更新布局中各个GameBlock的MineCout信息
         /// </summary>
         /// <param name="gameCells"></param>
-        public static void UpdateMineCountInfo(Grid<IGameCell> gameCells)
+        public static void UpdateMineCountInfo<TGameCell>(Grid<TGameCell> gameCells)
+            where TGameCell : IGameCell
         {
             foreach (var coord in gameCells.GetCoordinates())
             {
@@ -140,7 +144,8 @@ namespace HM.MiniGames.Minesweeper
         /// </summary>
         /// <param name="gameCells"></param>
         /// <returns></returns>
-        public static GameResult CheckIfGameCompleted(Grid<IGameCell> gameCells)
+        public static GameResult CheckIfGameCompleted<TGameCell>(Grid<TGameCell> gameCells)
+            where TGameCell : IGameCell
         {
             /* 若存在任何一个处于Open状态的Mine块，则返回Fail，
              * 若存在任何一个处于Closed状态的Blank块，则返回Unknow，
@@ -164,7 +169,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static GameCellOpenResult Open(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static GameCellOpenResult Open<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             if (!gameCells.IsValidCoordinate(coordinate))
             {
@@ -198,7 +204,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static Coordinate[] GetQuickOpenCoordinates(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static Coordinate[] GetQuickOpenCoordinates<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             bool[,] openMap = new bool[gameCells.Width, gameCells.Height];
             return GetQuickOpenCoordinatesCore(gameCells, coordinate, openMap);
@@ -209,7 +216,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static Coordinate[] GetGuardOpenCoordinates(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static Coordinate[] GetGuardOpenCoordinates<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             var guaredCoords =
                 GetNearybyCoordinates(gameCells, coordinate)
@@ -225,7 +233,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static bool Flag(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static bool Flag<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             if (!gameCells.IsValidCoordinate(coordinate)) return false;
 
@@ -245,7 +254,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static bool Unflag(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static bool Unflag<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             if (!gameCells.IsValidCoordinate(coordinate)) return false;
 
@@ -265,7 +275,8 @@ namespace HM.MiniGames.Minesweeper
         /// <param name="gameCells"></param>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static bool Proclaim(Grid<IGameCell> gameCells, Coordinate coordinate)
+        public static bool Proclaim<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate)
+            where TGameCell : IGameCell
         {
             if (!gameCells.IsValidCoordinate(coordinate)) return false;
 
@@ -273,7 +284,8 @@ namespace HM.MiniGames.Minesweeper
             return true;
         }
 
-        private static Coordinate[] GetQuickOpenCoordinatesCore(Grid<IGameCell> gameCells, Coordinate coordinate, bool[,] openMap)
+        private static Coordinate[] GetQuickOpenCoordinatesCore<TGameCell>(Grid<TGameCell> gameCells, Coordinate coordinate, bool[,] openMap)
+            where TGameCell : IGameCell
         {
             if (!gameCells.IsValidCoordinate(coordinate)) return Array.Empty<Coordinate>();
             if (openMap[coordinate.X, coordinate.Y]) return Array.Empty<Coordinate>();
@@ -321,7 +333,8 @@ namespace HM.MiniGames.Minesweeper
 
             return result.ToArray();
         }
-        private static void SwapBlockType(IGameCell a, IGameCell b)
+        private static void SwapBlockType<TGameCell>(TGameCell a, TGameCell b)
+            where TGameCell : IGameCell
         {
             (a.Type, b.Type) = (b.Type, a.Type);
         }
