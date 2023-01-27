@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public enum GameCellState
+    public enum CellState
     {
         /// <summary>
         /// 未定义

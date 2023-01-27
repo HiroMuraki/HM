@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public interface IGameSetting
+    public interface IGameSettings
     {
         /// <summary>
         /// 游戏宽度

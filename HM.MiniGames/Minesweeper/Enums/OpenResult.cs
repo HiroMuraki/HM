@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.Minesweeper
 {
-    public enum GameCellOpenResult
+    public enum OpenResult
     {
         /// <summary>
         /// 无效点击
