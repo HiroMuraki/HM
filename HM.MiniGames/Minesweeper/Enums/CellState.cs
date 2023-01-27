@@ -11,10 +11,6 @@
         /// </summary>
         Proclaimed,
         /// <summary>
-        /// 被按住
-        /// </summary>
-        Held,
-        /// <summary>
         /// 已打开
         /// </summary>
         Open,
