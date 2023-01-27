@@ -6,7 +6,7 @@ using HM.MiniGames.LinkGame;
 
 namespace HM.MiniGames.Minesweeper
 {
-    public static class MinesweeperHelper
+    public static class MinesweeperExtensions
     {
         /// <summary>
         /// 八个方向的偏移值
