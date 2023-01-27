@@ -4,7 +4,7 @@ namespace HM.MiniGames.LinkGame
 {
     public class GameManagerBase
     {
-        public void SelectToken(Grid<IGameBlock> gameTokens, Coordinate coord)
+        public void SelectToken(Grid<ICell> gameTokens, Coordinate coord)
         {
             return;
             //if (Grid[coord].Status == TokenStatus.Idle)

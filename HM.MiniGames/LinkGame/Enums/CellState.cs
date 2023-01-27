@@ -1,6 +1,6 @@
 ﻿namespace HM.MiniGames.LinkGame
 {
-    public enum GamkeBlockState
+    public enum CellState
     {
         None,
         Selected,

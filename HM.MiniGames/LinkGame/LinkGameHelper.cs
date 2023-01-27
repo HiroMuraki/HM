@@ -4,75 +4,73 @@ using System.Linq;
 
 namespace HM.MiniGames.LinkGame
 {
-    public class LinkGameHelper
+    public static class LinkGameHelper
     {
-        public IGameBlockGenerator TokenGenerator { get; }
-        public IRandomGenerator RandomGenerator { get; }
-
-        public Grid<IGameBlock> Create(int width, int height, int[] contentIDs)
+        public static Grid<TCell> Create<TCell>(
+            IGameSettings settings,
+            ICellGenerator<TCell> cellGenerator,
+            IRandomGenerator randomGenerator)
+            where TCell : ICell
         {
-            int totalTokens = width * height;
+            int totalTokens = settings.Width * settings.Height;
             if (totalTokens % 2 != 0)
             {
-                throw new ArgumentException($"Invalid layout size({width} x {height})");
+                throw new ArgumentException($"Invalid layout size({settings.Width} x {settings.Height})");
             }
 
-            var emptyMark = contentIDs.Min() - 1;
-            var contentIDLayout = Grid<int>.Create(width, height);
+            var emptyMark = settings.ContentIDs.Min() - 1;
+            var contentIDLayout = Grid<int>.Create(settings.Width, settings.Height);
             GridExtension.Fill(contentIDLayout, emptyMark);
             while (contentIDLayout.Any(c => c == emptyMark))
             {
-                int contentID = contentIDs[RandomGenerator.Range(0, contentIDs.Length)];
+                int contentID = settings.ContentIDs[randomGenerator.Range(0, settings.ContentIDs.Length)];
                 var fixedCoords = contentIDLayout.FindCoordinates(c => c != emptyMark);
                 GridExtension.RandomFill(contentIDLayout, contentID, 2, fixedCoords);
             }
 
-            var result = Grid<IGameBlock>.Create(width, height);
+            var result = Grid<TCell>.Create(settings.Width, settings.Height);
             foreach (var coord in result.GetCoordinates())
             {
-                result[coord] = TokenGenerator.GetGameToken();
-                result[coord].State = GamkeBlockState.Idle;
+                result[coord] = cellGenerator.CreateCell();
+                result[coord].State = CellState.Idle;
                 result[coord].Coordinate = coord;
                 result[coord].ContentID = contentIDLayout[coord];
             }
 
             return result;
         }
-        public bool TryConnect(Grid<IGameBlock> gameBlocks, Coordinate start, Coordinate target, out Coordinate[] nodes)
+        public static bool TryConnect<TCell>(Grid<TCell> gameBlocks, Coordinate start, Coordinate target, out Coordinate[] nodes)
+            where TCell : ICell
         {
             var layoutMap = Grid<bool>.Create(gameBlocks.Width, gameBlocks.Height);
             foreach (var coord in gameBlocks.GetCoordinates())
             {
                 layoutMap[coord] = gameBlocks[coord].State switch
                 {
-                    GamkeBlockState.Idle => false,
-                    GamkeBlockState.None => true,
-                    GamkeBlockState.Matched => true,
+                    CellState.Idle => false,
+                    CellState.None => true,
+                    CellState.Matched => true,
                     _ => false
                 };
             }
             return TryConnectCore(layoutMap, start, target, out nodes);
         }
-        public bool TryMatch(Grid<IGameBlock> gameBlocks, Coordinate start, Coordinate target)
+        public static bool TryMatch<TCell>(Grid<TCell> gameBlocks, Coordinate start, Coordinate target)
+            where TCell : ICell
         {
             return TryMatchCore(gameBlocks, start, target);
         }
-        public bool IsGameCompleted(Grid<IGameBlock> gameBlocks)
+        public static bool IsGameCompleted<TCell>(Grid<TCell> gameBlocks)
+            where TCell : ICell
         {
             foreach (var token in gameBlocks)
             {
-                if (token.State == GamkeBlockState.Idle)
+                if (token.State == CellState.Idle)
                 {
                     return false;
                 }
             }
             return true;
-        }
-
-        public LinkGameHelper(IRandomGenerator randomGenerator, IGameBlockGenerator tokenGenerator)
-        {
-            TokenGenerator = tokenGenerator;
-            RandomGenerator = randomGenerator;
         }
 
         private static bool TryConnectCore(Grid<bool> accessableMap, Coordinate start, Coordinate target, out Coordinate[] nodes)
@@ -243,7 +241,8 @@ namespace HM.MiniGames.LinkGame
                 return nodes.Length != 0;
             }
         }
-        private static bool TryMatchCore(Grid<IGameBlock> grid, Coordinate start, Coordinate target)
+        private static bool TryMatchCore<TCell>(Grid<TCell> grid, Coordinate start, Coordinate target)
+            where TCell : ICell
         {
             return grid[start].ContentID == grid[target].ContentID;
         }
