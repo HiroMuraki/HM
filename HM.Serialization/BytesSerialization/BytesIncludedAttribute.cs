@@ -1,4 +1,4 @@
-﻿namespace HM.Serialization
+﻿namespace HM.Serialization.BytesSerialization
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class BytesIncludedAttribute : Attribute

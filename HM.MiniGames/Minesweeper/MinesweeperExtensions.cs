@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using HM.MiniGames.LinkGame;
+using System.Security.Cryptography;
 
 namespace HM.MiniGames.Minesweeper
 {
@@ -151,7 +152,7 @@ namespace HM.MiniGames.Minesweeper
             /* 若存在任何一个处于Open状态的Mine块，则返回Fail，
              * 若存在任何一个处于Closed状态的Blank块，则返回Unknow，
              * 否则即所有的Mine块都处于Closed状态，Blank块都处于Open状态，视为Success*/
-            var hitMines = cells.Any(c => c.State == CellState.Open && c.Type == CellType.Mine);
+            var hitMines = cells.Any(c => c.State == CellState.Blast);
             if (hitMines)
             {
                 return GameResult.Fail;
@@ -185,17 +186,16 @@ namespace HM.MiniGames.Minesweeper
 
             if (cells[coordinate].State == CellState.Closed)
             {
-                cells[coordinate].State = CellState.Open;
                 if (cells[coordinate].Type == CellType.Blank)
                 {
+                    cells[coordinate].State = CellState.Open;
                     return OpenResult.Open;
                 }
                 else if (cells[coordinate].Type == CellType.Mine)
                 {
-                    return OpenResult.HitMine;
+                    cells[coordinate].State = CellState.Blast;
+                    return OpenResult.Blast;
                 }
-
-                return OpenResult.Open;
             }
 
             return OpenResult.None;
@@ -272,18 +272,25 @@ namespace HM.MiniGames.Minesweeper
             }
         }
         /// <summary>
-        /// 揭示方块类型
+        /// 揭示方块
         /// </summary>
+        /// <typeparam name="TCell"></typeparam>
         /// <param name="cells"></param>
-        /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static bool Proclaim<TCell>(this Grid<TCell> cells, Coordinate coordinate)
+        public static void RevealCells<TCell>(this Grid<TCell> cells)
             where TCell : ICell
         {
-            if (!cells.IsValidCoordinate(coordinate)) return false;
-
-            cells[coordinate].State = CellState.Proclaimed;
-            return true;
+            foreach (var cell in cells)
+            {
+                if (cell.State == CellState.Closed && cell.Type == CellType.Mine)
+                {
+                    cell.State = CellState.Open;
+                }
+                else if (cell.State == CellState.Flagged && cell.Type == CellType.Blank)
+                {
+                    cell.State = CellState.FalseFlagged;
+                }
+            }
         }
 
         private static Coordinate[] GetQuickOpenCoordinatesCore<TCell>(Grid<TCell> cells, Coordinate coordinate, bool[,] openMap)

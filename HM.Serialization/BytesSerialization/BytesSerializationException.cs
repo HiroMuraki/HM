@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace HM.Serialization
+namespace HM.Serialization.BytesSerialization
 {
     [Serializable]
     public class BytesSerializationException : Exception

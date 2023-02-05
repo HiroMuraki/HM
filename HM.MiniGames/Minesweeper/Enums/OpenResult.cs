@@ -13,6 +13,6 @@
         /// <summary>
         /// 点中雷块
         /// </summary>
-        HitMine
+        Blast
     }
 }

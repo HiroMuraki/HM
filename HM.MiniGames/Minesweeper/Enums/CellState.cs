@@ -7,10 +7,6 @@
         /// </summary>
         Undefined,
         /// <summary>
-        /// 已揭示
-        /// </summary>
-        Proclaimed,
-        /// <summary>
         /// 已打开
         /// </summary>
         Open,
@@ -22,5 +18,13 @@
         /// 已标记
         /// </summary>
         Flagged,
+        /// <summary>
+        /// 错误标记的雷
+        /// </summary>
+        FalseFlagged,
+        /// <summary>
+        /// 点爆
+        /// </summary>
+        Blast
     }
 }
