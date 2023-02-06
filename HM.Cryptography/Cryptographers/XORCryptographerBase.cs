@@ -1,8 +1,8 @@
-﻿namespace HM.Cryptography
+﻿namespace HM.Cryptography.Cryptographers
 {
-    public abstract class XOREncrypterBase : EncrypterBase
+    public abstract class XORCryptographerBase : CryptographerBase
     {
-        internal XOREncrypterBase(byte[] key)
+        internal XORCryptographerBase(byte[] key)
         {
             Key = key;
         }

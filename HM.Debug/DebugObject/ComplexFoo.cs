@@ -138,21 +138,21 @@ namespace HM.Debug
                 _dateTimeVal = RandomData.NextDateTime(), // 13
                 _stringVal = RandomData.NextString(), // 14
 
-                _byteArray = RandomData.NextBytes(), // 15
-                _sByteArray = RandomData.NextSBytes(), // 16
-                _int16Array = RandomData.NextInt16s(), // 17
-                _uInt16Array = RandomData.NextUInt16s(), // 18
-                _int32Array = RandomData.NextInt32s(), // 19
-                _uInt32Array = RandomData.NextUInt32s(), // 20
-                _int64Array = RandomData.NextInt64s(), // 21
-                _uInt64Array = RandomData.NextUInt64s(), // 22
-                _singleArray = RandomData.NextSingles(), // 23
-                _doubleArray = RandomData.NextDoubles(), // 24
-                _decimalArray = RandomData.NextDecimals(), // 25
-                _booleanArray = RandomData.NextBooleans(), // 26
-                _charArray = RandomData.NextChars(), // 27
-                _dateTimeArray = RandomData.NextDateTimes(), // 28
-                _stringArray = RandomData.NextStrings(), // 29
+                _byteArray = RandomData.Repeat(() => RandomData.NextByte(), RandomData.NextInt32(0, 20)), // 15
+                _sByteArray = RandomData.Repeat(() => RandomData.NextSByte(), RandomData.NextInt32(0, 20)), // 16
+                _int16Array = RandomData.Repeat(() => RandomData.NextInt16(), RandomData.NextInt32(0, 20)), // 17
+                _uInt16Array = RandomData.Repeat(() => RandomData.NextUInt16(), RandomData.NextInt32(0, 20)), // 18
+                _int32Array = RandomData.Repeat(() => RandomData.NextInt32(), RandomData.NextInt32(0, 20)), // 19
+                _uInt32Array = RandomData.Repeat(() => RandomData.NextUInt32(), RandomData.NextInt32(0, 20)), // 20
+                _int64Array = RandomData.Repeat(() => RandomData.NextInt64(), RandomData.NextInt32(0, 20)), // 21
+                _uInt64Array = RandomData.Repeat(() => RandomData.NextUInt64(), RandomData.NextInt32(0, 20)), // 22
+                _singleArray = RandomData.Repeat(() => RandomData.NextSingle(), RandomData.NextInt32(0, 20)), // 23
+                _doubleArray = RandomData.Repeat(() => RandomData.NextDouble(), RandomData.NextInt32(0, 20)), // 24
+                _decimalArray = RandomData.Repeat(() => RandomData.NextDecimal(), RandomData.NextInt32(0, 20)), // 25
+                _booleanArray = RandomData.Repeat(() => RandomData.NextBoolean(), RandomData.NextInt32(0, 20)), // 26
+                _charArray = RandomData.Repeat(() => RandomData.NextChar(), RandomData.NextInt32(0, 20)), // 27
+                _dateTimeArray = RandomData.Repeat(() => RandomData.NextDateTime(), RandomData.NextInt32(0, 20)), // 28
+                _stringArray = RandomData.Repeat(() => RandomData.NextString(), RandomData.NextInt32(0, 20)), // 29
             };
             return r;
         }

@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HM.CLI", "HM.CLI\HM.CLI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HM.Wpf.Controls", "HM.Wpf.Controls\HM.Wpf.Controls.csproj", "{B6C79A7E-7F63-4971-B98B-C0C9A8BCC473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HM.UnityEngine", "HM.UnityEngine\HM.UnityEngine.csproj", "{36515E18-4234-4D6A-8851-12298F5D1028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HM.UnityEngine", "HM.UnityEngine\HM.UnityEngine.csproj", "{36515E18-4234-4D6A-8851-12298F5D1028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HM.Data", "HM.Data\HM.Data.csproj", "{82E021B8-C025-49B2-8111-8521E3D08146}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{36515E18-4234-4D6A-8851-12298F5D1028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36515E18-4234-4D6A-8851-12298F5D1028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36515E18-4234-4D6A-8851-12298F5D1028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E021B8-C025-49B2-8111-8521E3D08146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E021B8-C025-49B2-8111-8521E3D08146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E021B8-C025-49B2-8111-8521E3D08146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E021B8-C025-49B2-8111-8521E3D08146}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

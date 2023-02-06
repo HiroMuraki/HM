@@ -1,13 +1,13 @@
 ﻿using System.Security.Cryptography;
 
-namespace HM.Cryptography
+namespace HM.Cryptography.Cryptographers
 {
-    public abstract class AesEncrypterBase : EncrypterBase
+    public abstract class AesCryptographerBase : CryptographerBase
     {
         public static readonly int KeyLengh = 256 / 8;
         public static readonly int IVLength = 128 / 8;
 
-        internal AesEncrypterBase(byte[] key)
+        internal AesCryptographerBase(byte[] key)
         {
             if (key.Length != KeyLengh)
             {
@@ -16,7 +16,7 @@ namespace HM.Cryptography
             _aes.Key = key;
             _aes.IV = new byte[IVLength];
         }
-        internal AesEncrypterBase(byte[] key, byte[] iv) : this(key)
+        internal AesCryptographerBase(byte[] key, byte[] iv) : this(key)
         {
             _aes.IV = iv;
         }

@@ -1,6 +1,6 @@
-﻿namespace HM.Cryptography
+﻿namespace HM.Cryptography.Cryptographers
 {
-    public class AesBytesEncrypter : AesEncrypterBase, IBytesEncrypter
+    public class AesBytesCryptographer : AesCryptographerBase, IBytesCryptographer
     {
         public ReadOnlySpan<byte> Decrypt(ReadOnlySpan<byte> bytes)
         {
@@ -11,7 +11,7 @@
             return ProcessCore(bytes, _aes.CreateEncryptor());
         }
 
-        public AesBytesEncrypter(byte[] key) : base(key) { }
-        public AesBytesEncrypter(byte[] key, byte[] iv) : base(key, iv) { }
+        public AesBytesCryptographer(byte[] key) : base(key) { }
+        public AesBytesCryptographer(byte[] key, byte[] iv) : base(key, iv) { }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace HM.Cryptography
+﻿namespace HM.Cryptography.Cryptographers
 {
-    public interface ITextEncrypter
+    public interface ITextCryptographer
     {
         string Encrypt(string originText);
         string Decrypt(string encryptedText);

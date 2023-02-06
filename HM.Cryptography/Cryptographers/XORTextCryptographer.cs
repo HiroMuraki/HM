@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace HM.Cryptography
+namespace HM.Cryptography.Cryptographers
 {
-    public class XORTextEncrypter : XOREncrypterBase, ITextEncrypter
+    public class XORTextCryptographer : XORCryptographerBase, ITextCryptographer
     {
         public string Encrypt(string originText)
         {
@@ -25,6 +25,6 @@ namespace HM.Cryptography
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public XORTextEncrypter(byte[] key) : base(key) { }
+        public XORTextCryptographer(byte[] key) : base(key) { }
     }
 }

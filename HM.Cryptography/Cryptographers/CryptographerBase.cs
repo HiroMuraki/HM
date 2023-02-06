@@ -1,6 +1,6 @@
-﻿namespace HM.Cryptography
+﻿namespace HM.Cryptography.Cryptographers
 {
-    public abstract class EncrypterBase
+    public abstract class CryptographerBase
     {
         /// <summary>
         /// 密钥

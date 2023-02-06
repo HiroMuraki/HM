@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace HM.Cryptography
+namespace HM.Cryptography.Cryptographers
 {
-    public class AesTextEncrypter : AesEncrypterBase, ITextEncrypter
+    public class AesTextCryptographer : AesCryptographerBase, ITextCryptographer
     {
         public Encoding Encoding { get; set; } = Encoding.UTF8;
 
@@ -17,7 +17,7 @@ namespace HM.Cryptography
             return Convert.ToHexString(encryptedBytes);
         }
 
-        public AesTextEncrypter(byte[] key) : base(key) { }
-        public AesTextEncrypter(byte[] key, byte[] iv) : base(key, iv) { }
+        public AesTextCryptographer(byte[] key) : base(key) { }
+        public AesTextCryptographer(byte[] key, byte[] iv) : base(key, iv) { }
     }
 }

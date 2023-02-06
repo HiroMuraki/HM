@@ -1,6 +1,6 @@
-﻿namespace HM.Cryptography
+﻿namespace HM.Cryptography.Cryptographers
 {
-    public interface IBytesEncrypter
+    public interface IBytesCryptographer
     {
         ReadOnlySpan<byte> Encrypt(ReadOnlySpan<byte> bytes);
         ReadOnlySpan<byte> Decrypt(ReadOnlySpan<byte> bytes);
