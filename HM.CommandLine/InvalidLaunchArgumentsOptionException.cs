@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace HM.CLI
+namespace HM.CommandLine
 {
     [Serializable]
     public class InvalidLaunchArgumentsOptionException : Exception

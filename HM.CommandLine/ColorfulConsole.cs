@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HM.CLI
+namespace HM.CommandLine
 {
     public static class ColorfulConsole
     {

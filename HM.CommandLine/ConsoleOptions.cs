@@ -1,4 +1,4 @@
-﻿namespace HM.CLI
+﻿namespace HM.CommandLine
 {
     public class ConsoleOptions
     {

@@ -1,8 +1,7 @@
-﻿using System.CommandLine;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
 
-namespace HM.APManager.StringTable
+namespace HM.CommandLine.StringTable
 {
     public class StringTableBuilder
     {
@@ -43,7 +42,7 @@ namespace HM.APManager.StringTable
         }
         public void Write(StringTableFormatOptions? options = null)
         {
-            Write(Console.Out, options);
+            Write(Console.Instance.Out, options);
         }
         public override string ToString() => FormatTable();
 

@@ -1,4 +1,4 @@
-﻿namespace HM.APManager.StringTable
+﻿namespace HM.CommandLine.StringTable
 {
     public record class TableCornerElements
     {

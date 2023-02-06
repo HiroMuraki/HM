@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace HM.CLI
+namespace HM.CommandLine
 {
     public class LaunchArgumentsMatcher
     {
