@@ -1,6 +1,6 @@
 ﻿namespace HM.Data.Database
 {
-    public class DbFieldInfo
+    public record class DbFieldInfo
     {
         public DbFieldMode Mode { get; set; }
         public string PropertyName { get; init; } = string.Empty;

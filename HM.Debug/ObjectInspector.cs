@@ -65,21 +65,21 @@ namespace HM.Debug
             ArgumentNullException.ThrowIfNull(obj);
 
             var sb = new StringBuilder();
-            var fieldInfos = GetPropertyInfos(obj.GetType());
-            foreach (var fieldInfo in fieldInfos)
+            var propertyInfos = GetPropertyInfos(obj.GetType());
+            foreach (var propertyInfo in propertyInfos)
             {
-                var val = fieldInfo.GetValue(obj);
+                var val = propertyInfo.GetValue(obj);
                 if (val is null)
                 {
-                    sb.AppendLine($"{fieldInfo.Name}: null");
+                    sb.AppendLine($"{propertyInfo.Name}: null");
                 }
                 else
                 {
-                    if (fieldInfo.PropertyType.IsArray)
+                    if (propertyInfo.PropertyType.IsArray)
                     {
                         Array array = (Array)val!;
                         var arrayStr = new StringBuilder();
-                        arrayStr.Append("[");
+                        arrayStr.Append('[');
                         for (int i = 0; i < array.Length; i++)
                         {
                             arrayStr.Append(array.GetValue(i) ?? "null");
@@ -88,12 +88,12 @@ namespace HM.Debug
                                 arrayStr.Append(", ");
                             }
                         }
-                        arrayStr.Append("]");
-                        sb.AppendLine($"{fieldInfo.Name}: {arrayStr.ToString()}");
+                        arrayStr.Append(']');
+                        sb.AppendLine($"{propertyInfo.Name}: {arrayStr.ToString()}");
                     }
                     else
                     {
-                        sb.AppendLine($"{fieldInfo.Name}: {val}");
+                        sb.AppendLine($"{propertyInfo.Name}: {val}");
                     }
 
                 }
@@ -135,7 +135,6 @@ namespace HM.Debug
                 default: throw new ArgumentException();
             }
         }
-
 
         private static readonly Dictionary<Guid, FieldInfo[]> _fieldInfosCache = new();
         private static readonly Dictionary<Guid, PropertyInfo[]> _propertyInfosCache = new();
