@@ -7,8 +7,7 @@ using System.Xml.Schema;
 
 namespace HM.Debug.FakeData
 {
-    public abstract class FakeObject<T>
-        where T : new()
+    public abstract class FakeObject
     {
         public override string ToString()
         {
@@ -53,24 +52,6 @@ namespace HM.Debug.FakeData
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        public static T FakeOne() => FakeOne(null);
-        public static T FakeOne(Action<T>? setter)
-        {
-            var result = new T();
-            setter?.Invoke(result);
-            return result;
-        }
-        public static T[] FakeMany(int count) => FakeMany(count, null);
-        public static T[] FakeMany(int count, Action<T>? setter = null)
-        {
-            var result = new List<T>();
-            for (int i = 0; i < count; i++)
-            {
-                result.Add(FakeOne(setter));
-            }
-            return result.ToArray();
         }
 
         private static readonly Dictionary<Type, PropertyInfo[]> _propertyInfosCache = new();
