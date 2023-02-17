@@ -5,6 +5,17 @@ namespace HM.Debug
 {
     public static class ObjectExtension
     {
+        public static void WriteSelf(this object self, string title, Action<string?> writer)
+        {
+            if (!string.IsNullOrEmpty(title))
+            {
+                writer.Invoke(title);
+            }
+
+            writer.Invoke(self?.ToString());
+        }
+        public static void WriteSelf(this object self, string title) => WriteSelf(self, title, Console.WriteLine);
+        public static void WriteSelf(this object self) => WriteSelf(self, string.Empty, Console.WriteLine);
         public static T[]? GetMembers<T>(this object? obj, BindingFlags bindingAttr) where T : MemberInfo
         {
             if (obj is null)

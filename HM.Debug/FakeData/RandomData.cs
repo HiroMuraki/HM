@@ -1,7 +1,7 @@
 ﻿#pragma warning disable IDE0049
 using System.Text;
 
-namespace HM.Debug
+namespace HM.Debug.FakeData
 {
     public static class RandomData
     {
@@ -14,64 +14,64 @@ namespace HM.Debug
                 _random = value;
             }
         }
-        public static readonly Char[] UpperLetters;
-        public static readonly Char[] LowerLetters;
-        public static readonly Char[] Digits;
-        public static readonly Char[] Symbols;
+        public static readonly char[] UpperLetters;
+        public static readonly char[] LowerLetters;
+        public static readonly char[] Digits;
+        public static readonly char[] Symbols;
 
-        public static Byte NextByte() => NextByte(Byte.MinValue, Byte.MaxValue);
-        public static Byte NextByte(Byte min = Byte.MinValue, Byte max = Byte.MaxValue)
+        public static byte NextByte() => NextByte(byte.MinValue, byte.MaxValue);
+        public static byte NextByte(byte min = byte.MinValue, byte max = byte.MaxValue)
         {
-            return (Byte)Random.Next(min, max);
+            return (byte)Random.Next(min, max);
         }
-        public static SByte NextSByte() => NextSByte(SByte.MinValue, SByte.MaxValue);
-        public static SByte NextSByte(SByte min = SByte.MinValue, SByte max = SByte.MaxValue)
+        public static sbyte NextSByte() => NextSByte(sbyte.MinValue, sbyte.MaxValue);
+        public static sbyte NextSByte(sbyte min = sbyte.MinValue, sbyte max = sbyte.MaxValue)
         {
-            return (SByte)Random.Next(min, max);
+            return (sbyte)Random.Next(min, max);
         }
-        public static Int16 NextInt16() => NextInt16(Int16.MinValue, Int16.MaxValue);
-        public static Int16 NextInt16(Int16 min = Int16.MinValue, Int16 max = Int16.MaxValue)
+        public static short NextInt16() => NextInt16(short.MinValue, short.MaxValue);
+        public static short NextInt16(short min = short.MinValue, short max = short.MaxValue)
         {
-            return (Int16)Random.Next(min, max);
+            return (short)Random.Next(min, max);
         }
-        public static UInt16 NextUInt16() => NextUInt16(UInt16.MinValue, UInt16.MaxValue);
-        public static UInt16 NextUInt16(UInt16 min = UInt16.MinValue, UInt16 max = UInt16.MaxValue)
+        public static ushort NextUInt16() => NextUInt16(ushort.MinValue, ushort.MaxValue);
+        public static ushort NextUInt16(ushort min = ushort.MinValue, ushort max = ushort.MaxValue)
         {
-            return (UInt16)Random.Next(min, max);
+            return (ushort)Random.Next(min, max);
         }
-        public static Int32 NextInt32() => NextInt32(Int32.MinValue, Int32.MaxValue);
-        public static Int32 NextInt32(Int32 min = Int32.MinValue, Int32 max = Int32.MaxValue)
+        public static int NextInt32() => NextInt32(int.MinValue, int.MaxValue);
+        public static int NextInt32(int min = int.MinValue, int max = int.MaxValue)
         {
-            return (Int32)Random.Next(min, max);
+            return Random.Next(min, max);
         }
-        public static UInt32 NextUInt32() => NextUInt32(UInt32.MinValue, UInt32.MaxValue);
-        public static UInt32 NextUInt32(UInt32 min = UInt32.MinValue, UInt32 max = UInt32.MaxValue)
+        public static uint NextUInt32() => NextUInt32(uint.MinValue, uint.MaxValue);
+        public static uint NextUInt32(uint min = uint.MinValue, uint max = uint.MaxValue)
         {
-            return (UInt32)Random.NextInt64(min, max);
+            return (uint)Random.NextInt64(min, max);
         }
-        public static Int64 NextInt64() => NextInt64(Int64.MinValue, Int64.MaxValue);
-        public static Int64 NextInt64(Int64 min = Int64.MinValue, Int64 max = Int64.MaxValue)
+        public static long NextInt64() => NextInt64(long.MinValue, long.MaxValue);
+        public static long NextInt64(long min = long.MinValue, long max = long.MaxValue)
         {
-            return (Int64)Random.NextInt64(min, max);
+            return Random.NextInt64(min, max);
         }
-        public static UInt64 NextUInt64() => NextUInt64(UInt64.MinValue, UInt64.MaxValue);
-        public static UInt64 NextUInt64(UInt64 min = UInt64.MinValue, UInt64 max = UInt64.MaxValue)
+        public static ulong NextUInt64() => NextUInt64(ulong.MinValue, ulong.MaxValue);
+        public static ulong NextUInt64(ulong min = ulong.MinValue, ulong max = ulong.MaxValue)
         {
-            return (UInt64)Random.NextInt64((Int64)min, (Int64)max);
+            return (ulong)Random.NextInt64((long)min, (long)max);
         }
-        public static Single NextSingle() => NextSingle(Single.MinValue, Single.MaxValue);
-        public static Single NextSingle(Single min, Single max)
+        public static float NextSingle() => NextSingle(float.MinValue, float.MaxValue);
+        public static float NextSingle(float min, float max)
         {
-            return min + (Single)Random.NextSingle() * (max - min)
+            return min + (float)Random.NextSingle() * (max - min)
                 * Random.Next(0, 2) == 0 ? 1 : -1;
         }
-        public static Double NextDouble() => NextDouble(Double.MinValue, Double.MaxValue);
-        public static Double NextDouble(Double min, Double max)
+        public static double NextDouble() => NextDouble(double.MinValue, double.MaxValue);
+        public static double NextDouble(double min, double max)
         {
-            return (min + (Single)Random.NextDouble() * (max - min))
+            return (min + (float)Random.NextDouble() * (max - min))
                 * Random.Next(0, 2) == 0 ? 1 : -1;
         }
-        public static Decimal NextDecimal()
+        public static decimal NextDecimal()
         {
             // [前96比特不用管，用于表示[0,2^96-1]的数，任意取值即可]
             // 下面是标志位[Int32]的结构
@@ -83,47 +83,47 @@ namespace HM.Debug
             // f = 比例因子，包含一个[0,28]的整数，指示10的幂（即小数从右往左的偏移位）,
             //     由于实际上只需要5个bit即可表示[0,28]，而剩下的三位一定是0
             // 0 = 常量0
-            Int32[] Int32Array =
+            int[] Int32Array =
             {
-                Random.Next(Int32.MinValue, Int32.MaxValue),
-                Random.Next(Int32.MinValue, Int32.MaxValue),
-                Random.Next(Int32.MinValue, Int32.MaxValue),
+                Random.Next(int.MinValue, int.MaxValue),
+                Random.Next(int.MinValue, int.MaxValue),
+                Random.Next(int.MinValue, int.MaxValue),
                 0
             };
 
             Int32Array[3] |= Random.Next(0, 29) << 16;
             if (Random.Next(0, 2) == 0)
             {
-                Int32Array[3] |= unchecked((Int32)0b_10000000_00000000_00000000_00000000);
+                Int32Array[3] |= unchecked((int)0b_10000000_00000000_00000000_00000000);
             }
 
             return new decimal(Int32Array);
         }
-        public static Boolean NextBoolean()
+        public static bool NextBoolean()
         {
             return Random.Next(0, 2) == 0;
         }
-        public static Char NextChar(Char min, Char max)
+        public static char NextChar(char min, char max)
         {
-            return (Char)Random.Next(min, max);
+            return (char)Random.Next(min, max);
         }
-        public static Char NextChar() => NextChar(Char.MinValue, Char.MaxValue);
+        public static char NextChar() => NextChar(char.MinValue, char.MaxValue);
         public static DateTime NextDateTime() => NextDateTime(DateTime.MinValue, DateTime.MaxValue);
         public static DateTime NextDateTime(DateTime min, DateTime max)
         {
             return DateTime.FromBinary(Random.NextInt64(min.Ticks, max.Ticks));
         }
-        public static String NextString(Int32 minLength, Int32 maxLength, CharTypes charTypes)
+        public static string NextString(int minLength, int maxLength, CharTypes charTypes)
         {
             return NextString(Random.Next(minLength, maxLength + 1), charTypes);
         }
-        public static String NextString(Int32 minLength, Int32 maxLength)
+        public static string NextString(int minLength, int maxLength)
         {
             return NextString(Random.Next(minLength, maxLength + 1), CharTypes.All);
         }
-        public static String NextString(Int32 length, CharTypes charTypes)
+        public static string NextString(int length, CharTypes charTypes)
         {
-            var letters = new List<Char>();
+            var letters = new List<char>();
             if ((charTypes & CharTypes.UpperLetters) == CharTypes.UpperLetters)
             {
                 letters.AddRange(UpperLetters);
@@ -141,16 +141,16 @@ namespace HM.Debug
                 letters.AddRange(Symbols);
             }
 
-            return new String(ValuesFromPool(length, letters.ToArray()));
+            return new string(ValuesFromPool(length, letters.ToArray()));
         }
-        public static String NextString(Int32 length)
+        public static string NextString(int length)
         {
             return NextString(length, CharTypes.All);
         }
-        public static String NextString(params CharTypes[] charTypes)
+        public static string NextString(params CharTypes[] charTypes)
         {
-            var result = new Char[charTypes.Length];
-            for (Int32 i = 0; i < charTypes.Length; i++)
+            var result = new char[charTypes.Length];
+            for (int i = 0; i < charTypes.Length; i++)
             {
                 result[i] = charTypes[i] switch
                 {
@@ -161,12 +161,12 @@ namespace HM.Debug
                     _ => throw new ArgumentException($"Unsupported Char type {charTypes[i]}")
                 };
             }
-            return new String(result);
+            return new string(result);
         }
-        public static String NextString(String mask)
+        public static string NextString(string mask)
         {
             var charTypes = new CharTypes[mask.Length];
-            for (Int32 i = 0; i < charTypes.Length; i++)
+            for (int i = 0; i < charTypes.Length; i++)
             {
                 charTypes[i] = mask[i] switch
                 {
@@ -187,10 +187,10 @@ namespace HM.Debug
         /// <param name="valueGetter"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public static T[] Repeat<T>(Func<T> valueGetter, Int32 count)
+        public static T[] Repeat<T>(Func<T> valueGetter, int count)
         {
             var result = new T[count];
-            for (Int32 i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 result[i] = valueGetter();
             }
@@ -213,10 +213,10 @@ namespace HM.Debug
         /// <param name="size"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public static T[] ValuesFromPool<T>(Int32 size, params T[] values)
+        public static T[] ValuesFromPool<T>(int size, params T[] values)
         {
             var result = new T[size];
-            for (Int32 i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Length; i++)
             {
                 result[i] = values[_random.Next(0, values.Length)];
             }
@@ -226,25 +226,25 @@ namespace HM.Debug
         private static Random _random = new();
         static RandomData()
         {
-            UpperLetters = new Char[26]
+            UpperLetters = new char[26]
             {
                 'A','B','C','D','E','F','G',
                 'H','I','J','K','L','M','N',
                 'O','P','Q','R','S','T','U',
                 'V','W','X','Y','Z'
             };
-            LowerLetters = new Char[26]
+            LowerLetters = new char[26]
             {
                 'a','b','c','d','e','f','g',
                 'h','i','j','k','l','m','n',
                 'o','p','q','r','s','t','u',
                 'v','w','x','y','z'
             };
-            Digits = new Char[10]
+            Digits = new char[10]
             {
                 '0','1','2','3','4','5','6','7','8','9'
             };
-            Symbols = new Char[32]
+            Symbols = new char[32]
             {
                 '!','"','#','$','%','&','\'','(',
                 ')','*','+',',','-','.','/',':',

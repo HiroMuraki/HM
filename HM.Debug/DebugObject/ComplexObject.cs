@@ -1,14 +1,16 @@
-﻿using System;
+﻿#pragma warning disable IDE0049
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using HM.Debug.FakeData;
 
 namespace HM.Debug
 {
-    public class ComplexFoo : IEquatable<ComplexFoo>
+    public class ComplexObject : IEquatable<ComplexObject>
     {
-        // single
         public Byte _byteVal; // 0
         public SByte _sByteVal; // 1
         public Int16 _int16Val; // 2
@@ -40,11 +42,12 @@ namespace HM.Debug
         public Char[] _charArray = Array.Empty<Char>(); // 27
         public DateTime[] _dateTimeArray = Array.Empty<DateTime>(); // 28
         public String[] _stringArray = Array.Empty<String>(); // 29
-        public static ComplexFoo CloneFrom(ComplexFoo other)
+
+        public static ComplexObject CloneFrom(ComplexObject other)
         {
             ArgumentNullException.ThrowIfNull(other);
 
-            ComplexFoo copy = new ComplexFoo()
+            ComplexObject copy = new()
             {
                 _byteVal = other._byteVal, // 0
                 _sByteVal = other._sByteVal, // 1
@@ -79,7 +82,7 @@ namespace HM.Debug
             };
             return copy;
         }
-        public bool Equals(ComplexFoo? other)
+        public bool Equals(ComplexObject? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null || other.GetType() != GetType()) return false;
@@ -118,9 +121,17 @@ namespace HM.Debug
 
             return true;
         }
-        public static ComplexFoo GetRandomOne()
+        public override bool Equals(object? other)
         {
-            var r = new ComplexFoo()
+            return Equals(other as ComplexObject);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public static ComplexObject GetRandomOne()
+        {
+            var r = new ComplexObject()
             {
                 _byteVal = RandomData.NextByte(), // 0
                 _sByteVal = RandomData.NextSByte(), // 1
