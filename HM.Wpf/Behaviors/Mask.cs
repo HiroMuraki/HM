@@ -80,12 +80,10 @@ public sealed class Mask : AnimatorBehavior<UIElement>
 
         if ((bool)e.NewValue)
         {
-            System.Diagnostics.Debug.WriteLine($"{"ON"}"); // debug output
             item.Show();
         }
         else
         {
-            System.Diagnostics.Debug.WriteLine($"{"OFF"}"); // debug output
             item.Hide();
         }
     }
