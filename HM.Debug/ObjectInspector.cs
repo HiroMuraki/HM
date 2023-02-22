@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Data.Common;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace HM.Debug
@@ -16,90 +18,68 @@ namespace HM.Debug
         BigEndian
     }
 
+    public static class Assert
+    {
+        public static Action<string> ErrorHanlder { get; } = s =>
+        {
+            var prefg = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(s);
+            Console.ForegroundColor = prefg;
+        };
+
+        public static void All<T>(IEnumerable<T> self, Func<T, bool> predicate)
+        {
+            int index = 0;
+            foreach (var item in self)
+            {
+                if (!predicate(item))
+                {
+                    ErrorHanlder($"{item} at index {index} is not {predicate}");
+                    return;
+                }
+                index++;
+            }
+        }
+        public static void Any<T>(IEnumerable<T> self, Func<T, bool> predicate) => AtLeast(self, predicate, 1);
+        public static void AtLeast<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
+        {
+            int foundCount = 0;
+            foreach (var item in self)
+            {
+                if (predicate(item))
+                {
+                    foundCount++;
+                }
+            }
+
+            if (foundCount < count)
+            {
+                ErrorHanlder($"not predticate found");
+            }
+        }
+        public static void Count<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
+        {
+            int foundCount = 0;
+            foreach (var item in self)
+            {
+                if (predicate(item))
+                {
+                    foundCount++;
+                }
+            }
+
+            if (foundCount != count)
+            {
+                ErrorHanlder($"not predticate found");
+            }
+        }
+    }
+
     public static class ObjectInspector
     {
         public static readonly BindingFlags BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-        public static string InspectFields(object obj)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            var sb = new StringBuilder();
-            var fieldInfos = GetFieldInfos(obj.GetType());
-            foreach (var fieldInfo in fieldInfos)
-            {
-                var val = fieldInfo.GetValue(obj);
-                if (val is null)
-                {
-                    sb.AppendLine($"{fieldInfo.Name}: null");
-                }
-                else
-                {
-                    if (fieldInfo.FieldType.IsArray)
-                    {
-                        Array array = (Array)val!;
-                        var arrayStr = new StringBuilder();
-                        arrayStr.Append("[");
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            arrayStr.Append(array.GetValue(i) ?? "null");
-                            if (i < array.Length - 1)
-                            {
-                                arrayStr.Append(", ");
-                            }
-                        }
-                        arrayStr.Append("]");
-                        sb.AppendLine($"{fieldInfo.Name}: {arrayStr.ToString()}");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"{fieldInfo.Name}: {val}");
-                    }
-
-                }
-            }
-            return sb.ToString();
-        }
-        public static string InspectProperties(object obj)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            var sb = new StringBuilder();
-            var propertyInfos = GetPropertyInfos(obj.GetType());
-            foreach (var propertyInfo in propertyInfos)
-            {
-                var val = propertyInfo.GetValue(obj);
-                if (val is null)
-                {
-                    sb.AppendLine($"{propertyInfo.Name}: null");
-                }
-                else
-                {
-                    if (propertyInfo.PropertyType.IsArray)
-                    {
-                        Array array = (Array)val!;
-                        var arrayStr = new StringBuilder();
-                        arrayStr.Append('[');
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            arrayStr.Append(array.GetValue(i) ?? "null");
-                            if (i < array.Length - 1)
-                            {
-                                arrayStr.Append(", ");
-                            }
-                        }
-                        arrayStr.Append(']');
-                        sb.AppendLine($"{propertyInfo.Name}: {arrayStr.ToString()}");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"{propertyInfo.Name}: {val}");
-                    }
-
-                }
-            }
-            return sb.ToString();
-        }
         public static bool AreFieldsEqual(object a, object b)
         {
             ArgumentNullException.ThrowIfNull(a);
