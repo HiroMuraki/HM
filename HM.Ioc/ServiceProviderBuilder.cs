@@ -42,11 +42,11 @@ public sealed class ServiceProviderBuilder
     #endregion
 }
 
-class Test
+internal class Test
 {
-    void T()
+    private void T()
     {
-        ScopedServiceProvider<string> scopedServiceProvider = new()
+        ScopedServiceProviders<string> scopedServiceProvider = new()
         {
             ["Storage"] = new ServiceProviderBuilder()
             {

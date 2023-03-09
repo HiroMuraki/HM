@@ -1,6 +1,6 @@
 ﻿namespace HM.Ioc;
 
-public sealed class ScopedServiceProvider<TScope>
+public sealed class ScopedServiceProviders<TScope>
     where TScope : notnull
 {
     public ServiceProvider this[TScope scope]

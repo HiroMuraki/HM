@@ -4,6 +4,12 @@ public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
 {
     public IEnumerable<T> ReadedData => _readedData;
 
+    public void LoadInitialData(IEnumerable<T> data)
+    {
+        _readedData.Clear();
+        _readedData.AddRange(data);
+    }
+
     public int Add(T item)
     {
         _readedData.Add(item);
@@ -100,6 +106,6 @@ public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
     }
 
     #region
-    private readonly IList<T> _readedData = new List<T>();
+    private readonly List<T> _readedData = new();
     #endregion
 }
