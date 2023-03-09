@@ -1,35 +1,34 @@
 ﻿using System.Reflection;
 
-namespace HM.Data.Database
+namespace HM.Data.Database;
+
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+public class DbFieldAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class DbFieldAttribute : Attribute
+    public string Name { get; }
+    public DbFieldType Mode { get; init; } = DbFieldType.Normal;
+
+    public DbFieldAttribute(string columnName)
     {
-        public string Name { get; }
-        public DbFieldMode Mode { get; init; } = DbFieldMode.Normal;
+        Name = columnName;
+    }
 
-        public DbFieldAttribute(string columnName)
+    public static DbFieldInfo[] GetColumns<T>()
+    {
+        var properties = typeof(T).GetProperties();
+        var result = new List<DbFieldInfo>(properties.Length);
+        for (int i = 0; i < properties.Length; i++)
         {
-            Name = columnName;
-        }
-
-        public static DbFieldInfo[] GetColumns<T>()
-        {
-            var properties = typeof(T).GetProperties();
-            var result = new List<DbFieldInfo>(properties.Length);
-            for (int i = 0; i < properties.Length; i++)
+            if (properties[i].GetCustomAttribute<DbFieldAttribute>() is DbFieldAttribute attr)
             {
-                if (properties[i].GetCustomAttribute<DbFieldAttribute>() is DbFieldAttribute attr)
+                result.Add(new DbFieldInfo()
                 {
-                    result.Add(new DbFieldInfo()
-                    {
-                        PropertyName = properties[i].Name,
-                        ColumnName = attr.Name,
-                        Mode = attr.Mode
-                    });
-                }
+                    PropertyName = properties[i].Name,
+                    ColumnName = attr.Name,
+                    Mode = attr.Mode
+                });
             }
-            return result.ToArray();
         }
+        return result.ToArray();
     }
 }

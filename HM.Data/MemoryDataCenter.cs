@@ -1,4 +1,4 @@
-﻿namespace HM.ContentManagementSystem;
+﻿namespace HM.Data;
 
 public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
 {

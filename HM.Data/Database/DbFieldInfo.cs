@@ -1,9 +1,8 @@
-﻿namespace HM.Data.Database
+﻿namespace HM.Data;
+
+public record class DbFieldInfo
 {
-    public record class DbFieldInfo
-    {
-        public DbFieldMode Mode { get; set; }
-        public string PropertyName { get; init; } = string.Empty;
-        public string ColumnName { get; init; } = string.Empty;
-    }
+    public DbFieldType Mode { get; set; }
+    public string PropertyName { get; init; } = string.Empty;
+    public string ColumnName { get; init; } = string.Empty;
 }

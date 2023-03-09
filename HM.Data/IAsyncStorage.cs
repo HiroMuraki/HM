@@ -1,4 +1,4 @@
-﻿namespace HM.ContentManagementSystem;
+﻿namespace HM.Data;
 
 public interface IAsyncStorage
 {
