@@ -1,10 +1,5 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace HM.Debug
@@ -19,7 +14,8 @@ namespace HM.Debug
         {
             return JsonSerializer.Serialize(obj, new JsonSerializerOptions()
             {
-                WriteIndented = true
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             });
         }
         public static void DumpJson(this object? obj) => AsJson(obj).WriteSelf();

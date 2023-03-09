@@ -1,10 +1,4 @@
 ﻿#pragma warning disable IDE0049
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using HM.Debug.FakeData;
 
 namespace HM.Debug

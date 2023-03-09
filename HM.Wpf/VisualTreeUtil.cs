@@ -1,9 +1,5 @@
-﻿using System.Security.Cryptography;
-using System.IO;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Collections.Generic;
 
 namespace HM.Wpf
 {

@@ -35,8 +35,14 @@ public sealed class FilesDropAction : Behavior<FrameworkElement>
     {
         base.OnAttached();
 
-        AssociatedObject.DragEnter += (_, _) => IsActiviting = true;
-        AssociatedObject.DragLeave += (_, _) => IsActiviting = false;
+        AssociatedObject.DragEnter += (_, e) =>
+        {
+            IsActiviting = true;
+        };
+        AssociatedObject.DragLeave += (_, e) =>
+        {
+            IsActiviting = false;
+        };
         AssociatedObject.Drop += (_, e) =>
         {
             IsActiviting = false;

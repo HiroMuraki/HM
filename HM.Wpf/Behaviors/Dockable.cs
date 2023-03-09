@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace HM.Wpf.Behaviors;
 
-public sealed class Dockable : AnimatorBehavior<FrameworkElement>
+public sealed class Dockable : AnimatedBehavior<FrameworkElement>
 {
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         nameof(Orientation),
@@ -55,6 +55,8 @@ public sealed class Dockable : AnimatorBehavior<FrameworkElement>
     protected override void OnAttached()
     {
         base.OnAttached();
+
+        Fold();
     }
 
     private void Expand()

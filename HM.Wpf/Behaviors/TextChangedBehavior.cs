@@ -15,9 +15,9 @@ public class TextChangedBehavior : Behavior<TextBox>
     );
 
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-        nameof(Command), 
-        typeof(ICommand), 
-        typeof(TextChangedBehavior), 
+        nameof(Command),
+        typeof(ICommand),
+        typeof(TextChangedBehavior),
         new PropertyMetadata(default)
     );
 

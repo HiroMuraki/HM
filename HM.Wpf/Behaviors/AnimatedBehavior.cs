@@ -4,13 +4,13 @@ using System.Windows.Media.Animation;
 
 namespace HM.Wpf.Behaviors;
 
-public abstract class AnimatorBehavior<T> : Behavior<T>
+public abstract class AnimatedBehavior<T> : Behavior<T>
     where T : DependencyObject
 {
     public static readonly DependencyProperty AnimationTimeProperty = DependencyProperty.Register(
         nameof(AnimationTime),
         typeof(double),
-        typeof(AnimatorBehavior<T>),
+        typeof(AnimatedBehavior<T>),
         new PropertyMetadata(200.0)
     );
 

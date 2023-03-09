@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace HM.Collections.Observable
 {
     [Serializable]
-    public class ObservableDictonary<TKey, TValue> :
+    public class ObservableDictionary<TKey, TValue> :
         DictionaryBase<TKey, TValue>,
         INotifyPropertyChanged,
         INotifyCollectionChanged

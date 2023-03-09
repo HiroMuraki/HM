@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace HM.Wpf.Behaviors;
 
-public sealed class Mask : AnimatorBehavior<UIElement>
+public abstract class Mask : AnimatedBehavior<UIElement>
 {
     public static readonly DependencyProperty InitOpacityProperty = DependencyProperty.Register(
         nameof(InitOpacity),
@@ -25,53 +25,24 @@ public sealed class Mask : AnimatorBehavior<UIElement>
         new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, IsShownChanged)
     );
 
-    public double InitOpacity
+    public virtual double InitOpacity
     {
         get => (double)GetValue(InitOpacityProperty);
         set => SetValue(InitOpacityProperty, value);
     }
-    public double MaskedOpacity
+    public virtual double MaskedOpacity
     {
         get => (double)GetValue(MaskedOpacityProperty);
         set => SetValue(MaskedOpacityProperty, value);
     }
-    public bool IsShown
+    public virtual bool IsShown
     {
         get => (bool)GetValue(IsShownProperty);
         set => SetValue(IsShownProperty, value);
     }
 
-    protected override void OnAttached()
-    {
-        base.OnAttached();
-
-        Hide();
-    }
-
-    private void Show()
-    {
-        AssociatedObject.Visibility = Visibility.Visible;
-        AssociatedObject.IsEnabled = true;
-        AssociatedObject.IsHitTestVisible = true;
-        AssociatedObject.MouseLeftButtonDown += HideHandler;
-        var animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
-
-        AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
-    }
-    private void Hide()
-    {
-        AssociatedObject.IsHitTestVisible = false;
-        AssociatedObject.MouseLeftButtonDown -= HideHandler;
-        AssociatedObject.IsEnabled = false;
-        var animation = CreateDoubleAnimation(MaskedOpacity, InitOpacity);
-
-        animation.Completed += (_, _) =>
-        {
-            AssociatedObject.Visibility = Visibility.Collapsed;
-        };
-
-        AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
-    }
+    protected abstract void Show();
+    protected abstract void Hide();
     private static void IsShownChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is null) return;
@@ -87,9 +58,69 @@ public sealed class Mask : AnimatorBehavior<UIElement>
             item.Hide();
         }
     }
+}
+
+public sealed class FocusMask : Mask
+{
+    protected override void OnAttached()
+    {
+        base.OnAttached();
+
+        Hide();
+    }
+
+    protected override void Show()
+    {
+        AssociatedObject.IsEnabled = true;
+        AssociatedObject.Visibility = Visibility.Visible;
+        AssociatedObject.IsHitTestVisible = true;
+        AssociatedObject.MouseLeftButtonDown += HideHandler;
+        var animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
+
+        AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
+    }
+    protected override void Hide()
+    {
+        AssociatedObject.IsEnabled = false;
+        AssociatedObject.IsHitTestVisible = false;
+        AssociatedObject.MouseLeftButtonDown -= HideHandler;
+        var animation = CreateDoubleAnimation(MaskedOpacity, InitOpacity);
+
+        animation.Completed += (_, _) =>
+        {
+            AssociatedObject.Visibility = Visibility.Collapsed;
+        };
+
+        AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
+    }
     private void HideHandler(object sender, MouseButtonEventArgs e)
     {
         IsShown = false;
         BindingOperations.GetBindingExpression(this, IsShownProperty)?.UpdateSource();
+    }
+}
+
+public sealed class TipMask : Mask
+{
+    public override double InitOpacity => 0;
+
+    protected override void OnAttached()
+    {
+        base.OnAttached();
+
+        Hide();
+        AssociatedObject.IsEnabled = false;
+    }
+
+    protected override void Show()
+    {
+        AssociatedObject.Visibility = Visibility.Visible;
+
+        var animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
+        AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
+    }
+    protected override void Hide()
+    {
+        AssociatedObject.Visibility = Visibility.Collapsed;
     }
 }

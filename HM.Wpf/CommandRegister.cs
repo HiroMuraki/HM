@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using System;
 
 namespace HM.Wpf
 {

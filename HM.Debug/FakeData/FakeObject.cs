@@ -1,9 +1,7 @@
 ﻿#pragma warning disable IDE0049
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Xml.Schema;
 
 namespace HM.Debug.FakeData
 {

@@ -1,5 +1,4 @@
 ﻿#pragma warning disable IDE0049
-using System.Text;
 
 namespace HM.Debug.FakeData
 {

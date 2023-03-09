@@ -4,7 +4,7 @@ using System.Text;
 namespace HM.Debug
 {
     [Obsolete("Use AesTextEncrypter")]
-    public class _AESTextEncrypter 
+    public class _AESTextEncrypter
     {
         private const int _bitPerByte = 8; // 每字节位数
         private const int _bytePerKByte = 1024; // 每KB的字节数
