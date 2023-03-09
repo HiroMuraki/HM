@@ -16,9 +16,6 @@ public class ServiceNotFoundException : Exception
     public ServiceNotFoundException(string serviceName, string message)
         : this(serviceName, message, null!) { }
 
-    public ServiceNotFoundException(string serviceName, Exception inner)
-        : this(serviceName, $"Requested service `{serviceName}` not found", inner) { }
-
     public ServiceNotFoundException(string serviceName, string message, Exception inner) : base(message, inner)
     {
         ServiceName = serviceName;
