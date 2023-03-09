@@ -2,7 +2,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
-namespace HM.Debug
+namespace HM.Debug.Extensions
 {
     public static class ObjectExtension
     {
@@ -18,7 +18,7 @@ namespace HM.Debug
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             });
         }
-        public static void DumpJson(this object? obj) => AsJson(obj).WriteSelf();
+        public static void DumpJson(this object? obj) => obj.AsJson().WriteSelf();
         public static void DumpProperties(this object self)
         {
             string.Join('\n', GetMemberLines(self, 4)).WriteSelf();
@@ -38,7 +38,7 @@ namespace HM.Debug
                     if (p.PropertyType.IsArray)
                     {
                         string header = $"{indentStr}{p.Name} = [";
-                        var headerIndent = new string(' ', (header).Length - 1);
+                        var headerIndent = new string(' ', header.Length - 1);
 
                         lines.Add(header);
                         foreach (var item in (Array)value!)
@@ -91,7 +91,7 @@ namespace HM.Debug
                     if (p.FieldType.IsArray)
                     {
                         string header = $"{indentStr}{p.Name} = [";
-                        var headerIndent = new string(' ', (header).Length - 1);
+                        var headerIndent = new string(' ', header.Length - 1);
 
                         lines.Add(header);
                         foreach (var item in (Array)value!)

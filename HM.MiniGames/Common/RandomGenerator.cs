@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Common
 {
     public class RandomGenerator : IRandomGenerator
     {

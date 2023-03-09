@@ -1,4 +1,5 @@
-﻿using HM.MiniGames;
+﻿using HM.MiniGames.Common;
+using HM.MiniGames.LinkGame.Interfaces;
 
 namespace HM.MiniGames.LinkGame
 {

@@ -1,8 +1,10 @@
 ﻿#nullable enable
 using UnityEngine;
 using System;
+using HM.UnityEngine._FakeUnityAPI;
+using HM.UnityEngine.Scripts.HM.Structs;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     [Serializable]
     public class Area

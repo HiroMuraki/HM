@@ -1,7 +1,8 @@
 ﻿#nullable enable
+using HM;
 using System;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     public class ValueChangedEventArgs : EventArgs
     {

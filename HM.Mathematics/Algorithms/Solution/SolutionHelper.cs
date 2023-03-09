@@ -1,4 +1,6 @@
-﻿namespace HM.Mathematics.Algorithm
+﻿using HM.Mathematics.Algorithms.Exceptions;
+
+namespace HM.Mathematics.Algorithms.Solution
 {
     internal static class SolutionHelper
     {

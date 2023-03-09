@@ -1,7 +1,8 @@
 ﻿#nullable enable
-using UnityEngine;
+using HM;
+using HM.UnityEngine._FakeUnityAPI;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     public class GridLayoutInfo
     {

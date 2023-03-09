@@ -2,8 +2,10 @@
 using System.Text;
 using System;
 using System.Linq;
+using HM.MiniGames.Common;
+using HM.MiniGames.Extensions;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Extensions
 {
     internal static class GridExtension
     {
@@ -160,12 +162,12 @@ namespace HM.MiniGames
         }
         internal static Coordinate[] FindCoordinates<T>(this Grid<T> grid, Predicate<T> predicate)
         {
-            TryFindCoordinates(grid, predicate, out var result);
+            grid.TryFindCoordinates(predicate, out var result);
             return result;
         }
         internal static void Fill<T>(this Grid<T> grid, T[] values)
         {
-            Fill(grid, values, Array.Empty<Coordinate>());
+            grid.Fill(values, Array.Empty<Coordinate>());
         }
         internal static void Fill<T>(this Grid<T> grid, T[] values, Coordinate[] ignoredCoords)
         {
@@ -184,11 +186,11 @@ namespace HM.MiniGames
         }
         internal static void Fill<T>(this Grid<T> grid, T value, int count)
         {
-            Fill(grid, value, count, Array.Empty<Coordinate>());
+            grid.Fill(value, count, Array.Empty<Coordinate>());
         }
         internal static void Fill<T>(this Grid<T> grid, T value)
         {
-            Fill(grid, value, grid.Width * grid.Height);
+            grid.Fill(value, grid.Width * grid.Height);
         }
         internal static void Fill<T>(this Grid<T> grid, T value, int count, Coordinate[] ignoredCoords)
         {
@@ -207,15 +209,15 @@ namespace HM.MiniGames
         }
         internal static void RandomFill<T>(this Grid<T> grid, T[] values)
         {
-            RandomFill(grid, values, Array.Empty<Coordinate>());
+            grid.RandomFill(values, Array.Empty<Coordinate>());
         }
         internal static void RandomFill<T>(this Grid<T> grid, T value, int count)
         {
-            RandomFill(grid, value, count, Array.Empty<Coordinate>());
+            grid.RandomFill(value, count, Array.Empty<Coordinate>());
         }
         internal static void RandomFill<T>(this Grid<T> grid, T[] values, Coordinate[] fixedCoords)
         {
-            if ((grid.Width * grid.Height) - fixedCoords.Length < values.Length)
+            if (grid.Width * grid.Height - fixedCoords.Length < values.Length)
             {
                 throw new ArgumentException($"Values size({values.Length}) could not be larger than target coords size({fixedCoords.Length})");
             }
@@ -238,7 +240,7 @@ namespace HM.MiniGames
         }
         internal static void RandomFill<T>(this Grid<T> grid, T value, int count, Coordinate[] fixedCoords)
         {
-            if ((grid.Width * grid.Height) - fixedCoords.Length < count)
+            if (grid.Width * grid.Height - fixedCoords.Length < count)
             {
                 throw new ArgumentException($"Values size({count}) could not be larger than target coords size({fixedCoords.Length})");
             }
@@ -258,7 +260,7 @@ namespace HM.MiniGames
         }
         internal static void Shuffle<T>(this Grid<T> grid)
         {
-            Shuffle(grid, Array.Empty<Coordinate>());
+            grid.Shuffle(Array.Empty<Coordinate>());
         }
         internal static void Shuffle<T>(this Grid<T> grid, Coordinate[] fixedCoords)
         {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnityEngine
+namespace HM.UnityEngine._FakeUnityAPI
 {
     public class MonoBehaviour
     {

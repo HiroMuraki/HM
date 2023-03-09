@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityEditor
+namespace HM.UnityEngine._FakeUnityAPI
 {
     public class SerializedObject
     {

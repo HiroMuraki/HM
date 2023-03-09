@@ -1,4 +1,7 @@
-﻿namespace HM.MiniGames.LinkGame
+﻿using HM.MiniGames.Common;
+using HM.MiniGames.LinkGame.Enums;
+
+namespace HM.MiniGames.LinkGame.Interfaces
 {
     public interface ICell
     {

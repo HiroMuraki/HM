@@ -1,4 +1,4 @@
-﻿namespace HM.GameManager.GameModManager.ViewModels;
+﻿namespace HM.Debug._;
 
 public sealed class FormattableText
 {

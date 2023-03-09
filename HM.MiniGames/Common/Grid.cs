@@ -1,11 +1,12 @@
 ﻿#nullable enable
+using HM;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Common
 {
     /// <summary>
     /// 二维坐标网格，该网格以左下角为坐标原点，向上为y轴正方向，向右为x轴正方向（参考直角坐标系）
@@ -147,7 +148,7 @@ namespace HM.MiniGames
         }
         public override int GetHashCode()
         {
-            return (Height << 2) ^ Width;
+            return Height << 2 ^ Width;
         }
         public bool Equals(Grid<T>? other)
         {

@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿namespace HM.MiniGames.Minesweeper.Enums
 {
     public enum OpenResult
     {

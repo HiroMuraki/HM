@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Common.Exceptions
 {
     [Serializable]
     public class CoordinateOutOfRangeException : Exception

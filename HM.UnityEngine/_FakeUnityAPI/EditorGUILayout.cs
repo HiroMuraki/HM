@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnityEditor
+namespace HM.UnityEngine._FakeUnityAPI
 {
     public class EditorGUILayout
     {

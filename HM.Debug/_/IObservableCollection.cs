@@ -1,6 +1,4 @@
-﻿using Collections;
-
-namespace HM.Collections.Observable
+﻿namespace HM.Debug._
 {
     /// <summary>
     /// Represent a collection that can raise event when item in the collection was added, removed or updated

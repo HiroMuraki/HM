@@ -1,4 +1,4 @@
-﻿namespace HM.Debug
+﻿namespace HM.Debug.Extensions
 {
     public static class StringExtension
     {

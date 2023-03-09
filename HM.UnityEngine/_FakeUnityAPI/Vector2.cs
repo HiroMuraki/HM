@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityEngine
+namespace HM.UnityEngine._FakeUnityAPI
 {
     public struct Vector2
     {

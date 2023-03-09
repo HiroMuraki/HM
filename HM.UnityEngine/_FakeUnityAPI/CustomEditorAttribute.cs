@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace UnityEditor
+namespace HM.UnityEngine._FakeUnityAPI
 {
-    [System.AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class CustomEditorAttribute : Attribute
     {
         public CustomEditorAttribute(Type type, bool val)

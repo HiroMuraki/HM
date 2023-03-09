@@ -1,4 +1,4 @@
-﻿namespace HM.Mathematics.Algorithm
+﻿namespace HM.Mathematics.Algorithms.Solution
 {
     public class LinearSearcher<T> : ISolutionSearcher<T> where T : IComparable<T>
     {

@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using UnityEngine;
-using UnityEditor;
+using HM.UnityEngine._FakeUnityAPI;
 
 namespace HM.UnityEngine.Editor
 {

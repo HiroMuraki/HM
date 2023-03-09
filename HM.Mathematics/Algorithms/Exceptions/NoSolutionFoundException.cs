@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace HM.Mathematics.Algorithm
+namespace HM.Mathematics.Algorithms.Exceptions
 {
     [Serializable]
     public class NoSolutionFoundException : Exception

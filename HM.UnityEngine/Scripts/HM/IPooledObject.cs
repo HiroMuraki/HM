@@ -1,6 +1,8 @@
 ﻿#nullable enable
 
-namespace HM.UnityEngine
+using HM;
+
+namespace HM.UnityEngine.Scripts.HM
 {
     public interface IPooledObject
     {

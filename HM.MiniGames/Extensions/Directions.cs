@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Extensions
 {
     [Flags]
     public enum Directions

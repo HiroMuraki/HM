@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using HM.UnityEngine._FakeUnityAPI;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM.Extensions
 {
     public static class Vector2Extension
     {

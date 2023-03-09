@@ -1,8 +1,9 @@
 ﻿#nullable enable
+using HM;
 using System;
 using UnityEngine;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     [Serializable]
     public struct Margin

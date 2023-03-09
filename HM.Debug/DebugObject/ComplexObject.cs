@@ -1,41 +1,41 @@
 ﻿#pragma warning disable IDE0049
 using HM.Debug.FakeData;
 
-namespace HM.Debug
+namespace HM.Debug.DebugObject
 {
     public class ComplexObject : IEquatable<ComplexObject>
     {
-        public Byte _byteVal; // 0
-        public SByte _sByteVal; // 1
-        public Int16 _int16Val; // 2
-        public UInt16 _uInt16Val; // 3
-        public Int32 _int32Val; // 4
-        public UInt32 _uInt32Val; // 5
-        public Int64 _int64Val; // 6
-        public UInt64 _uInt64Val; // 7
-        public Single _singleVal; // 8
-        public Double _doubleVal; // 9
-        public Decimal _decimalVal; // 10
-        public Boolean _booleanVal; // 11
-        public Char _charVal; // 12
+        public byte _byteVal; // 0
+        public sbyte _sByteVal; // 1
+        public short _int16Val; // 2
+        public ushort _uInt16Val; // 3
+        public int _int32Val; // 4
+        public uint _uInt32Val; // 5
+        public long _int64Val; // 6
+        public ulong _uInt64Val; // 7
+        public float _singleVal; // 8
+        public double _doubleVal; // 9
+        public decimal _decimalVal; // 10
+        public bool _booleanVal; // 11
+        public char _charVal; // 12
         public DateTime _dateTimeVal; // 13
-        public String _stringVal = String.Empty; // 14
+        public string _stringVal = string.Empty; // 14
 
-        public Byte[] _byteArray = Array.Empty<Byte>(); // 15
-        public SByte[] _sByteArray = Array.Empty<SByte>(); // 16
-        public Int16[] _int16Array = Array.Empty<Int16>(); // 17
-        public UInt16[] _uInt16Array = Array.Empty<UInt16>(); // 18
-        public Int32[] _int32Array = Array.Empty<Int32>(); // 19
-        public UInt32[] _uInt32Array = Array.Empty<UInt32>(); // 20
-        public Int64[] _int64Array = Array.Empty<Int64>(); // 21
-        public UInt64[] _uInt64Array = Array.Empty<UInt64>(); // 22
-        public Single[] _singleArray = Array.Empty<Single>(); // 23
-        public Double[] _doubleArray = Array.Empty<Double>(); // 24
-        public Decimal[] _decimalArray = Array.Empty<Decimal>(); // 25
-        public Boolean[] _booleanArray = Array.Empty<Boolean>(); // 26
-        public Char[] _charArray = Array.Empty<Char>(); // 27
+        public byte[] _byteArray = Array.Empty<byte>(); // 15
+        public sbyte[] _sByteArray = Array.Empty<sbyte>(); // 16
+        public short[] _int16Array = Array.Empty<short>(); // 17
+        public ushort[] _uInt16Array = Array.Empty<ushort>(); // 18
+        public int[] _int32Array = Array.Empty<int>(); // 19
+        public uint[] _uInt32Array = Array.Empty<uint>(); // 20
+        public long[] _int64Array = Array.Empty<long>(); // 21
+        public ulong[] _uInt64Array = Array.Empty<ulong>(); // 22
+        public float[] _singleArray = Array.Empty<float>(); // 23
+        public double[] _doubleArray = Array.Empty<double>(); // 24
+        public decimal[] _decimalArray = Array.Empty<decimal>(); // 25
+        public bool[] _booleanArray = Array.Empty<bool>(); // 26
+        public char[] _charArray = Array.Empty<char>(); // 27
         public DateTime[] _dateTimeArray = Array.Empty<DateTime>(); // 28
-        public String[] _stringArray = Array.Empty<String>(); // 29
+        public string[] _stringArray = Array.Empty<string>(); // 29
 
         public static ComplexObject CloneFrom(ComplexObject other)
         {

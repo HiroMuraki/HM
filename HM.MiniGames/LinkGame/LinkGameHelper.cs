@@ -1,4 +1,7 @@
-﻿using HM.MiniGames;
+﻿using HM.MiniGames.Common;
+using HM.MiniGames.Extensions;
+using HM.MiniGames.LinkGame.Enums;
+using HM.MiniGames.LinkGame.Interfaces;
 using System;
 using System.Linq;
 

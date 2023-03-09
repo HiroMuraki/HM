@@ -1,14 +1,15 @@
 ﻿#nullable enable
 using UnityEditor;
-using UnityEngine;
 using System;
 using System.Reflection;
+using HM.UnityEngine._FakeUnityAPI;
+using HM.UnityEngine.Scripts.HM;
 
 namespace HM.UnityEngine.Editor
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OneWayBinder), true)]
-    public class OneWayBinderEditor : UnityEditor.Editor
+    public class OneWayBinderEditor : _FakeUnityAPI.Editor
     {
         public override void OnInspectorGUI()
         {

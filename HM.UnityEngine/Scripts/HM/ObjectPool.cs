@@ -1,10 +1,10 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System;
-using UnityEngine;
-using Object = UnityEngine.Object;
+using Object = HM.UnityEngine._FakeUnityAPI.Object;
+using HM.UnityEngine._FakeUnityAPI;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     public class ObjectPool
     {

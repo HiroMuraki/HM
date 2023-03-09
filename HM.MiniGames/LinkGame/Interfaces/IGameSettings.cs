@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.LinkGame
+﻿namespace HM.MiniGames.LinkGame.Interfaces
 {
     public interface IGameSettings
     {

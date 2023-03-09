@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.CompilerServices;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM.Extensions
 {
     public static class Vector3Extension
     {

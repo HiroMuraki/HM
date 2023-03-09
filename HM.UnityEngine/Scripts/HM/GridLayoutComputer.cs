@@ -1,8 +1,9 @@
 ﻿#nullable enable
 using UnityEngine;
 using System;
+using HM.UnityEngine._FakeUnityAPI;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     public class GridLayoutComputer
     {
@@ -32,8 +33,8 @@ namespace HM.UnityEngine
         {
             var actualLayoutSize = new Vector2
             {
-                x = (DesiredCellSize.x * Columns) + (Columns - 1) * DesiredMarginPerCell.x,
-                y = (DesiredCellSize.y * Rows) + (Rows - 1) * DesiredMarginPerCell.y,
+                x = DesiredCellSize.x * Columns + (Columns - 1) * DesiredMarginPerCell.x,
+                y = DesiredCellSize.y * Rows + (Rows - 1) * DesiredMarginPerCell.y,
             };
             if (actualLayoutSize.x < DesiredLayoutSize.x && actualLayoutSize.y < DesiredLayoutSize.y)
             {

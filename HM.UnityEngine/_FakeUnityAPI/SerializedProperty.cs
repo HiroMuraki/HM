@@ -1,4 +1,4 @@
-﻿namespace UnityEditor
+﻿namespace HM.UnityEngine._FakeUnityAPI
 {
     public class SerializedProperty
     {

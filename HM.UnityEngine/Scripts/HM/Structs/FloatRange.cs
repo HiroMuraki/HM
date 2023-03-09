@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM.Structs
 {
     [Serializable]
     public struct FloatRange : IEquatable<FloatRange>, IFormattable

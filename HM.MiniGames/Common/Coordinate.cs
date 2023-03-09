@@ -1,7 +1,8 @@
 #nullable enable
+using HM;
 using System;
 
-namespace HM.MiniGames
+namespace HM.MiniGames.Common
 {
     [Serializable]
     public readonly struct Coordinate : IEquatable<Coordinate>, IFormattable
@@ -135,7 +136,7 @@ namespace HM.MiniGames
         }
         public override int GetHashCode()
         {
-            return (X << 2) ^ Y;
+            return X << 2 ^ Y;
         }
 
         private readonly int _x;

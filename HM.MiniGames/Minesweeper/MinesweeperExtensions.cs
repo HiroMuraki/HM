@@ -2,8 +2,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using HM.MiniGames.LinkGame;
 using System.Security.Cryptography;
+using HM.MiniGames.Minesweeper.Enums;
+using HM.MiniGames.Common;
+using HM.MiniGames.Minesweeper.Interfaces;
+using HM.MiniGames.LinkGame.Interfaces;
 
 namespace HM.MiniGames.Minesweeper
 {

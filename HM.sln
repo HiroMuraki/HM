@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HM.UnityEngine", "HM.UnityE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HM.Data", "HM.Data\HM.Data.csproj", "{82E021B8-C025-49B2-8111-8521E3D08146}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HM.Ioc", "HM.Ioc\HM.Ioc.csproj", "{DC5A04C5-9412-4805-91D4-4BB4ADDC924A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{82E021B8-C025-49B2-8111-8521E3D08146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82E021B8-C025-49B2-8111-8521E3D08146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82E021B8-C025-49B2-8111-8521E3D08146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC5A04C5-9412-4805-91D4-4BB4ADDC924A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC5A04C5-9412-4805-91D4-4BB4ADDC924A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC5A04C5-9412-4805-91D4-4BB4ADDC924A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC5A04C5-9412-4805-91D4-4BB4ADDC924A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

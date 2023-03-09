@@ -2,8 +2,9 @@
 using System;
 using UnityEngine;
 using System.Linq;
+using HM.UnityEngine._FakeUnityAPI;
 
-namespace HM.UnityEngine
+namespace HM.UnityEngine.Scripts.HM
 {
     public abstract class OneWayBinder : MonoBehaviour
     {

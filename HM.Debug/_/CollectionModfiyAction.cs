@@ -1,4 +1,4 @@
-﻿namespace HM.Collections.Observable
+﻿namespace HM.Debug._
 {
     public enum CollectionModfiyAction
     {

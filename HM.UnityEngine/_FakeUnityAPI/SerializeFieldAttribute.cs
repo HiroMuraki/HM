@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace UnityEngine
+namespace HM.UnityEngine._FakeUnityAPI
 {
-    [System.AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class SerializeFieldAttribute : Attribute
     {
     }

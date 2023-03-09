@@ -1,4 +1,4 @@
-﻿namespace Collections
+﻿namespace HM.Debug._
 {
     [Flags]
     public enum NotificationMode

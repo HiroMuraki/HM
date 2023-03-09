@@ -1,4 +1,6 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿using HM.MiniGames.Minesweeper.Enums;
+
+namespace HM.MiniGames.Minesweeper.Interfaces
 {
     public interface ICell
     {

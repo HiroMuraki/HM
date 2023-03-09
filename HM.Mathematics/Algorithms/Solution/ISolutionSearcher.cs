@@ -1,4 +1,4 @@
-﻿namespace HM.Mathematics.Algorithm
+﻿namespace HM.Mathematics.Algorithms.Solution
 {
     public interface ISolutionSearcher<T> where T : IComparable<T>
     {

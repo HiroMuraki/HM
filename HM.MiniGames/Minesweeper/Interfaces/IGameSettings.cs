@@ -1,4 +1,4 @@
-﻿namespace HM.MiniGames.Minesweeper
+﻿namespace HM.MiniGames.Minesweeper.Interfaces
 {
     public interface IGameSettings
     {
