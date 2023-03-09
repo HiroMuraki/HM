@@ -2,13 +2,13 @@
 
 namespace HM.Ioc;
 
-public class ServiceProvider
+public sealed class ServiceProvider
 {
     public bool TryGetService<TInterface>(out TInterface? result)
     {
-        bool valueGet = _registeredServices.TryGetValue(typeof(TInterface), out var value);
+        _registeredServices.TryGetValue(typeof(TInterface), out var value);
 
-        if (valueGet)
+        if (value is not null)
         {
             result = (TInterface)value!;
             return true;
@@ -22,14 +22,14 @@ public class ServiceProvider
 
     public TInterface GetService<TInterface>()
     {
-        bool valueGet = _registeredServices.TryGetValue(typeof(TInterface), out var value);
-
-        if (valueGet)
+        if (TryGetService<TInterface>(out var value))
         {
-            return (TInterface)value!;
+            return value!;
         }
-
-        throw new ServiceNotFoundException(typeof(TInterface).Name);
+        else
+        {
+            throw new ServiceNotFoundException(typeof(TInterface).Name);
+        }
     }
 
     public TInterface[] GetServices<TInterface>()

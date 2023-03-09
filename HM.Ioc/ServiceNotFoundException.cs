@@ -8,17 +8,17 @@ public class ServiceNotFoundException : Exception
     public string ServiceName { get; } = string.Empty;
 
     public ServiceNotFoundException()
-    {
+        : this(string.Empty, string.Empty, null!) { }
 
-    }
-    public ServiceNotFoundException(string serviceName) : base($"Requested service `{serviceName}` not found")
-    {
-        ServiceName = serviceName;
-    }
-    public ServiceNotFoundException(string serviceName, string message) : base(message)
-    {
-        ServiceName = serviceName;
-    }
+    public ServiceNotFoundException(string serviceName)
+        : this(serviceName, $"Requested service `{serviceName}` not found", null!) { }
+
+    public ServiceNotFoundException(string serviceName, string message)
+        : this(serviceName, message, null!) { }
+
+    public ServiceNotFoundException(string serviceName, Exception inner)
+        : this(serviceName, $"Requested service `{serviceName}` not found", inner) { }
+
     public ServiceNotFoundException(string serviceName, string message, Exception inner) : base(message, inner)
     {
         ServiceName = serviceName;
