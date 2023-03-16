@@ -56,7 +56,14 @@ public sealed class Dockable : AnimatedBehavior<FrameworkElement>
     {
         base.OnAttached();
 
-        Fold();
+        if (Orientation == Orientation.Horizontal)
+        {
+            AssociatedObject.Width = FoldedSize;
+        }
+        else if (Orientation == Orientation.Vertical)
+        {
+            AssociatedObject.Height = FoldedSize;
+        }
     }
 
     private void Expand()

@@ -66,7 +66,11 @@ public sealed class FocusMask : Mask
     {
         base.OnAttached();
 
-        Hide();
+        AssociatedObject.IsEnabled = false;
+        AssociatedObject.IsHitTestVisible = false;
+        AssociatedObject.MouseLeftButtonDown -= HideHandler;
+        AssociatedObject.Opacity = InitOpacity;
+        AssociatedObject.Visibility = Visibility.Collapsed;
     }
 
     protected override void Show()
