@@ -46,8 +46,8 @@ namespace HM.Debug
         public void SetMaxFileSize(int mbSize, int kbSize, int byteSize)
         {
             MaxFileSize = byteSize
-                          + kbSize * _fileSizeBase
-                          + mbSize * _fileSizeBase * _fileSizeBase;
+                          + (kbSize * _fileSizeBase)
+                          + (mbSize * _fileSizeBase * _fileSizeBase);
         }
         public void Dispose()
         {
@@ -74,7 +74,7 @@ namespace HM.Debug
             {
                 return;
             }
-            var l = logLevel & Level;
+            LogLevel l = logLevel & Level;
             if (l == _level || (l == logLevel && (int)logLevel > _levelValue))
             {
                 if (_writer.BaseStream.Length >= MaxFileSize)

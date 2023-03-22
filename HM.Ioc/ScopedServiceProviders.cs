@@ -3,11 +3,11 @@
 public sealed class ScopedServiceProviders<TScope>
     where TScope : notnull
 {
-    public ServiceProvider this[TScope scope]
+    public AppServices this[TScope scope]
     {
         get
         {
-            if (_scopedServiceProvider.TryGetValue(scope, out var serviceProvider))
+            if (_scopedServiceProvider.TryGetValue(scope, out AppServices? serviceProvider))
             {
                 return serviceProvider;
             }
@@ -21,6 +21,6 @@ public sealed class ScopedServiceProviders<TScope>
     }
 
     #region NonPublic
-    private readonly Dictionary<TScope, ServiceProvider> _scopedServiceProvider = new();
+    private readonly Dictionary<TScope, AppServices> _scopedServiceProvider = new();
     #endregion
 }

@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace HM.Data;
+﻿namespace HM.Data;
 
 public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
 {
@@ -66,7 +64,7 @@ public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
     {
         int addedCount = 0;
 
-        foreach (var item in items)
+        foreach (T? item in items)
         {
             _readedData.Add(item);
             addedCount++;
@@ -122,7 +120,7 @@ public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
     {
         ArgumentNullException.ThrowIfNull(predicate);
 
-        var updatedCount = 0;
+        int updatedCount = 0;
 
         for (int i = 0; i < _readedData.Count; i++)
         {

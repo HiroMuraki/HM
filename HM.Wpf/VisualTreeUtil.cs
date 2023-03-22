@@ -23,7 +23,7 @@ namespace HM.Wpf
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
-                var child = VisualTreeHelper.GetChild(obj, i);
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
                 if (child is T result)
                 {
                     return result;

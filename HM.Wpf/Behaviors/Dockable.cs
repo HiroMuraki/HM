@@ -68,7 +68,7 @@ public sealed class Dockable : AnimatedBehavior<FrameworkElement>
 
     private void Expand()
     {
-        var animation = CreateDoubleAnimation(FoldedSize, ExpandedSize);
+        System.Windows.Media.Animation.DoubleAnimation animation = CreateDoubleAnimation(FoldedSize, ExpandedSize);
 
         if (Orientation == Orientation.Horizontal)
         {
@@ -81,7 +81,7 @@ public sealed class Dockable : AnimatedBehavior<FrameworkElement>
     }
     private void Fold()
     {
-        var animation = CreateDoubleAnimation(ExpandedSize, FoldedSize);
+        System.Windows.Media.Animation.DoubleAnimation animation = CreateDoubleAnimation(ExpandedSize, FoldedSize);
 
         if (Orientation == Orientation.Horizontal)
         {

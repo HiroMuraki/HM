@@ -27,25 +27,25 @@ namespace HM.Debug.Extensions
             {
                 if (obj is null) return Array.Empty<string>();
 
-                var propertyInfos = obj.GetType().GetProperties(PublicBindingFlags);
+                PropertyInfo[] propertyInfos = obj.GetType().GetProperties(PublicBindingFlags);
                 var lines = new List<string>();
                 string indentStr = new string(' ', indent);
 
                 lines.Add("{");
-                foreach (var p in propertyInfos)
+                foreach (PropertyInfo p in propertyInfos)
                 {
                     object? value = p.GetValue(obj);
                     if (p.PropertyType.IsArray)
                     {
                         string header = $"{indentStr}{p.Name} = [";
-                        var headerIndent = new string(' ', header.Length - 1);
+                        string headerIndent = new string(' ', header.Length - 1);
 
                         lines.Add(header);
-                        foreach (var item in (Array)value!)
+                        foreach (object? item in (Array)value!)
                         {
                             if (Type.GetTypeCode(item.GetType()) == TypeCode.Object)
                             {
-                                var itemLines = GetMemberLines(item, indent);
+                                string[] itemLines = GetMemberLines(item, indent);
                                 lines.AddRange(itemLines.Select(t => indentStr + indentStr + t));
                             }
                             else
@@ -62,7 +62,7 @@ namespace HM.Debug.Extensions
                     else
                     {
                         lines.Add($"{indentStr}{p.Name} = {{");
-                        var memberLines = GetMemberLines(value, indent);
+                        string[] memberLines = GetMemberLines(value, indent);
                         lines.AddRange(memberLines.Skip(1).SkipLast(1).Select(t => indentStr + t));
                         lines.Add($"{indentStr}}}");
                     }
@@ -80,25 +80,25 @@ namespace HM.Debug.Extensions
             {
                 if (obj is null) return Array.Empty<string>();
 
-                var propertyInfos = obj.GetType().GetFields(NonPublicBindingFlags);
+                FieldInfo[] propertyInfos = obj.GetType().GetFields(NonPublicBindingFlags);
                 var lines = new List<string>();
                 string indentStr = new string(' ', indent);
 
                 lines.Add("{");
-                foreach (var p in propertyInfos)
+                foreach (FieldInfo p in propertyInfos)
                 {
                     object? value = p.GetValue(obj);
                     if (p.FieldType.IsArray)
                     {
                         string header = $"{indentStr}{p.Name} = [";
-                        var headerIndent = new string(' ', header.Length - 1);
+                        string headerIndent = new string(' ', header.Length - 1);
 
                         lines.Add(header);
-                        foreach (var item in (Array)value!)
+                        foreach (object? item in (Array)value!)
                         {
                             if (Type.GetTypeCode(item.GetType()) == TypeCode.Object)
                             {
-                                var itemLines = GetMemberLines(item, indent);
+                                string[] itemLines = GetMemberLines(item, indent);
                                 lines.AddRange(itemLines.Select(t => indentStr + indentStr + t));
                             }
                             else
@@ -115,7 +115,7 @@ namespace HM.Debug.Extensions
                     else
                     {
                         lines.Add($"{indentStr}{p.Name} = {{");
-                        var memberLines = GetMemberLines(value, indent);
+                        string[] memberLines = GetMemberLines(value, indent);
                         lines.AddRange(memberLines.Skip(1).SkipLast(1).Select(t => indentStr + t));
                         lines.Add($"{indentStr}}}");
                     }

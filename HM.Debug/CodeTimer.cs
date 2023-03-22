@@ -42,7 +42,7 @@ namespace HM.Debug
         {
             OutputHandler?.Invoke($">>> Code timer Started");
             var results = new List<BenchmarkResult>();
-            foreach (var action in actions)
+            foreach (Action action in actions)
             {
                 results.Add(RunCore(action));
             }
@@ -84,7 +84,7 @@ namespace HM.Debug
         {
             Prepare();
             // 尝试获取BenchmarkInfoAttribute特性信息
-            var methodInfo = action.Method;
+            System.Reflection.MethodInfo methodInfo = action.Method;
             var bmAtt = Attribute.GetCustomAttribute(methodInfo, typeof(BenchmarkInfoAttribute)) as BenchmarkInfoAttribute;
             if (bmAtt is null)
             {

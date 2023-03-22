@@ -31,7 +31,7 @@ namespace HM.Debug
             {
                 yield return string.Join(VerticalTAB, FormatRow(Headers!, columnWidths, Padding, cellAlignment));
             }
-            foreach (var row in Rows)
+            foreach (string[] row in Rows)
             {
                 yield return string.Join(VerticalTAB, FormatRow(row, columnWidths, Padding, cellAlignment));
             }
@@ -66,7 +66,7 @@ namespace HM.Debug
         {
             var sb = new StringBuilder();
             string rowLine = new string(HorizontalTAB, columnWidths.Sum() + columnWidths.Length - 1);
-            foreach (var row in GetFormattedRows(columnWidths, cellAlignment))
+            foreach (string row in GetFormattedRows(columnWidths, cellAlignment))
             {
                 sb.AppendLine(row);
                 sb.AppendLine(rowLine);

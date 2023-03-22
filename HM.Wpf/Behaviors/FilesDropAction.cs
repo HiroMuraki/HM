@@ -49,7 +49,7 @@ public sealed class FilesDropAction : Behavior<FrameworkElement>
 
             if (Command is null) return;
 
-            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            string[]? files = e.Data.GetData(DataFormats.FileDrop) as string[];
             if (files is null || files.Length <= 0)
             {
                 return;

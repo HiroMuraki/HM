@@ -26,9 +26,9 @@ public class RadioMenuItemsGenerator : Behavior<ContextMenu>
         {
             ArgumentNullException.ThrowIfNull(RadioMenuItemDefines[i].EnumType);
 
-            var enumValues = Enum.GetValues(RadioMenuItemDefines[i].EnumType!);
+            Array enumValues = Enum.GetValues(RadioMenuItemDefines[i].EnumType!);
 
-            foreach (var item in enumValues)
+            foreach (object? item in enumValues)
             {
                 var binding = new Binding()
                 {

@@ -19,7 +19,7 @@ namespace HM.Debug
     {
         public static Action<string> ErrorHanlder { get; } = s =>
         {
-            var prefg = Console.ForegroundColor;
+            ConsoleColor prefg = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(s);
             Console.ForegroundColor = prefg;
@@ -28,7 +28,7 @@ namespace HM.Debug
         public static void All<T>(IEnumerable<T> self, Func<T, bool> predicate)
         {
             int index = 0;
-            foreach (var item in self)
+            foreach (T? item in self)
             {
                 if (!predicate(item))
                 {
@@ -42,7 +42,7 @@ namespace HM.Debug
         public static void AtLeast<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
         {
             int foundCount = 0;
-            foreach (var item in self)
+            foreach (T? item in self)
             {
                 if (predicate(item))
                 {
@@ -58,7 +58,7 @@ namespace HM.Debug
         public static void Count<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
         {
             int foundCount = 0;
-            foreach (var item in self)
+            foreach (T? item in self)
             {
                 if (predicate(item))
                 {
@@ -117,7 +117,7 @@ namespace HM.Debug
         private static readonly Dictionary<Guid, PropertyInfo[]> _propertyInfosCache = new();
         private static FieldInfo[] GetFieldInfos(Type type)
         {
-            if (_fieldInfosCache.TryGetValue(type.GUID, out var reuslt))
+            if (_fieldInfosCache.TryGetValue(type.GUID, out FieldInfo[]? reuslt))
             {
                 return reuslt;
             }
@@ -130,7 +130,7 @@ namespace HM.Debug
         }
         private static PropertyInfo[] GetPropertyInfos(Type type)
         {
-            if (_propertyInfosCache.TryGetValue(type.GUID, out var reuslt))
+            if (_propertyInfosCache.TryGetValue(type.GUID, out PropertyInfo[]? reuslt))
             {
                 return reuslt;
             }
@@ -189,7 +189,7 @@ namespace HM.Debug
             if (a is not null && b is null) return false;
             if (a!.GetType() != b!.GetType()) return false;
 
-            var dataType = a.GetType();
+            Type dataType = a.GetType();
             switch (Type.GetTypeCode(dataType))
             {
                 case TypeCode.Boolean:
@@ -229,7 +229,7 @@ namespace HM.Debug
             }
             else
             {
-                foreach (var fieldInfo in GetFieldInfos(dataType))
+                foreach (FieldInfo fieldInfo in GetFieldInfos(dataType))
                 {
                     object? valueOfA = fieldInfo.GetValue(a);
                     object? valueOfB = fieldInfo.GetValue(b);
@@ -249,7 +249,7 @@ namespace HM.Debug
             if (a is not null && b is null) return false;
             if (a!.GetType() != b!.GetType()) return false;
 
-            var dataType = a.GetType();
+            Type dataType = a.GetType();
             switch (Type.GetTypeCode(dataType))
             {
                 case TypeCode.Boolean:
@@ -289,7 +289,7 @@ namespace HM.Debug
             }
             else
             {
-                foreach (var fieldInfo in GetPropertyInfos(dataType))
+                foreach (PropertyInfo fieldInfo in GetPropertyInfos(dataType))
                 {
                     object? valueOfA = fieldInfo.GetValue(a);
                     object? valueOfB = fieldInfo.GetValue(b);

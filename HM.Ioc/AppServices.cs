@@ -2,11 +2,13 @@
 
 namespace HM.Ioc;
 
-public sealed class ServiceProvider
+public sealed class AppServices
 {
+    public static AppServices Empty { get; } = new(Array.Empty<KeyValuePair<Type, object>>());
+
     public bool TryGetService<TInterface>(out TInterface? result)
     {
-        _registeredServices.TryGetValue(typeof(TInterface), out var value);
+        _registeredServices.TryGetValue(typeof(TInterface), out object? value);
 
         if (value is not null)
         {
@@ -22,7 +24,7 @@ public sealed class ServiceProvider
 
     public TInterface GetService<TInterface>()
     {
-        if (TryGetService<TInterface>(out var value))
+        if (TryGetService<TInterface>(out TInterface? value))
         {
             return value!;
         }
@@ -36,7 +38,7 @@ public sealed class ServiceProvider
     {
         var result = new List<TInterface>();
 
-        foreach (var item in _registeredServices.Values)
+        foreach (object item in _registeredServices.Values)
         {
             if (item is TInterface implement)
             {
@@ -47,7 +49,7 @@ public sealed class ServiceProvider
         return result.ToArray();
     }
 
-    public ServiceProvider(IEnumerable<KeyValuePair<Type, object>> services)
+    public AppServices(IEnumerable<KeyValuePair<Type, object>> services)
     {
         _registeredServices = services.ToImmutableDictionary();
     }

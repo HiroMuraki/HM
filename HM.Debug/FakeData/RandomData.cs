@@ -61,13 +61,13 @@ namespace HM.Debug.FakeData
         public static float NextSingle() => NextSingle(float.MinValue, float.MaxValue);
         public static float NextSingle(float min, float max)
         {
-            return min + (float)Random.NextSingle() * (max - min)
-                * Random.Next(0, 2) == 0 ? 1 : -1;
+            return min + ((float)Random.NextSingle() * (max - min)
+                * Random.Next(0, 2)) == 0 ? 1 : -1;
         }
         public static double NextDouble() => NextDouble(double.MinValue, double.MaxValue);
         public static double NextDouble(double min, double max)
         {
-            return (min + (float)Random.NextDouble() * (max - min))
+            return (min + ((float)Random.NextDouble() * (max - min)))
                 * Random.Next(0, 2) == 0 ? 1 : -1;
         }
         public static decimal NextDecimal()
@@ -148,7 +148,7 @@ namespace HM.Debug.FakeData
         }
         public static string NextString(params CharTypes[] charTypes)
         {
-            var result = new char[charTypes.Length];
+            char[] result = new char[charTypes.Length];
             for (int i = 0; i < charTypes.Length; i++)
             {
                 result[i] = charTypes[i] switch

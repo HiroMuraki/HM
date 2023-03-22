@@ -32,9 +32,9 @@ public sealed class ServiceProviderBuilder
         _registeredServices.Remove(typeof(TInterface));
     }
 
-    public ServiceProvider BuildServiceProvider()
+    public AppServices BuildServiceProvider()
     {
-        return new ServiceProvider(_registeredServices);
+        return new AppServices(_registeredServices);
     }
 
     #region NonPublic

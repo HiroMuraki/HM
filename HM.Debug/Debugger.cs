@@ -13,7 +13,7 @@ namespace HM.Debug
             if (!expr)
             {
                 var starckTrace = new StackTrace(true);
-                var callerStarckFrame = starckTrace.GetFrame(1);
+                StackFrame? callerStarckFrame = starckTrace.GetFrame(1);
                 System.Diagnostics.Debug.Assert(callerStarckFrame is not null, "Unable to track required stack info");
 
                 int linenum = callerStarckFrame.GetFileLineNumber();

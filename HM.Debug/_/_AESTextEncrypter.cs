@@ -14,7 +14,7 @@ namespace HM.Debug._
         private const int _aesBlockSize = _aesKeyLength * _bitPerByte; //AES加密块大小，设置为密钥长度 * BitPerByte
         private readonly Aes _aes = Aes.Create();
         private readonly int _encryptBufferSize = 32 * _bytePerKByte; // 加密缓冲区大小，设置为32KB
-        private readonly int _decryptBufferSize = 32 * _bytePerKByte + 16; // 解密缓冲区大小，为加密缓冲区大小加上AES加密会导致多出的16字节
+        private readonly int _decryptBufferSize = (32 * _bytePerKByte) + 16; // 解密缓冲区大小，为加密缓冲区大小加上AES加密会导致多出的16字节
 
         #region 公共属性
         public int EncryptionBufferSize

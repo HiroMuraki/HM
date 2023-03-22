@@ -15,7 +15,7 @@ public class DbFieldAttribute : Attribute
 
     public static DbFieldInfo[] GetColumns<T>()
     {
-        var properties = typeof(T).GetProperties();
+        PropertyInfo[] properties = typeof(T).GetProperties();
         var result = new List<DbFieldInfo>(properties.Length);
         for (int i = 0; i < properties.Length; i++)
         {

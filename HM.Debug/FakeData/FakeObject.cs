@@ -9,7 +9,7 @@ namespace HM.Debug.FakeData
     {
         public override string ToString()
         {
-            var propInfos = GetPropertyInfosFromCache();
+            PropertyInfo[] propInfos = GetPropertyInfosFromCache();
 
             var sb = new StringBuilder();
             sb.Append('{');
@@ -30,8 +30,8 @@ namespace HM.Debug.FakeData
             if (obj is null) return false;
             if (obj.GetType() != GetType()) return false;
 
-            var propInfos = GetPropertyInfosFromCache();
-            foreach (var propInfo in propInfos)
+            PropertyInfo[] propInfos = GetPropertyInfosFromCache();
+            foreach (PropertyInfo propInfo in propInfos)
             {
                 object? valA = propInfo.GetValue(this);
                 object? valB = propInfo.GetValue(obj);
@@ -55,8 +55,8 @@ namespace HM.Debug.FakeData
         private static readonly Dictionary<Type, PropertyInfo[]> _propertyInfosCache = new();
         private PropertyInfo[] GetPropertyInfosFromCache()
         {
-            var type = GetType();
-            if (_propertyInfosCache.TryGetValue(type, out var propInfos))
+            Type type = GetType();
+            if (_propertyInfosCache.TryGetValue(type, out PropertyInfo[]? propInfos))
             {
                 return propInfos;
             }
