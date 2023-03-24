@@ -167,10 +167,8 @@ public class FileIO : IFileIO
 
     public async Task DeleteFileAsync(string path)
     {
-        await Task.Run(() =>
-        {
-            File.Delete(path);
-        });
+        File.Delete(path);
+        await Task.CompletedTask;
     }
 
     #region NonPublic
