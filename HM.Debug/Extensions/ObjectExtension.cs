@@ -27,12 +27,12 @@ namespace HM.Debug.Extensions
             {
                 if (obj is null) return Array.Empty<string>();
 
-                PropertyInfo[] propertyInfos = obj.GetType().GetProperties(PublicBindingFlags);
+                var propertyInfos = obj.GetType().GetProperties(PublicBindingFlags);
                 var lines = new List<string>();
                 string indentStr = new string(' ', indent);
 
                 lines.Add("{");
-                foreach (PropertyInfo p in propertyInfos)
+                foreach (var p in propertyInfos)
                 {
                     object? value = p.GetValue(obj);
                     if (p.PropertyType.IsArray)
@@ -80,12 +80,12 @@ namespace HM.Debug.Extensions
             {
                 if (obj is null) return Array.Empty<string>();
 
-                FieldInfo[] propertyInfos = obj.GetType().GetFields(NonPublicBindingFlags);
+                var propertyInfos = obj.GetType().GetFields(NonPublicBindingFlags);
                 var lines = new List<string>();
                 string indentStr = new string(' ', indent);
 
                 lines.Add("{");
-                foreach (FieldInfo p in propertyInfos)
+                foreach (var p in propertyInfos)
                 {
                     object? value = p.GetValue(obj);
                     if (p.FieldType.IsArray)

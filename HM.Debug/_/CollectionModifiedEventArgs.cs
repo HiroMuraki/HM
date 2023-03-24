@@ -1,4 +1,4 @@
-﻿namespace HM.Debug._
+﻿namespace HM.Debug._d
 {
     public enum LockStatus
     {

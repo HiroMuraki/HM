@@ -23,14 +23,14 @@ namespace HM.Wpf
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                var child = VisualTreeHelper.GetChild(obj, i);
                 if (child is T result)
                 {
                     return result;
                 }
                 else
                 {
-                    T? childOfChild = FindVisualChild<T>(child);
+                    var childOfChild = FindVisualChild<T>(child);
                     if (childOfChild is not null)
                     {
                         return childOfChild;

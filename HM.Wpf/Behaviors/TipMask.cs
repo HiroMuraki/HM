@@ -18,7 +18,7 @@ public sealed class TipMask : Mask
     {
         AssociatedObject.Visibility = Visibility.Visible;
 
-        System.Windows.Media.Animation.DoubleAnimation animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
+        var animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
         AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
     }
     protected override void Hide()

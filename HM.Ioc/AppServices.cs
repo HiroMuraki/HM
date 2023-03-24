@@ -24,7 +24,7 @@ public sealed class AppServices
 
     public TInterface GetService<TInterface>()
     {
-        if (TryGetService<TInterface>(out TInterface? value))
+        if (TryGetService<TInterface>(out var value))
         {
             return value!;
         }

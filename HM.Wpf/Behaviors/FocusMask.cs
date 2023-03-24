@@ -23,7 +23,7 @@ public sealed class FocusMask : Mask
         AssociatedObject.Visibility = Visibility.Visible;
         AssociatedObject.IsHitTestVisible = true;
         AssociatedObject.MouseLeftButtonDown += HideHandler;
-        System.Windows.Media.Animation.DoubleAnimation animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
+        var animation = CreateDoubleAnimation(InitOpacity, MaskedOpacity);
 
         AssociatedObject.BeginAnimation(UIElement.OpacityProperty, animation);
     }
@@ -32,7 +32,7 @@ public sealed class FocusMask : Mask
         AssociatedObject.IsEnabled = false;
         AssociatedObject.IsHitTestVisible = false;
         AssociatedObject.MouseLeftButtonDown -= HideHandler;
-        System.Windows.Media.Animation.DoubleAnimation animation = CreateDoubleAnimation(MaskedOpacity, InitOpacity);
+        var animation = CreateDoubleAnimation(MaskedOpacity, InitOpacity);
 
         animation.Completed += (_, _) =>
         {

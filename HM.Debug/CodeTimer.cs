@@ -26,12 +26,12 @@ namespace HM.Debug
             public override string ToString()
             {
                 var sb = new StringBuilder();
-                sb.AppendLine($">>> Timer started at {DateTime.Now:yyyy-MM-dd:HH-mm-ss}");
-                sb.AppendLine($">>> Timer stopped at {DateTime.Now:yyyy-MM-dd:HH-mm-ss}");
-                sb.AppendLine($"    Avg = {ElapsedTimes.Average():F6}ms");
-                sb.AppendLine($"    Max = {ElapsedTimes.Max():F6}ms");
-                sb.AppendLine($"    Min = {ElapsedTimes.Min():F6}ms");
-                sb.AppendLine($"    MemoryUsage = {MemoryUsages.Average()} bytes");
+                _ = sb.AppendLine($">>> Timer started at {DateTime.Now:yyyy-MM-dd:HH-mm-ss}");
+                _ = sb.AppendLine($">>> Timer stopped at {DateTime.Now:yyyy-MM-dd:HH-mm-ss}");
+                _ = sb.AppendLine($"    Avg = {ElapsedTimes.Average():F6}ms");
+                _ = sb.AppendLine($"    Max = {ElapsedTimes.Max():F6}ms");
+                _ = sb.AppendLine($"    Min = {ElapsedTimes.Min():F6}ms");
+                _ = sb.AppendLine($"    MemoryUsage = {MemoryUsages.Average()} bytes");
                 return sb.ToString();
             }
         }
@@ -42,7 +42,7 @@ namespace HM.Debug
         {
             OutputHandler?.Invoke($">>> Code timer Started");
             var results = new List<BenchmarkResult>();
-            foreach (Action action in actions)
+            foreach (var action in actions)
             {
                 results.Add(RunCore(action));
             }
@@ -84,7 +84,7 @@ namespace HM.Debug
         {
             Prepare();
             // 尝试获取BenchmarkInfoAttribute特性信息
-            System.Reflection.MethodInfo methodInfo = action.Method;
+            var methodInfo = action.Method;
             var bmAtt = Attribute.GetCustomAttribute(methodInfo, typeof(BenchmarkInfoAttribute)) as BenchmarkInfoAttribute;
             if (bmAtt is null)
             {

@@ -74,7 +74,7 @@ namespace HM.Debug
             {
                 return;
             }
-            LogLevel l = logLevel & Level;
+            var l = logLevel & Level;
             if (l == _level || (l == logLevel && (int)logLevel > _levelValue))
             {
                 if (_writer.BaseStream.Length >= MaxFileSize)

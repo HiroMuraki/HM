@@ -68,8 +68,8 @@ namespace HM.Debug
             string rowLine = new string(HorizontalTAB, columnWidths.Sum() + columnWidths.Length - 1);
             foreach (string row in GetFormattedRows(columnWidths, cellAlignment))
             {
-                sb.AppendLine(row);
-                sb.AppendLine(rowLine);
+                _ = sb.AppendLine(row);
+                _ = sb.AppendLine(rowLine);
             }
             return sb.ToString();
         }

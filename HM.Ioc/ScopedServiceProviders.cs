@@ -7,7 +7,7 @@ public sealed class ScopedServiceProviders<TScope>
     {
         get
         {
-            if (_scopedServiceProvider.TryGetValue(scope, out AppServices? serviceProvider))
+            if (_scopedServiceProvider.TryGetValue(scope, out var serviceProvider))
             {
                 return serviceProvider;
             }

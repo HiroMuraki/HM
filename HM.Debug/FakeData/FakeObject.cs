@@ -9,19 +9,19 @@ namespace HM.Debug.FakeData
     {
         public override string ToString()
         {
-            PropertyInfo[] propInfos = GetPropertyInfosFromCache();
+            var propInfos = GetPropertyInfosFromCache();
 
             var sb = new StringBuilder();
-            sb.Append('{');
+            _ = sb.Append('{');
             for (int i = 0; i < propInfos!.Length; i++)
             {
-                sb.Append($"{propInfos[i].Name} = {propInfos[i].GetValue(this)}");
+                _ = sb.Append($"{propInfos[i].Name} = {propInfos[i].GetValue(this)}");
                 if (i < propInfos.Length - 1)
                 {
-                    sb.Append(", ");
+                    _ = sb.Append(", ");
                 }
             }
-            sb.Append('}');
+            _ = sb.Append('}');
             return sb.ToString();
         }
         public override bool Equals(object? obj)
@@ -30,8 +30,8 @@ namespace HM.Debug.FakeData
             if (obj is null) return false;
             if (obj.GetType() != GetType()) return false;
 
-            PropertyInfo[] propInfos = GetPropertyInfosFromCache();
-            foreach (PropertyInfo propInfo in propInfos)
+            var propInfos = GetPropertyInfosFromCache();
+            foreach (var propInfo in propInfos)
             {
                 object? valA = propInfo.GetValue(this);
                 object? valB = propInfo.GetValue(obj);
@@ -55,8 +55,8 @@ namespace HM.Debug.FakeData
         private static readonly Dictionary<Type, PropertyInfo[]> _propertyInfosCache = new();
         private PropertyInfo[] GetPropertyInfosFromCache()
         {
-            Type type = GetType();
-            if (_propertyInfosCache.TryGetValue(type, out PropertyInfo[]? propInfos))
+            var type = GetType();
+            if (_propertyInfosCache.TryGetValue(type, out var propInfos))
             {
                 return propInfos;
             }

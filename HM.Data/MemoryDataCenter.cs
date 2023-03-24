@@ -64,7 +64,7 @@ public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
     {
         int addedCount = 0;
 
-        foreach (T? item in items)
+        foreach (var item in items)
         {
             _readedData.Add(item);
             addedCount++;

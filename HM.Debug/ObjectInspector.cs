@@ -19,7 +19,7 @@ namespace HM.Debug
     {
         public static Action<string> ErrorHanlder { get; } = s =>
         {
-            ConsoleColor prefg = Console.ForegroundColor;
+            var prefg = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(s);
             Console.ForegroundColor = prefg;
@@ -28,7 +28,7 @@ namespace HM.Debug
         public static void All<T>(IEnumerable<T> self, Func<T, bool> predicate)
         {
             int index = 0;
-            foreach (T? item in self)
+            foreach (var item in self)
             {
                 if (!predicate(item))
                 {
@@ -42,7 +42,7 @@ namespace HM.Debug
         public static void AtLeast<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
         {
             int foundCount = 0;
-            foreach (T? item in self)
+            foreach (var item in self)
             {
                 if (predicate(item))
                 {
@@ -58,7 +58,7 @@ namespace HM.Debug
         public static void Count<T>(IEnumerable<T> self, Func<T, bool> predicate, int count)
         {
             int foundCount = 0;
-            foreach (T? item in self)
+            foreach (var item in self)
             {
                 if (predicate(item))
                 {
@@ -105,7 +105,7 @@ namespace HM.Debug
                 case TypeCode.UInt64: return BytesToString(BitConverter.GetBytes((ulong)value!));
                 case TypeCode.Single: return BytesToString(BitConverter.GetBytes((float)value!));
                 case TypeCode.Double: return BytesToString(BitConverter.GetBytes((double)value!));
-                case TypeCode.Decimal: return String.Join(' ', from intVal in decimal.GetBits((decimal)value) select To8bitsString(intVal));
+                case TypeCode.Decimal: return string.Join(' ', from intVal in decimal.GetBits((decimal)value) select To8bitsString(intVal));
                 case TypeCode.Boolean: return BytesToString(BitConverter.GetBytes((bool)value!));
                 case TypeCode.Char: return BytesToString(BitConverter.GetBytes((char)value!));
                 case TypeCode.DateTime: return BytesToString(BitConverter.GetBytes(((DateTime)value).Ticks));
@@ -117,7 +117,7 @@ namespace HM.Debug
         private static readonly Dictionary<Guid, PropertyInfo[]> _propertyInfosCache = new();
         private static FieldInfo[] GetFieldInfos(Type type)
         {
-            if (_fieldInfosCache.TryGetValue(type.GUID, out FieldInfo[]? reuslt))
+            if (_fieldInfosCache.TryGetValue(type.GUID, out var reuslt))
             {
                 return reuslt;
             }
@@ -130,7 +130,7 @@ namespace HM.Debug
         }
         private static PropertyInfo[] GetPropertyInfos(Type type)
         {
-            if (_propertyInfosCache.TryGetValue(type.GUID, out PropertyInfo[]? reuslt))
+            if (_propertyInfosCache.TryGetValue(type.GUID, out var reuslt))
             {
                 return reuslt;
             }
@@ -159,7 +159,7 @@ namespace HM.Debug
                 }
                 byteStrArray[index] = ByteToBitString(bytes[i], bitOrder);
             }
-            return String.Join(delimiter, byteStrArray);
+            return string.Join(delimiter, byteStrArray);
         }
         private static string ByteToBitString(byte byteVal, BitOrder bitOrder = BitOrder.BigEndian)
         {
@@ -189,7 +189,7 @@ namespace HM.Debug
             if (a is not null && b is null) return false;
             if (a!.GetType() != b!.GetType()) return false;
 
-            Type dataType = a.GetType();
+            var dataType = a.GetType();
             switch (Type.GetTypeCode(dataType))
             {
                 case TypeCode.Boolean:
@@ -229,7 +229,7 @@ namespace HM.Debug
             }
             else
             {
-                foreach (FieldInfo fieldInfo in GetFieldInfos(dataType))
+                foreach (var fieldInfo in GetFieldInfos(dataType))
                 {
                     object? valueOfA = fieldInfo.GetValue(a);
                     object? valueOfB = fieldInfo.GetValue(b);
@@ -249,7 +249,7 @@ namespace HM.Debug
             if (a is not null && b is null) return false;
             if (a!.GetType() != b!.GetType()) return false;
 
-            Type dataType = a.GetType();
+            var dataType = a.GetType();
             switch (Type.GetTypeCode(dataType))
             {
                 case TypeCode.Boolean:
@@ -289,7 +289,7 @@ namespace HM.Debug
             }
             else
             {
-                foreach (PropertyInfo fieldInfo in GetPropertyInfos(dataType))
+                foreach (var fieldInfo in GetPropertyInfos(dataType))
                 {
                     object? valueOfA = fieldInfo.GetValue(a);
                     object? valueOfB = fieldInfo.GetValue(b);

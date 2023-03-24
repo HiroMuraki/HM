@@ -19,6 +19,7 @@
 	  <ProjectReference Include="..\HM.Collections\HM.Collections.csproj" />
 	  <ProjectReference Include="..\HM.Common\HM.Common.csproj" />
 	  <ProjectReference Include="..\HM.Cryptography\HM.Cryptography.csproj" />
+	  <ProjectReference Include="..\HM.Data\HM.Data.csproj" />
 	  <ProjectReference Include="..\HM.Debug\HM.Debug.csproj" />
 	  <ProjectReference Include="..\HM.Mathematics\HM.Mathematics.csproj" />
 	  <ProjectReference Include="..\HM.MiniGames\HM.MiniGames.csproj" />

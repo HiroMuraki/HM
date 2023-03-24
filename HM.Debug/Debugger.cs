@@ -13,7 +13,7 @@ namespace HM.Debug
             if (!expr)
             {
                 var starckTrace = new StackTrace(true);
-                StackFrame? callerStarckFrame = starckTrace.GetFrame(1);
+                var callerStarckFrame = starckTrace.GetFrame(1);
                 System.Diagnostics.Debug.Assert(callerStarckFrame is not null, "Unable to track required stack info");
 
                 int linenum = callerStarckFrame.GetFileLineNumber();
@@ -26,7 +26,7 @@ namespace HM.Debug
                     int currentLine = 1;
                     while (currentLine < linenum)
                     {
-                        reader.ReadLine();
+                        _ = reader.ReadLine();
                         currentLine++;
                     }
                     exprSection = reader.ReadLine()?.Trim();

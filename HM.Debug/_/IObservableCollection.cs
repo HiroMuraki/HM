@@ -1,4 +1,4 @@
-﻿namespace HM.Debug._
+﻿namespace HM.Debug._d
 {
     /// <summary>
     /// Represent a collection that can raise event when item in the collection was added, removed or updated

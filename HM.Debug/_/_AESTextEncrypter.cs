@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace HM.Debug._
+namespace HM.Debug._d
 {
     [Obsolete("Use AesTextEncrypter")]
     public class _AESTextEncrypter
