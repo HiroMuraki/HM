@@ -1,4 +1,5 @@
 ﻿using HM.Data;
+using HM.Data.Servers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection.Emit;
 
@@ -25,7 +26,7 @@ public class DataServerTest
     private static readonly string _tempFile = @"testFile.txt";
     private static readonly string _serverFilePath = @"serverFile.txt";
 
-    private readonly IDataServer _dataServer = new LocalDataServer(_serverRoot, FileIO.Instance, DataJsonSeralizer.Instance);
+    private readonly IDataServer _dataServer = new LocalDataServer(_serverRoot, FileIO.Instance);
 
     [TestMethod]
     public async Task Uploading_Test()
@@ -43,7 +44,8 @@ public class DataServerTest
             System.Diagnostics.Debug.WriteLine($"[Uploading] {e.Progress * 100:F2}%"); // debug output
         };
 
-        await _dataServer.UploadAsync(vectors, _serverFilePath);
+        var data = await DataJsonSeralizer.Instance.SerializeAsync(vectors);
+        await _dataServer.UploadAsync(data, _serverFilePath);
 
         System.Diagnostics.Debug.WriteLine($"[Write]"); // debug output
         foreach (var vector in vectors)
@@ -61,7 +63,8 @@ public class DataServerTest
             System.Diagnostics.Debug.WriteLine($"[Downloading] {e.Progress * 100:F2}%"); // debug output
         };
 
-        var result = await _dataServer.FetchAsync<Vector[]>(_serverFilePath);
+        byte[] data = await _dataServer.FetchAsync(_serverFilePath);
+        var result = await DataJsonSeralizer.Instance.DeserializeAsync<Vector[]>(data);
 
         System.Diagnostics.Debug.WriteLine($"[Read]"); // debug output
         foreach (var item in result)

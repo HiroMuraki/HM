@@ -2,9 +2,7 @@
 
 public class LocalDataServer : LocalServer, IDataServer
 {
-    public IDataSerializer DataSerializer { get; }
-
-    public async Task<T> FetchAsync<T>(string serverFilePath, CancellationToken cancellationToken)
+    public async Task<byte[]> FetchAsync(string serverFilePath, CancellationToken cancellationToken)
     {
         string localFilePath = GetLocalFilePath(serverFilePath);
 
@@ -13,14 +11,12 @@ public class LocalDataServer : LocalServer, IDataServer
 
         await WriteToAsync(fs, ms, TranscationMode.Download, cancellationToken);
 
-        return await DataSerializer.DeserializeAsync<T>(ms.ToArray());
+        return ms.ToArray();
     }
 
-    public async Task UploadAsync<T>(T obj, string serverFilePath, CancellationToken cancellationToken)
+    public async Task UploadAsync(byte[] data, string serverFilePath, CancellationToken cancellationToken)
     {
         string localFilePath = GetLocalFilePath(serverFilePath);
-
-        byte[] data = await DataSerializer.SerializeAsync(obj, cancellationToken);
 
         using var fs = FileIO.WriteAsStream(localFilePath);
 
@@ -38,9 +34,8 @@ public class LocalDataServer : LocalServer, IDataServer
         await FileIO.DeleteFileAsync(localFilePath);
     }
 
-    public LocalDataServer(string rootDirectory, IFileIO fileIO, IDataSerializer dataSerializer) : base(rootDirectory, fileIO)
+    public LocalDataServer(string rootDirectory, IFileIO fileIO) : base(rootDirectory, fileIO)
     {
-        DataSerializer = dataSerializer;
     }
 }
 

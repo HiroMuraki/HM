@@ -2,12 +2,12 @@
 
 public static class IDataServerExtensions
 {
-    public static async Task<T> FetchAsync<T>(this IDataServer self, string serverFilePath)
+    public static async Task<byte[]> FetchAsync(this IDataServer self, string serverFilePath)
     {
-        return await self.FetchAsync<T>(serverFilePath, CancellationToken.None);
+        return await self.FetchAsync(serverFilePath, CancellationToken.None);
     }
 
-    public static async Task UploadAsync<T>(this IDataServer self, T data, string serverFilePath)
+    public static async Task UploadAsync(this IDataServer self, byte[] data, string serverFilePath)
     {
         await self.UploadAsync(data, serverFilePath, CancellationToken.None);
     }
