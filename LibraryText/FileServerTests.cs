@@ -5,7 +5,7 @@ using System.Runtime;
 namespace LibraryTest;
 
 [TestClass]
-public class ServerTests
+public class FileServerTests
 {
     private static readonly string _localRoot = @"C:\Users\11717\Downloads\ServerTest\LocalData";
     private static readonly string _serverRoot = @"C:\Users\11717\Downloads\ServerTest\ServerData";
@@ -47,7 +47,7 @@ public class ServerTests
         // Add a progress changed listener
         double uploadProgress = -1;
         double lastLoggedUploadProgress = -1;
-        _server.UploadingProgressChanged += (sender, args) =>
+        _server.ProgressChanged += (sender, args) =>
         {
             uploadProgress = args.Progress;
 
@@ -108,7 +108,7 @@ public class ServerTests
 
         // Add a progress changed listener
         double uploadProgress = -1;
-        _server.UploadingProgressChanged += (sender, args) =>
+        _server.ProgressChanged += (sender, args) =>
         {
             uploadProgress = args.Progress;
             System.Diagnostics.Debug.WriteLine($"[Uploading] {uploadProgress * 100:F2}%"); // debug output
@@ -168,7 +168,7 @@ public class ServerTests
         // Add a progress changed listener
         double downloadProgress = -1;
         double lastLoggedDownloadProgress = -1;
-        _server.DownloadingProgressChanged += (sender, args) =>
+        _server.ProgressChanged += (sender, args) =>
         {
             downloadProgress = args.Progress;
 
@@ -225,7 +225,7 @@ public class ServerTests
 
         // Add a progress changed listener
         double downloadProgress = -1;
-        _server.DownloadingProgressChanged += (sender, args) =>
+        _server.ProgressChanged += (sender, args) =>
         {
             downloadProgress = args.Progress;
             System.Diagnostics.Debug.WriteLine($"[Downloading] {downloadProgress * 100:F2}%"); // debug output

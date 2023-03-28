@@ -1,6 +1,6 @@
 ﻿namespace HM.Data;
 
-public class MemorySingleData<T> : IAsyncSingleData<T>, ISingleData<T>
+public class MemorySingleDataCenter<T> : IAsyncSingleData<T>, ISingleDataCenter<T>
 {
     public int Delete()
     {

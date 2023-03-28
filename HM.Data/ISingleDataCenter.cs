@@ -9,10 +9,12 @@ using System.Threading;
 using HM.Data;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Net.Mail;
+using System.Xml;
 
 namespace HM.Data;
 
-public interface ISingleData<T>
+public interface ISingleDataCenter<T>
 {
     T? Get();
 
@@ -21,8 +23,16 @@ public interface ISingleData<T>
     int Delete();
 }
 
+public enum TranscationMode
+{
+    Undefined,
+    Upload,
+    Download
+}
+
 public class ProgressChangedEventArgs : EventArgs
 {
+    public TranscationMode TranscationMode { get; init; }
     public double Progress { get; init; }
     public bool TaskCompleted { get; init; }
 }
@@ -35,14 +45,9 @@ public class ExceptionRaisedEventArgs : EventArgs
 public interface IFileServer
 {
     /// <summary>
-    /// Raised when the current uploading progress has changed.
+    /// Raised when the current uploading or downloading progress has changed.
     /// </summary>
-    event EventHandler<ProgressChangedEventArgs>? UploadingProgressChanged;
-
-    /// <summary>
-    /// Raised when the current downloading progress has changed.
-    /// </summary>
-    event EventHandler<ProgressChangedEventArgs>? DownloadingProgressChanged;
+    event EventHandler<ProgressChangedEventArgs>? ProgressChanged;
 
     /// <summary>
     /// Raised when an exception is raised during a file transfer operation.
@@ -81,6 +86,7 @@ public interface IFileServer
     /// <returns>A task representing the asynchronous operation of removing the file.</returns>
     Task RemoveAsync(string serverFilePath, CancellationToken cancellationToken);
 }
+
 
 public static class IFileServerExtensions
 {
@@ -179,58 +185,48 @@ public class FileIO : IFileIO
     #endregion  
 }
 
-public class LocalFileServer : IFileServer
+public class LocalFileServer : LocalServer, IFileServer
 {
-    public const int BufferSize = 16 * 1024; // 16KB buffer size
-    public const int SizeToEnableBuffer = 1 * 1024 * 1024; // Read/Write file larger than 1MB will enable buffer
-
-    public event EventHandler<ProgressChangedEventArgs>? UploadingProgressChanged;
-    public event EventHandler<ProgressChangedEventArgs>? DownloadingProgressChanged;
-    public event EventHandler<ExceptionRaisedEventArgs>? ExceptionRaised;
-
     public Task<bool> CheckIfFileExisted(string serverFilePath, CancellationToken cancellationToken)
     {
-        string targetFilePath = Path.Combine(_rootDirectory, serverFilePath);
+        string targetFilePath = GetLocalFilePath(serverFilePath);
 
-        return Task.FromResult(_fileIO.Exists(targetFilePath));
+        return Task.FromResult(FileIO.Exists(targetFilePath));
     }
 
     public async Task DownloadAsync(string serverFilePath, string localFilePath, CancellationToken cancellationToken)
     {
-        string sourceLocalFilePath = Path.Combine(_rootDirectory, serverFilePath);
+        string sourceLocalFilePath = GetLocalFilePath(serverFilePath);
 
-        if (!_fileIO.Exists(sourceLocalFilePath))
+        if (!FileIO.Exists(sourceLocalFilePath))
         {
-            ExceptionRaised?.Invoke(this, new ExceptionRaisedEventArgs()
-            {
-                Exception = new FileNotFoundException($"Can't find file `{sourceLocalFilePath}`")
-            });
+            OnExceptionRaised(new FileNotFoundException($"Can't find file `{sourceLocalFilePath}`"));
             return;
         }
 
-        using var sourceFileStream = _fileIO.ReadAsStream(sourceLocalFilePath);
-        using var targetFileStream = _fileIO.WriteAsStream(localFilePath);
+        using var sourceFileStream = FileIO.ReadAsStream(sourceLocalFilePath);
+        using var targetFileStream = FileIO.WriteAsStream(localFilePath);
 
         await WriteToAsync(
             sourceFileStream,
             targetFileStream,
-            cancellationToken,
-            p => DownloadingProgressChanged?.Invoke(this, p)
+            TranscationMode.Download,
+            cancellationToken
         );
     }
 
     public async Task UploadAsync(string serverFilePath, string localFilePath, CancellationToken cancellationToken)
     {
-        string targetFilePath = Path.Combine(_rootDirectory, serverFilePath);
+        string targetFilePath = GetLocalFilePath(serverFilePath);
 
-        using var targetFileStream = _fileIO.WriteAsStream(targetFilePath);
-        using var sourceFileStream = _fileIO.ReadAsStream(localFilePath);
+        using var targetFileStream = FileIO.WriteAsStream(targetFilePath);
+        using var sourceFileStream = FileIO.ReadAsStream(localFilePath);
 
         await WriteToAsync(
             sourceFileStream,
             targetFileStream,
-            cancellationToken,
-            p => UploadingProgressChanged?.Invoke(this, p)
+            TranscationMode.Upload,
+            cancellationToken
         );
     }
 
@@ -238,79 +234,93 @@ public class LocalFileServer : IFileServer
     {
         try
         {
-            string targetFilePath = Path.Combine(_rootDirectory, serverFilePath);
+            string targetFilePath = GetLocalFilePath(serverFilePath);
 
-            await _fileIO.DeleteFileAsync(targetFilePath);
+            await FileIO.DeleteFileAsync(targetFilePath);
         }
         catch (Exception e)
         {
-            ExceptionRaised?.Invoke(this, new ExceptionRaisedEventArgs()
-            {
-                Exception = e
-            });
+            OnExceptionRaised(e);
         }
     }
 
-    public LocalFileServer(string rootDirectory, IFileIO fileIO)
+    public LocalFileServer(string rootDirectory, IFileIO fileIO) : base(rootDirectory, fileIO)
+    {
+    }
+}
+
+public abstract class LocalServer
+{
+    public const int BufferSize = 16 * 1024; // 16KB buffer size
+    public const int SizeToEnableBuffer = 1 * 1024 * 1024; // Read/Write file larger than 1MB will enable buffer
+
+    public event EventHandler<ProgressChangedEventArgs>? ProgressChanged;
+    public event EventHandler<ExceptionRaisedEventArgs>? ExceptionRaised;
+
+    public LocalServer(string rootDirectory, IFileIO fileIO)
     {
         _rootDirectory = rootDirectory;
         _fileIO = fileIO;
     }
 
     #region NonPublic
-    private readonly string _rootDirectory;
-    private readonly IFileIO _fileIO;
-    private async Task WriteToAsync(Stream sourceFileStream, Stream targetFileStream, CancellationToken cancellationToken, Action<ProgressChangedEventArgs> progressChanged)
+    protected string RootDirectoy => _rootDirectory;
+    protected IFileIO FileIO => _fileIO;
+    protected string GetLocalFilePath(string serverFilePath)
+    {
+        return Path.Combine(_rootDirectory, serverFilePath);
+    }
+    protected void OnProgressChanged(double progress, TranscationMode transcationMode)
+    {
+        ProgressChanged?.Invoke(this, new ProgressChangedEventArgs()
+        {
+            TranscationMode = transcationMode,
+            Progress = progress,
+            TaskCompleted = progress == 1
+        });
+    }
+    protected void OnExceptionRaised(Exception exception)
+    {
+        ExceptionRaised?.Invoke(this, new ExceptionRaisedEventArgs()
+        {
+            Exception = exception
+        });
+    }
+    protected async Task WriteToAsync(Stream sourceStream, Stream targetStream, TranscationMode transcationMode, CancellationToken cancellationToken)
     {
         try
         {
-            progressChanged?.Invoke(new ProgressChangedEventArgs()
-            {
-                Progress = 0,
-                TaskCompleted = false
-            });
+            OnProgressChanged(0, transcationMode);
 
-            if (sourceFileStream.Length <= SizeToEnableBuffer)
+            if (sourceStream.Length <= SizeToEnableBuffer)
             {
-                await sourceFileStream.CopyToAsync(targetFileStream, cancellationToken);
+                await sourceStream.CopyToAsync(targetStream, cancellationToken);
             }
             else
             {
                 int readCount;
                 byte[] buffer = new byte[BufferSize];
-                while ((readCount = sourceFileStream.Read(buffer)) > 0)
+                while ((readCount = sourceStream.Read(buffer)) > 0)
                 {
-                    await targetFileStream.WriteAsync(buffer.AsMemory(0, readCount), cancellationToken);
+                    await targetStream.WriteAsync(buffer.AsMemory(0, readCount), cancellationToken);
 
-                    progressChanged?.Invoke(new ProgressChangedEventArgs()
-                    {
-                        Progress = (double)targetFileStream.Length / sourceFileStream.Length,
-                        TaskCompleted = false
-                    });
+                    OnProgressChanged((double)targetStream.Length / sourceStream.Length, transcationMode);
                 }
-
             }
 
-            progressChanged?.Invoke(new ProgressChangedEventArgs()
-            {
-                Progress = 1,
-                TaskCompleted = true
-            });
+            OnProgressChanged(1, transcationMode);
         }
         catch (TaskCanceledException e)
         {
-            ExceptionRaised?.Invoke(this, new ExceptionRaisedEventArgs()
-            {
-                Exception = e
-            });
+            OnExceptionRaised(e);
         }
         catch (Exception e)
         {
-            ExceptionRaised?.Invoke(this, new ExceptionRaisedEventArgs()
-            {
-                Exception = e
-            });
+            OnExceptionRaised(e);
         }
     }
+
+    private readonly string _rootDirectory;
+    private readonly IFileIO _fileIO;
     #endregion
 }
