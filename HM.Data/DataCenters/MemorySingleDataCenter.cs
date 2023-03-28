@@ -1,19 +1,7 @@
-﻿namespace HM.Data;
+﻿namespace HM.Data.DataCenters;
 
-public class MemorySingleDataCenter<T> : IAsyncSingleData<T>, ISingleDataCenter<T>
+public class MemorySingleDataCenter<T> : IAsyncSingleDataCenter<T>, ISingleDataCenter<T>
 {
-    public int Delete()
-    {
-        _value = default;
-        return 1;
-    }
-
-    public async Task<int> DeleteAsync()
-    {
-        _value = default;
-        return await Task.FromResult(1);
-    }
-
     public T? Get()
     {
         return _value;
@@ -33,6 +21,18 @@ public class MemorySingleDataCenter<T> : IAsyncSingleData<T>, ISingleDataCenter<
     public async Task<int> UpdateAsync(T item)
     {
         _value = item;
+        return await Task.FromResult(1);
+    }
+
+    public int Delete()
+    {
+        _value = default;
+        return 1;
+    }
+
+    public async Task<int> DeleteAsync()
+    {
+        _value = default;
         return await Task.FromResult(1);
     }
 

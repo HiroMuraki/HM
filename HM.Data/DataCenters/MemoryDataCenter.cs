@@ -1,4 +1,4 @@
-﻿namespace HM.Data;
+﻿namespace HM.Data.DataCenters;
 
 public class MemoryDataCenter<T> : IDataCenter<T>, IAsyncDataCenter<T>
 {

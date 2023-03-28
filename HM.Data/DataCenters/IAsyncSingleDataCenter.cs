@@ -1,6 +1,6 @@
-﻿namespace HM.Data;
+﻿namespace HM.Data.DataCenters;
 
-public interface IAsyncSingleData<T>
+public interface IAsyncSingleDataCenter<T>
 {
     Task<T?> GetAsync();
 
