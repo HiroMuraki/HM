@@ -31,6 +31,13 @@ public class LocalDataServer : LocalServer, IDataServer
         OnProgressChanged(1, TranscationMode.Upload);
     }
 
+    public async Task FreeSpaceAsync(string serverFilePath, CancellationToken cancellationToken)
+    {
+        string localFilePath = GetLocalFilePath(serverFilePath);
+
+        await FileIO.DeleteFileAsync(localFilePath);
+    }
+
     public LocalDataServer(string rootDirectory, IFileIO fileIO, IDataSerializer dataSerializer) : base(rootDirectory, fileIO)
     {
         DataSerializer = dataSerializer;

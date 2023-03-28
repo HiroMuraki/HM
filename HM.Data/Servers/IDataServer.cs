@@ -8,5 +8,7 @@ public interface IDataServer
     Task<T> FetchAsync<T>(string serverFilePath, CancellationToken cancellationToken);
 
     Task UploadAsync<T>(T data, string serverFilePath, CancellationToken cancellationToken);
+
+    Task FreeSpaceAsync(string serverFilePath, CancellationToken cancellationToken);
 }
 

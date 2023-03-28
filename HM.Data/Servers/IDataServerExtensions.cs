@@ -11,5 +11,10 @@ public static class IDataServerExtensions
     {
         await self.UploadAsync(data, serverFilePath, CancellationToken.None);
     }
+
+    public static async Task FreeSpaceAsync(this IDataServer self, string serverFilePath)
+    {
+        await self.FreeSpaceAsync(serverFilePath, CancellationToken.None);
+    }
 }
 

@@ -1,6 +1,6 @@
 ﻿namespace HM.Ioc;
 
-public sealed class ServiceProviderBuilder
+public sealed class AppServicesBuilder
 {
     public object this[Type type]
     {
@@ -40,29 +40,4 @@ public sealed class ServiceProviderBuilder
     #region NonPublic
     private readonly Dictionary<Type, object> _registeredServices = new();
     #endregion
-}
-
-internal class Test
-{
-    private void T()
-    {
-        ScopedServiceProviders<string> scopedServiceProvider = new()
-        {
-            ["Storage"] = new ServiceProviderBuilder()
-            {
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-            }.BuildServiceProvider(),
-
-            ["Platform"] = new ServiceProviderBuilder()
-            {
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-                [typeof(int)] = "",
-            }.BuildServiceProvider(),
-        };
-    }
 }
